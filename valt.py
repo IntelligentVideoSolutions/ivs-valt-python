@@ -237,7 +237,7 @@ class VALT:
 					markertime = self.getrecordingtime(room)
 					if markertime > 0:
 						if self.version[0] == "6":
-							values ={"recordTime": markertime, "recordId": self.getrecordingid(room), "template":{"id": template_id, "data":template_data, "name": markername}}
+							values ={"recordTime": markertime, "recordId": self.getrecordingid(room), "type":"simple", "template":{"id": template_id, "data":template_data, "name": markername}}
 							# if "author" in kwargs:
 							# 	values["author"] = kwargs["author"]
 						elif self.version[0] == "5":
