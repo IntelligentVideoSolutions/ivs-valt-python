@@ -7,6 +7,7 @@ import json
 import http.client, urllib.error, urllib.request, urllib.parse
 import os, ssl, time, threading
 import logging
+import uuid
 
 class VALT:
 	def __init__(self, valt_address, valt_username, valt_password, timeout=5,logpath="ivs.log", **kwargs):
@@ -581,6 +582,12 @@ class VALT:
 			pass
 		elif str(e) == "Unable to get camera presets":
 			pass
+		elif str(e) == "File not found.":
+			pass
+		elif str(e) == "Recording Not Found":
+			pass
+		elif str(e) == "Video Not Found":
+			pass
 		else:
 			self.errormsg = "An Unknown Error Occurred"
 			self.accesstoken = 0
@@ -770,19 +777,63 @@ class VALT:
 		if 'values' in kwargs:
 			params = json.dumps(kwargs['values']).encode('utf-8')
 			self.logger.debug(__name__ + ": " + str(params))
+		else:
+			params = None
+		if 'file_path' in kwargs:
+			file_path = kwargs['file_path']
+		else:
+			file_path = None
+
 		try:
 			self.logger.debug(__name__ + ": " + "Sending API call")
 			starttime = time.time()
-			req = urllib.request.Request(url)
-			if 'values' in kwargs:
+			if file_path is not None and os.path.isfile(file_path):
+				file_size = os.path.getsize(file_path)
+
+				# Read the file content
+				with open(file_path, 'rb') as f:
+					file_content = f.read()
+
+				boundary = uuid.uuid4().hex
+
+				# Headers
+				content_type = f'multipart/form-data; boundary={boundary}'
+				# The range format is: bytes <start>-<end>/<total>
+				# For a full file: 0 to (size - 1) / size
+				content_range = f'bytes 0-{file_size - 1}/{file_size}'
+				body_parts = []
+				# 1. Start with the opening boundary
+				body_parts.append(f'--{boundary}'.encode())
+				# 2. File headers
+				body_parts.append(f'Content-Disposition: form-data; name="file"; filename="{os.path.basename(file_path)}"'.encode())
+				body_parts.append(b'Content-Type: application/octet-stream')
+				# 3. An empty line (CRLF) before the actual data
+				body_parts.append(b'')
+				# 4. Join parts with CRLF
+				payload = b'\r\n'.join(body_parts) + b'\r\n'
+				# 5. Add the binary file content and the closing boundary
+				payload += file_content + f'\r\n--{boundary}--\r\n'.encode()
+
+				# Create request
+				req = urllib.request.Request(url, data=payload, method='POST')
+				req.add_header('Content-Type', content_type)
+				req.add_header('Content-Range', content_range)
+				response = urllib.request.urlopen(req, context=ctx)
+
+			elif params is not None:
+				req = urllib.request.Request(url)
 				req.add_header('Content-Type', 'application/json')
 				response = urllib.request.urlopen(req, params, timeout=self.httptimeout,context=ctx)
 			else:
+				req = urllib.request.Request(url)
 				response = urllib.request.urlopen(req, timeout=self.httptimeout,context=ctx)
 			endtime = time.time()
 			elapsedtime = endtime - starttime
 			self.logger.debug(__name__ + ": " + str(elapsedtime) + " seconds elapsed")
-			self.logger.debug(__name__ + ": " + "Response Received")
+			code = response.getcode()
+			self.logger.debug(__name__ + f": {code} Received")
+			content_type = response.info().get('Content-Type', '')
+			self.logger.debug(__name__ + f" Content-Type received: {content_type}")
 		except urllib.error.HTTPError as e:
 			self.accesstoken = 0
 			self.logger.error(__name__ + ": VALT API Call Failed")
@@ -803,6 +854,8 @@ class VALT:
 			try:
 				self.logger.debug(__name__ + ": " + str(response))
 				data = json.load(response)
+			except (json.JSONDecodeError, UnicodeDecodeError):
+				self.logger.error(__name__ + ": No JSON data in response.")
 			except Exception as e:
 				self.handleerror(e)
 			else:
@@ -1097,4 +1150,67 @@ class VALT:
 					return 0
 			else:
 				self.handleerror("No Media Servers")
+				return 0
+
+	def upload_video(self,file_path,upload_name):
+		if os.path.isfile(file_path):
+			if self.accesstoken == 0:
+				self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
+			else:
+				url = f"{self.baseurl}records/create-upload?access_token={self.accesstoken}"
+				values = {"name": upload_name}
+				data = self.send_to_valt(url,values=values)
+				if type(data).__name__ == "dict":
+					record_id = data['id']
+					videos = data['videos'][0]
+					url = f"{self.baseurl}records/{record_id}/videos/{videos}?access_token={self.accesstoken}"
+					self.send_to_valt(url,file_path=file_path)
+				else:
+					self.handleerror("Upload Creation Failed.")
+					return 0
+		else:
+			self.handleerror("File not found.")
+			return 0
+	def download_video(self,recording_id,video_id,file_name):
+		if self.accesstoken == 0:
+			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
+		else:
+			url = self.baseurl + f'records/download/{recording_id}/{video_id}?access_token={self.accesstoken}'
+			data = self.send_to_valt(url)
+			if type(data).__name__ == "dict":
+				if data['url']:
+					try:
+						# 1. Open the URL
+						with urllib.request.urlopen(data['url']) as response:
+							# 2. Read the binary data
+							data = response.read()
+
+							# 3. Write to a local file in 'wb' (write binary) mode
+							with open(file_name, "wb") as f:
+								f.write(data)
+
+						self.logger.info(f"{__name__}: File saved successfully as {file_name}")
+
+					except Exception as e:
+						self.logger.error(f"{__name__}: Failed to download: {e}")
+				else:
+					self.handleerror("Video Not Found")
+					return 0
+			else:
+				self.handleerror("Video Not Found")
+				return 0
+	def get_video_information(self,recording_id):
+		if self.accesstoken == 0:
+			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
+		else:
+			url = self.baseurl + f'records/{recording_id}?access_token={self.accesstoken}'
+			data = self.send_to_valt(url)
+			if type(data).__name__ == "dict":
+				if data['data']:
+					return data['data']
+				else:
+					self.handleerror("Recording Not Found")
+					return 0
+			else:
+				self.handleerror("Recording Mot Found")
 				return 0
