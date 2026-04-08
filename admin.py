@@ -113,12 +113,13 @@ class valt_admin:
 				data = self.send_to_valt(url)
 				if data['data']['schedules']:
 					for schedule in data['data']['schedules']:
-						if schedule['room']['id'] == int(room):
-							templist = []
-							templist.append(schedule['start_at'])
-							templist.append(schedule['stop_at'])
-							templist.append(schedule['name'])
-							roomsched.append(templist)
+						for rooms in schedule['rooms']:
+							if rooms['id'] == int(room):
+								templist = []
+								templist.append(schedule['start_at'])
+								templist.append(schedule['stop_at'])
+								templist.append(schedule['name'])
+								roomsched.append(templist)
 					roomsched.sort()
 					if roomsched:
 						if self.errormsg == "No Schedules Currently Set Up":
