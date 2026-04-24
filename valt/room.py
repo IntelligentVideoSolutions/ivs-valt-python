@@ -162,7 +162,9 @@ class valt_room:
 					markertime = self.getrecordingtime(room)
 					if markertime > 0:
 						if self.version[0] == "6":
-							values = {"recordTime": markertime, "recordId": self.getrecordingid(room), "type": "simple", "template": {"id": template_id, "data": template_data, "name": markername}}
+							# values = {"recordTime": markertime, "recordId": self.getrecordingid(room), "type": "simple", "template": {"id": template_id, "data": template_data, "name": markername}}
+							# Updated for VALT 6.6, unknown if it will work w/ previous versions
+							values = {"recordTime": markertime, "recordId": self.getrecordingid(room), "type": "simple", "message":markername}
 						# if "author" in kwargs:
 						# 	values["author"] = kwargs["author"]
 						elif self.version[0] == "5":
