@@ -146,23 +146,6 @@ class valt_admin:
 			if type(data).__name__ == "dict":
 				return data['data']['name']
 
-	def getusers(self):
-		# Function to return a list of users.
-		# Returns 0 on failure.
-		# Each list item is a dictionary with information about the user.
-		# Returns 99 if not currently authenticated to VALT
-		if self.accesstoken == 0:
-			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
-		else:
-			url = self.baseurl + 'admin/users?access_token=' + self.accesstoken
-			data = self.send_to_valt(url)
-			if type(data).__name__ == "dict":
-				return data['data']
-			else:
-				self.handleerror("No Users")
-				return 0
-
-
 	def create_camera(self,camera_name,camera_ip,camera_username,camera_password,**kwargs):
 		# Function to start recording in the specified room.
 		# Returns camera id on success and 0 on failure.

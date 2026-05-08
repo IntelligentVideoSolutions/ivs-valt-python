@@ -20,6 +20,10 @@ class valt_auth:
 				self.errormsg = None
 				self.logger.info(__name__ + ": " + "Authenticated to VALT")
 				self.version = self.getversion()
+				self.major_version = self.version.split(".")[0]
+				self.minor_version = self.version.split(".")[1]
+				if self.major_version == "6":
+					self.patch_level = self.version.split(".")[2]
 				self.logger.info(__name__ + ": " + "Valt Version: " + str(self.version))
 				self.reauthenticate(self.success_reauth_time)
 			else:
