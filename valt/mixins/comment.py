@@ -91,9 +91,12 @@ class valt_comment:
 			return False
 
 		url = self.baseurl + f'comment/{comment_id}/file?access_token=' + self.accesstoken
+		ctx = ssl.create_default_context()
+		ctx.check_hostname = False
+		ctx.verify_mode = ssl.CERT_NONE
 		try:
 			req = urllib.request.Request(url)
-			with urllib.request.urlopen(req, timeout=self.httptimeout) as response, open(output_path, 'wb') as out_file:
+			with urllib.request.urlopen(req, timeout=self.httptimeout, context=ctx) as response, open(output_path, 'wb') as out_file:
 				out_file.write(response.read())
 			self.logger.info(__name__ + f": File for comment {comment_id} saved to {output_path}")
 			return True
