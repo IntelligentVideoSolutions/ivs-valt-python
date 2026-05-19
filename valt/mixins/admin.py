@@ -8,9 +8,7 @@ class valt_admin:
 	def setsharing(self: VALT, recid, **kwargs):
 		# Function changes sets sharing permission on the specified recording.
 		# Users and groups must be passed as lists, enclosed in [].
-		# Returns 0 on failure.
-		# Returns 99 if not currently authenticated to VALT
-		if self.accesstoken == 0:
+		# Returns 0 on failure.		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 		else:
 			if 'users' in kwargs and 'groups' in kwargs:
@@ -32,9 +30,7 @@ class valt_admin:
 	def getrecords(self: VALT, **kwargs):
 		# Function to return a list of records.
 		# Returns 0 on failure.
-		# Each list item is a dictionary with information about the user.
-		# Returns 99 if not currently authenticated to VALT
-		if self.accesstoken == 0:
+		# Each list item is a dictionary with information about the user.		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 		else:
 			if 'search' in kwargs and 'start_date' in kwargs:
@@ -57,9 +53,7 @@ class valt_admin:
 		# Function to get the current active recording id in the specified room
 		# Returns true if the specified room is recording
 		# Returns False if the room is not recording
-		# Returns 2 if an error is encountered
-		# Returns 99 if not currently authenticated to VALT
-		if self.accesstoken == 0:
+		# Returns 2 if an error is encountered		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 		else:
 			url = self.baseurl + 'admin/general?access_token=' + self.accesstoken
@@ -73,9 +67,7 @@ class valt_admin:
 	def get_all_cameras(self: VALT):
 		# Function to return a list of all cameras.
 		# Returns a list of cameras if successful. Each list item is actually a dictionary containing information about that camera.
-		# Returns 0 on failure.
-		# Returns 99 if not currently authenticated to VALT
-		if self.accesstoken == 0:
+		# Returns 0 on failure.		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 		else:
 			url = self.baseurl + 'admin/cameras?access_token=' + self.accesstoken
@@ -142,9 +134,7 @@ class valt_admin:
 				return 0
 
 	def getusername(self: VALT, user):
-		# Function to return the name of the specified room.
-		# Returns 99 if not currently authenticated to VALT
-		if self.accesstoken == 0:
+		# Function to return the name of the specified room.		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 		else:
 			url = self.baseurl + 'admin/users/' + str(user) + '?access_token=' + self.accesstoken
@@ -193,9 +183,7 @@ class valt_admin:
 	def get_media_servers(self: VALT):
 		# Function to return a list of all cameras.
 		# Returns a list of cameras if successful. Each list item is actually a dictionary containing information about that camera.
-		# Returns 0 on failure.
-		# Returns 99 if not currently authenticated to VALT
-		if self.accesstoken == 0:
+		# Returns 0 on failure.		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 		else:
 			url = self.baseurl + 'admin/wowza?access_token=' + self.accesstoken

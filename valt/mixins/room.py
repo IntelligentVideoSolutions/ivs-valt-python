@@ -71,9 +71,7 @@ class valt_room:
 
 	def stoprecording(self: VALT, room):
 		# Function to stop recording in the specified room.
-		# Returns recording id on success and 0 on failure.
-		# Returns 99 if not currently authenticated to VALT
-		if self.accesstoken == 0:
+		# Returns recording id on success and 0 on failure.		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 		else:
 			if self.isrecording(room) == True:
@@ -95,9 +93,7 @@ class valt_room:
 
 	def pauserecording(self: VALT, room):
 		# Function to pause recording in the specified room.
-		# Returns recording id on success and 0 on failure.
-		# Returns 99 if not currently authenticated to VALT
-		if self.accesstoken == 0:
+		# Returns recording id on success and 0 on failure.		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 		else:
 			if self.isrecording(room) == True:
@@ -119,9 +115,7 @@ class valt_room:
 
 	def resumerecording(self: VALT, room):
 		# Function to resume recording in the specified room.
-		# Returns recording id on success and 0 on failure.
-		# Returns 99 if not currently authenticated to VALT
-		if self.accesstoken == 0:
+		# Returns recording id on success and 0 on failure.		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 		else:
 			if self.isrecording(room) == True:
@@ -216,9 +210,7 @@ class valt_room:
 
 	def islocked(self: VALT, room):
 		# Function to check if specified room is currently locked.
-		# Returns true if room is currently locked.
-		# Returns 99 if not currently authenticated to VALT
-		if self.accesstoken == 0:
+		# Returns true if room is currently locked.		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 		else:
 			url = self.baseurl + 'rooms/' + str(room) + '/status?access_token=' + self.accesstoken
@@ -235,9 +227,7 @@ class valt_room:
 	def get_cameras(self: VALT, room):
 		# Function to return a list of all cameras in the specified room.
 		# Returns a list of cameras if successful. Each list item is actually a dictionary containing information about that camera.
-		# Returns 0 on failure.
-		# Returns 99 if not currently authenticated to VALT
-		if self.accesstoken == 0:
+		# Returns 0 on failure.		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 		else:
 			if room != None and room != "" and room != "None":
@@ -256,9 +246,7 @@ class valt_room:
 				self.handleerror("Invalid Room ID")
 				return 0
 	def getroomname(self: VALT, room):
-		# Function to return the name of the specified room.
-		# Returns 99 if not currently authenticated to VALT
-		if self.accesstoken == 0:
+		# Function to return the name of the specified room.		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 		else:
 			if room != None and room != "" and room != "None":
@@ -306,9 +294,7 @@ class valt_room:
 
 	def lockroom(self: VALT, room):
 		# Function locks the specified room.
-		# Returns 0 on failure.
-		# Returns 99 if not currently authenticated to VALT
-		if self.accesstoken == 0:
+		# Returns 0 on failure.		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		if self.getroomstatus(room) == 1 or self.getroomstatus(room) == 5:
@@ -324,9 +310,7 @@ class valt_room:
 
 	def unlockroom(self: VALT, room):
 		# Function unlocks the specified room.
-		# Returns 0 on failure.
-		# Returns 99 if not currently authenticated to VALT
-		if self.accesstoken == 0:
+		# Returns 0 on failure.		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		if self.islocked(room):

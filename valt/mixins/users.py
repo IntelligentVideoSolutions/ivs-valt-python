@@ -51,9 +51,7 @@ class valt_users:
 	def getusers(self: VALT):
 		# Function to return a list of users.
 		# Returns 0 on failure.
-		# Each list item is a dictionary with information about the user.
-		# Returns 99 if not currently authenticated to VALT
-		if self.accesstoken == 0:
+		# Each list item is a dictionary with information about the user.		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 		else:
 			url = self.baseurl + 'admin/users?access_token=' + self.accesstoken
