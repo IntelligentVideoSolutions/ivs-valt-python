@@ -13,10 +13,12 @@ class valt_users:
 				return self.get_user_by_card_number_v6(cardnumber)
 			else:
 				return self.get_user_by_card_number_v5(cardnumber)
+
 	def get_user_by_card_number_v6(self: VALT, cardnumber):
 		# Function returns user matching card number.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
+			return 0
 		else:
 			url = self.baseurl + 'admin/users' + '?access_token=' + self.accesstoken + '&cardNumber=' + str(cardnumber)
 			data = self.send_to_valt(url)
@@ -26,10 +28,12 @@ class valt_users:
 				else:
 					self.logger.info(__name__ + ": " + "No user found with card number: " + str(cardnumber))
 					return 0
+
 	def get_user_by_card_number_v5(self: VALT, cardnumber):
 		# Function returns user matching card number.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
+			return 0
 		else:
 			user_list = self.getusers()
 			found_user = None
@@ -45,9 +49,11 @@ class valt_users:
 			else:
 				self.logger.info(__name__ + ": " + "No user found with card number: " + str(cardnumber))
 				return 0
+
 	def update_user(self: VALT, user_id, **kwargs):
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
+			return 0
 		else:
 			url = self.baseurl + 'admin/users/' + str(user_id) + '/edit?access_token=' + self.accesstoken
 			data = self.send_to_valt(url, values=kwargs)
@@ -62,6 +68,7 @@ class valt_users:
 		# Each list item is a dictionary with information about the user.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
+			return 0
 		else:
 			url = self.baseurl + 'admin/users?access_token=' + self.accesstoken
 			data = self.send_to_valt(url)

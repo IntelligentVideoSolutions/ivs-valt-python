@@ -30,6 +30,7 @@ class valt_recording:
 	def download_video(self: VALT,recording_id,video_id,file_name):
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
+			return 0
 		else:
 			url = self.baseurl + f'records/download/{recording_id}/{video_id}?access_token={self.accesstoken}'
 			data = self.send_to_valt(url)
@@ -39,11 +40,11 @@ class valt_recording:
 						# 1. Open the URL
 						with urllib.request.urlopen(data['url']) as response:
 							# 2. Read the binary data
-							data = response.read()
+							file_data = response.read()
 
 							# 3. Write to a local file in 'wb' (write binary) mode
 							with open(file_name, "wb") as f:
-								f.write(data)
+								f.write(file_data)
 
 						self.logger.info(f"{__name__}: File saved successfully as {file_name}")
 
@@ -58,6 +59,7 @@ class valt_recording:
 	def get_video_information(self: VALT,recording_id):
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
+			return 0
 		else:
 			url = self.baseurl + f'records/{recording_id}?access_token={self.accesstoken}'
 			data = self.send_to_valt(url)

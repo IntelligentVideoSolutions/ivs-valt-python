@@ -11,6 +11,7 @@ class valt_room:
 		# Returns False if the room is not recording
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
+			return 0
 		else:
 			url = self.baseurl + 'rooms/info/' + str(room) + '?access_token=' + self.accesstoken
 			data = self.send_to_valt(url)
@@ -26,6 +27,7 @@ class valt_room:
 		# Returns 0 if the room is not recording
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
+			return 0
 		else:
 			url = self.baseurl + 'rooms/info/' + str(room) + '?access_token=' + self.accesstoken
 			data = self.send_to_valt(url)
@@ -45,6 +47,7 @@ class valt_room:
 		# Returns recording id on success and 0 on failure.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
+			return 0
 		else:
 			if self.isrecording(room) != True:
 				if 'author' in kwargs:
@@ -74,6 +77,7 @@ class valt_room:
 		# Returns recording id on success and 0 on failure.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
+			return 0
 		else:
 			if self.isrecording(room) == True:
 				url = self.baseurl + 'rooms/' + str(room) + '/record/stop' + '?access_token=' + self.accesstoken
@@ -97,6 +101,7 @@ class valt_room:
 		# Returns recording id on success and 0 on failure.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
+			return 0
 		else:
 			if self.isrecording(room) == True:
 				if self.ispaused(room) != True:
@@ -120,6 +125,7 @@ class valt_room:
 		# Returns recording id on success and 0 on failure.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
+			return 0
 		else:
 			if self.isrecording(room) == True:
 				if self.ispaused(room) == True:
@@ -144,6 +150,7 @@ class valt_room:
 		# Returns 0 on failure.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
+			return 0
 		else:
 			if self.isrecording(room) == True:
 				if 'template_id' in kwargs:
@@ -161,20 +168,19 @@ class valt_room:
 				else:
 					self.logger.error(__name__ + ": Unable to Determine VALT version")
 					return 0
-				if self.isrecording(room):
-					markertime = self.getrecordingtime(room)
-					if markertime > 0:
-						if self.version[0] == "6":
-							# values = {"recordTime": markertime, "recordId": self.getrecordingid(room), "type": "simple", "template": {"id": template_id, "data": template_data, "name": markername}}
-							# Updated for VALT 6.6, unknown if it will work w/ previous versions
-							values = {"recordTime": markertime, "recordId": self.getrecordingid(room), "type": "simple", "message":markername}
-						# if "author" in kwargs:
-						# 	values["author"] = kwargs["author"]
-						elif self.version[0] == "5":
-							values = {"event": markername, "time": markertime, "color": color}
-						data = self.send_to_valt(url, values=values)
-						self.logger.info(__name__ + ": " + "Comment " + markername + " added in " + str(self.getroomname(room)))
-						return 1
+				markertime = self.getrecordingtime(room)
+				if markertime > 0:
+					if self.version[0] == "6":
+						# values = {"recordTime": markertime, "recordId": self.getrecordingid(room), "type": "simple", "template": {"id": template_id, "data": template_data, "name": markername}}
+						# Updated for VALT 6.6, unknown if it will work w/ previous versions
+						values = {"recordTime": markertime, "recordId": self.getrecordingid(room), "type": "simple", "message":markername}
+					# if "author" in kwargs:
+					# 	values["author"] = kwargs["author"]
+					elif self.version[0] == "5":
+						values = {"event": markername, "time": markertime, "color": color}
+					data = self.send_to_valt(url, values=values)
+					self.logger.info(__name__ + ": " + "Comment " + markername + " added in " + str(self.getroomname(room)))
+					return 1
 			else:
 				self.handleerror("No Recording")
 				return 0
@@ -185,6 +191,7 @@ class valt_room:
 		# Returns 0 on failure.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
+			return 0
 		else:
 			if self.isrecording(room) == True:
 				url = self.baseurl + 'rooms/info/' + str(room) + '?access_token=' + self.accesstoken
@@ -200,9 +207,9 @@ class valt_room:
 	def ispaused(self: VALT, room):
 		# Function to check if specified room is currently recording and paused.
 		# Returns true if room is currently paused
-
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
+			return 0
 		else:
 			url = self.baseurl + 'rooms/' + str(room) + '/status?access_token=' + self.accesstoken
 			data = self.send_to_valt(url)
@@ -217,6 +224,7 @@ class valt_room:
 		# Returns true if room is currently locked.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
+			return 0
 		else:
 			url = self.baseurl + 'rooms/' + str(room) + '/status?access_token=' + self.accesstoken
 			data = self.send_to_valt(url)
@@ -235,6 +243,7 @@ class valt_room:
 		# Returns 0 on failure.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
+			return 0
 		else:
 			if room != None and room != "" and room != "None":
 				url = self.baseurl + 'admin/rooms/' + str(room) + '/cameras?access_token=' + self.accesstoken
@@ -256,6 +265,7 @@ class valt_room:
 		# Function to return the name of the specified room.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
+			return 0
 		else:
 			if room != None and room != "" and room != "None":
 				url = self.baseurl + 'rooms/info/' + str(room) + '?access_token=' + self.accesstoken
@@ -277,6 +287,7 @@ class valt_room:
 		# Returns 5 if the room is prepared.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
+			return 0
 		# elif not isinstance(room, int):
 		# 	self.handleerror("Invalid Room ID")
 		# 	return 0
@@ -284,19 +295,19 @@ class valt_room:
 			url = self.baseurl + 'rooms/' + str(room) + '/status?access_token=' + self.accesstoken
 			data = self.send_to_valt(url)
 			if type(data).__name__ == "dict":
-					if data['data']['status'] == 'available':
-						return 1
-					elif data['data']['status'] == 'recording':
-						return 2
-					elif data['data']['status'] == 'paused':
-						return 3
-					elif data['data']['status'] == 'locked':
-						return 4
-					elif data['data']['status'] == 'prepared':
-						return 5
-					else:
-						self.handleerror("Unknown Status")
-						return 0
+				if data['data']['status'] == 'available':
+					return 1
+				elif data['data']['status'] == 'recording':
+					return 2
+				elif data['data']['status'] == 'paused':
+					return 3
+				elif data['data']['status'] == 'locked':
+					return 4
+				elif data['data']['status'] == 'prepared':
+					return 5
+				else:
+					self.handleerror("Unknown Status")
+					return 0
 			else:
 				self.handleerror("Invalid Room ID")
 				return 0

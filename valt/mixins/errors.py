@@ -64,6 +64,8 @@ class valt_errors:
 			self.errormsg = "Recording Not Found"
 		elif str(e) == "Video Not Found":
 			self.errormsg = "Video Not Found"
+		elif str(e) == "Upload Creation Failed.":
+			self.errormsg = "Upload Failed"
 		else:
 			self.errormsg = "An Unknown Error Occurred"
 			self.accesstoken = 0

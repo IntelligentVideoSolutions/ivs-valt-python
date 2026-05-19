@@ -8,6 +8,7 @@ class valt_groups:
 	def get_user_group_info(self: VALT,group_id):
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
+			return 0
 		else:
 			url = self.baseurl + 'admin/user_groups/' + str(group_id) + '?access_token=' + self.accesstoken
 			data = self.send_to_valt(url)
@@ -30,6 +31,7 @@ class valt_groups:
 	def update_group(self: VALT,group_id,**kwargs):
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
+			return 0
 		else:
 			url = self.baseurl + 'admin/user_groups/' + str(group_id) + '/edit?access_token=' + self.accesstoken
 			values = {}

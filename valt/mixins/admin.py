@@ -11,6 +11,7 @@ class valt_admin:
 		# Returns 0 on failure.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
+			return 0
 		else:
 			if 'users' in kwargs and 'groups' in kwargs:
 				values = {"share": {"users": kwargs['users'], "groups": kwargs['groups']}}
@@ -27,6 +28,8 @@ class valt_admin:
 			self.logger.debug(__name__ + ": " + str(values))
 			if type(data).__name__ == "dict":
 				return data['data']['id']
+			else:
+				return 0
 
 	def getrecords(self: VALT, **kwargs):
 		# Function to return a list of records.
@@ -34,6 +37,7 @@ class valt_admin:
 		# Each list item is a dictionary with information about the user.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
+			return 0
 		else:
 			if 'search' in kwargs and 'start_date' in kwargs:
 				values = {"search": kwargs['search'], "start_date": kwargs['start_date']}
@@ -59,6 +63,7 @@ class valt_admin:
 		# Returns 2 if an error is encountered
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
+			return 0
 		else:
 			url = self.baseurl + 'admin/general?access_token=' + self.accesstoken
 			data = self.send_to_valt(url)
@@ -75,6 +80,7 @@ class valt_admin:
 		# Returns 0 on failure.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
+			return 0
 		else:
 			url = self.baseurl + 'admin/cameras?access_token=' + self.accesstoken
 			data = self.send_to_valt(url)
@@ -94,6 +100,7 @@ class valt_admin:
 		# Returns 0 on failure.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
+			return 0
 		else:
 			url = self.baseurl + 'rooms/info?access_token=' + self.accesstoken
 			data = self.send_to_valt(url)
@@ -110,6 +117,7 @@ class valt_admin:
 		# Returns an empty list if no schedules exist for the specified room.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
+			return 0
 		else:
 			if room != None and room != "" and room != "None":
 				url = self.baseurl + 'schedule?access_token=' + self.accesstoken
@@ -143,17 +151,21 @@ class valt_admin:
 		# Function to return the name of the specified user.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
+			return 0
 		else:
 			url = self.baseurl + 'admin/users/' + str(user) + '?access_token=' + self.accesstoken
 			data = self.send_to_valt(url)
 			if type(data).__name__ == "dict":
 				return data['data']['name']
+			else:
+				return 0
 
 	def create_camera(self: VALT,camera_name,camera_ip,camera_username,camera_password,**kwargs):
 		# Function to start recording in the specified room.
 		# Returns camera id on success and 0 on failure.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
+			return 0
 		else:
 			values={}
 			values['name'] = camera_name
@@ -177,6 +189,7 @@ class valt_admin:
 	def create_room(self: VALT,room_name,**kwargs):
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
+			return 0
 		else:
 			values={}
 			values['name'] = room_name
@@ -194,6 +207,7 @@ class valt_admin:
 		# Returns 0 on failure.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
+			return 0
 		else:
 			url = self.baseurl + 'admin/wowza?access_token=' + self.accesstoken
 			data = self.send_to_valt(url)

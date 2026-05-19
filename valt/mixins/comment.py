@@ -2,6 +2,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 import json
+import ssl
 import urllib.request
 
 if TYPE_CHECKING:
@@ -12,7 +13,6 @@ class valt_comment:
 		# Function to return a list of all comments associated with a specific recording
 		# Returns list of comment dictionaries on success
 		# Returns 0 on failure
-		# Added by AI
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
@@ -69,9 +69,12 @@ class valt_comment:
 			return 0
 
 		url = self.baseurl + f'comment/{comment_id}?access_token=' + self.accesstoken
+		ctx = ssl.create_default_context()
+		ctx.check_hostname = False
+		ctx.verify_mode = ssl.CERT_NONE
 		try:
-			request = urllib.request.Request(url, method='DELETE')
-			response = urllib.request.urlopen(request, timeout=self.httptimeout)
+			req = urllib.request.Request(url, method='DELETE')
+			response = urllib.request.urlopen(req, timeout=self.httptimeout, context=ctx)
 			result = json.load(response)
 			self.logger.info(__name__ + f": Deleted comment ID {comment_id}")
 			return result.get('id', 0)
