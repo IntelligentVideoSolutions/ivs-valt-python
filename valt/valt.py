@@ -1,15 +1,15 @@
-from .admin import valt_admin
-from .comment import valt_comment
-from .communication import valt_communication
-from .errors import valt_errors
-from .groups import valt_groups
-from .log import valt_log
-from .monitor import valt_monitor
-from .preset import valt_preset
-from .recording import valt_recording
-from .room import valt_room
-from .users import valt_users
-from .auth import valt_auth
+from .mixins.admin import valt_admin
+from .mixins.comment import valt_comment
+from .mixins.communication import valt_communication
+from .mixins.errors import valt_errors
+from .mixins.groups import valt_groups
+from .mixins.log import valt_log
+from .mixins.monitor import valt_monitor
+from .mixins.preset import valt_preset
+from .mixins.recording import valt_recording
+from .mixins.room import valt_room
+from .mixins.users import valt_users
+from .mixins.auth import valt_auth
 
 class VALT(valt_communication,valt_log,valt_recording,valt_room,valt_preset,valt_users,valt_groups,valt_comment,valt_admin,valt_errors,valt_auth,valt_monitor):
 	def __init__(self, valt_address, valt_username, valt_password, timeout=5,logpath="ivs.log", **kwargs):
