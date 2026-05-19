@@ -1,6 +1,9 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 
+import json
+import urllib.request
+
 if TYPE_CHECKING:
 	from ..valt import VALT
 
