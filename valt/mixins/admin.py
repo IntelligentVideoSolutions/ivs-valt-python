@@ -1,5 +1,11 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+	from ..valt import VALT
+
 class valt_admin:
-	def setsharing(self: "VALT", recid, **kwargs):
+	def setsharing(self: VALT, recid, **kwargs):
 		# Function changes sets sharing permission on the specified recording.
 		# Users and groups must be passed as lists, enclosed in [].
 		# Returns 0 on failure.
@@ -23,7 +29,7 @@ class valt_admin:
 			if type(data).__name__ == "dict":
 				return data['data']['id']
 
-	def getrecords(self: "VALT", **kwargs):
+	def getrecords(self: VALT, **kwargs):
 		# Function to return a list of records.
 		# Returns 0 on failure.
 		# Each list item is a dictionary with information about the user.
@@ -47,7 +53,7 @@ class valt_admin:
 			else:
 				self.handleerror("No Records")
 				return 0
-	def getversion(self: "VALT"):
+	def getversion(self: VALT):
 		# Function to get the current active recording id in the specified room
 		# Returns true if the specified room is recording
 		# Returns False if the room is not recording
@@ -64,7 +70,7 @@ class valt_admin:
 				else:
 					self.handleerror("No Version")
 					return 0
-	def get_all_cameras(self: "VALT"):
+	def get_all_cameras(self: VALT):
 		# Function to return a list of all cameras.
 		# Returns a list of cameras if successful. Each list item is actually a dictionary containing information about that camera.
 		# Returns 0 on failure.
@@ -84,7 +90,7 @@ class valt_admin:
 				self.handleerror("No Cameras")
 				return 0
 
-	def getrooms(self: "VALT"):
+	def getrooms(self: VALT):
 		# Function to return a list of all rooms.
 		# Returns a list of rooms if successful. Each list item is actually a dictionary containing information about that room.
 		# Returns 0 on failure.
@@ -99,7 +105,7 @@ class valt_admin:
 				self.handleerror("No Rooms")
 				return 0
 
-	def getschedule(self: "VALT", room):
+	def getschedule(self: VALT, room):
 		# Function to return a list of scheduled recordings for the specified room.
 		# Returns a list of schedules if successful. Each list item is actually a list containing information about that schedule.
 		# Returns 0 on failure.
@@ -135,7 +141,7 @@ class valt_admin:
 				self.handleerror("Invalid Room ID")
 				return 0
 
-	def getusername(self: "VALT", user):
+	def getusername(self: VALT, user):
 		# Function to return the name of the specified room.
 		# Returns 99 if not currently authenticated to VALT
 		if self.accesstoken == 0:
@@ -146,7 +152,7 @@ class valt_admin:
 			if type(data).__name__ == "dict":
 				return data['data']['name']
 
-	def create_camera(self: "VALT",camera_name,camera_ip,camera_username,camera_password,**kwargs):
+	def create_camera(self: VALT,camera_name,camera_ip,camera_username,camera_password,**kwargs):
 		# Function to start recording in the specified room.
 		# Returns camera id on success and 0 on failure.
 		if self.accesstoken == 0:
@@ -170,7 +176,7 @@ class valt_admin:
 				return data['data']['id']
 			else:
 				return 0
-	def create_room(self: "VALT",room_name,**kwargs):
+	def create_room(self: VALT,room_name,**kwargs):
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 		else:
@@ -184,7 +190,7 @@ class valt_admin:
 			else:
 				return 0
 
-	def get_media_servers(self: "VALT"):
+	def get_media_servers(self: VALT):
 		# Function to return a list of all cameras.
 		# Returns a list of cameras if successful. Each list item is actually a dictionary containing information about that camera.
 		# Returns 0 on failure.

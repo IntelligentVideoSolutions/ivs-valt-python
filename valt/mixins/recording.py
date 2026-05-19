@@ -1,5 +1,11 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+	from ..valt import VALT
+
 class valt_recording:
-	def upload_video(self: "VALT",file_path,upload_name):
+	def upload_video(self: VALT,file_path,upload_name):
 		if os.path.isfile(file_path):
 			if self.accesstoken == 0:
 				self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
@@ -18,7 +24,7 @@ class valt_recording:
 		else:
 			self.handleerror("File not found.")
 			return 0
-	def download_video(self: "VALT",recording_id,video_id,file_name):
+	def download_video(self: VALT,recording_id,video_id,file_name):
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 		else:
@@ -46,7 +52,7 @@ class valt_recording:
 			else:
 				self.handleerror("Video Not Found")
 				return 0
-	def get_video_information(self: "VALT",recording_id):
+	def get_video_information(self: VALT,recording_id):
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 		else:

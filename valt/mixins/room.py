@@ -1,5 +1,11 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+	from ..valt import VALT
+
 class valt_room:
-	def isrecording(self: "VALT", room):
+	def isrecording(self: VALT, room):
 		# Function to check if the specified room is currently recording
 		# Returns true if the specified room is recording
 		# Returns False if the room is not recording
@@ -14,7 +20,7 @@ class valt_room:
 				return 0
 
 
-	def getrecordingid(self: "VALT", room):
+	def getrecordingid(self: VALT, room):
 		# Function to get the current active recording id in the specified room
 		# Returns recording id if currently recording
 		# Returns 0 if the room is not recording
@@ -34,7 +40,7 @@ class valt_room:
 				return 0
 
 
-	def startrecording(self: "VALT", room, name, **kwargs):
+	def startrecording(self: VALT, room, name, **kwargs):
 		# Function to start recording in the specified room.
 		# Returns recording id on success and 0 on failure.
 		if self.accesstoken == 0:
@@ -63,7 +69,7 @@ class valt_room:
 				return 0
 
 
-	def stoprecording(self: "VALT", room):
+	def stoprecording(self: VALT, room):
 		# Function to stop recording in the specified room.
 		# Returns recording id on success and 0 on failure.
 		# Returns 99 if not currently authenticated to VALT
@@ -87,7 +93,7 @@ class valt_room:
 				return 0
 
 
-	def pauserecording(self: "VALT", room):
+	def pauserecording(self: VALT, room):
 		# Function to pause recording in the specified room.
 		# Returns recording id on success and 0 on failure.
 		# Returns 99 if not currently authenticated to VALT
@@ -111,7 +117,7 @@ class valt_room:
 				return 0
 
 
-	def resumerecording(self: "VALT", room):
+	def resumerecording(self: VALT, room):
 		# Function to resume recording in the specified room.
 		# Returns recording id on success and 0 on failure.
 		# Returns 99 if not currently authenticated to VALT
@@ -135,7 +141,7 @@ class valt_room:
 				return 0
 
 
-	def addcomment(self: "VALT", room, markername, color="red", **kwargs):
+	def addcomment(self: VALT, room, markername, color="red", **kwargs):
 		# Function to add a comment current recording in specified room.
 		# Returns 1 if successful.
 		# Returns 0 on failure.
@@ -175,7 +181,7 @@ class valt_room:
 			else:
 				self.handleerror("No Recording")
 				return 0
-	def getrecordingtime(self: "VALT", room):
+	def getrecordingtime(self: VALT, room):
 		# Function to add a marker current recording in specified room.
 		# Returns current time index on sucess.
 		# Returns 0 on failure.
@@ -193,7 +199,7 @@ class valt_room:
 				self.handleerror("No Recording")
 				return 0
 
-	def ispaused(self: "VALT", room):
+	def ispaused(self: VALT, room):
 		# Function to check if specified room is currently recording and paused.
 		# Returns true if room is currently paused
 
@@ -208,7 +214,7 @@ class valt_room:
 				else:
 					return False
 
-	def islocked(self: "VALT", room):
+	def islocked(self: VALT, room):
 		# Function to check if specified room is currently locked.
 		# Returns true if room is currently locked.
 		# Returns 99 if not currently authenticated to VALT
@@ -223,10 +229,10 @@ class valt_room:
 				else:
 					return False
 
-	def getcameras(self: "VALT", room):
+	def getcameras(self: VALT, room):
 		return self.get_cameras(room)
 
-	def get_cameras(self: "VALT", room):
+	def get_cameras(self: VALT, room):
 		# Function to return a list of all cameras in the specified room.
 		# Returns a list of cameras if successful. Each list item is actually a dictionary containing information about that camera.
 		# Returns 0 on failure.
@@ -249,7 +255,7 @@ class valt_room:
 			else:
 				self.handleerror("Invalid Room ID")
 				return 0
-	def getroomname(self: "VALT", room):
+	def getroomname(self: VALT, room):
 		# Function to return the name of the specified room.
 		# Returns 99 if not currently authenticated to VALT
 		if self.accesstoken == 0:
@@ -264,7 +270,7 @@ class valt_room:
 					return 0
 			else:
 				return 0
-	def getroomstatus(self: "VALT", room):
+	def getroomstatus(self: VALT, room):
 		# Function to return the current state of the specified room.
 		# Returns 0 on failure.
 		# Returns 1 if the room is available.
@@ -298,7 +304,7 @@ class valt_room:
 				self.handleerror("Invalid Room ID")
 				return 0
 
-	def lockroom(self: "VALT", room):
+	def lockroom(self: VALT, room):
 		# Function locks the specified room.
 		# Returns 0 on failure.
 		# Returns 99 if not currently authenticated to VALT
@@ -315,7 +321,7 @@ class valt_room:
 			self.handleerror("No Lock")
 			return 0
 
-	def unlockroom(self: "VALT", room):
+	def unlockroom(self: VALT, room):
 		# Function unlocks the specified room.
 		# Returns 0 on failure.
 		# Returns 99 if not currently authenticated to VALT

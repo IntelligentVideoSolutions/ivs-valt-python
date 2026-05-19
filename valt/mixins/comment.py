@@ -1,5 +1,11 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+	from ..valt import VALT
+
 class valt_comment:
-	def get_comments_by_record(self: "VALT", record_id):
+	def get_comments_by_record(self: VALT, record_id):
 		# Function to return a list of all comments associated with a specific recording
 		# Returns list of comment dictionaries on success
 		# Returns 0 on failure
@@ -17,7 +23,7 @@ class valt_comment:
 			self.logger.error(__name__ + ": " + "Unable to retrieve comments for record " + str(record_id))
 			return 0
 
-	def create_comment(self: "VALT", comment_data):
+	def create_comment(self: VALT, comment_data):
 		# Created by AI – Function to create a new comment in VALT.
 		# Expects comment_data as a dict.
 		# Returns the created comment dict or 0 on failure.
@@ -35,7 +41,7 @@ class valt_comment:
 			self.handleerror("Unable to create comment")
 			return 0
 
-	def update_comment(self: "VALT", comment_id, update_data):
+	def update_comment(self: VALT, comment_id, update_data):
 		# Created by AI – Function to update an existing comment in VALT.
 		# Returns the updated comment dict or 0 on failure.
 		if self.accesstoken == 0:
@@ -52,7 +58,7 @@ class valt_comment:
 			self.handleerror("Unable to update comment")
 			return 0
 
-	def delete_comment(self: "VALT", comment_id):
+	def delete_comment(self: VALT, comment_id):
 		# Created by AI – Function to delete a comment by ID in VALT.
 		# Returns comment ID on success or 0 on failure.
 		if self.accesstoken == 0:
@@ -71,7 +77,7 @@ class valt_comment:
 			self.handleerror(e)
 			return 0
 
-	def download_comment_file(self: "VALT", comment_id, output_path):
+	def download_comment_file(self: VALT, comment_id, output_path):
 		# Created by AI – Function to download a comment's attached file to a local path.
 		# Returns True on success, False on failure.
 		if self.accesstoken == 0:
