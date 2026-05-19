@@ -68,5 +68,5 @@ class valt_recording:
 					self.handleerror("Recording Not Found")
 					return 0
 			else:
-				self.handleerror("Recording Mot Found")
+				self.handleerror("Recording Not Found")
 				return 0
