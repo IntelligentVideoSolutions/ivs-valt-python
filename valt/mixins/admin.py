@@ -48,7 +48,7 @@ class valt_admin:
 				return 0
 			url = self.baseurl + 'records?access_token=' + self.accesstoken
 			data = self.send_to_valt(url, values=values)
-			if data['data']:
+			if isinstance(data, dict) and data['data']:
 				return data['data']
 			else:
 				self.handleerror("No Records")
@@ -99,7 +99,7 @@ class valt_admin:
 		else:
 			url = self.baseurl + 'rooms/info?access_token=' + self.accesstoken
 			data = self.send_to_valt(url)
-			if data['data']['rooms']:
+			if isinstance(data, dict) and data['data']['rooms']:
 				return data['data']['rooms']
 			else:
 				self.handleerror("No Rooms")
@@ -117,7 +117,7 @@ class valt_admin:
 				url = self.baseurl + 'schedule?access_token=' + self.accesstoken
 				roomsched = []
 				data = self.send_to_valt(url)
-				if data['data']['schedules']:
+				if isinstance(data, dict) and data['data']['schedules']:
 					for schedule in data['data']['schedules']:
 						for rooms in schedule['rooms']:
 							if rooms['id'] == int(room):
