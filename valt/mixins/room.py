@@ -310,6 +310,7 @@ class valt_room:
 		# Returns 99 if not currently authenticated to VALT
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
+			return 0
 		if self.getroomstatus(room) == 1 or self.getroomstatus(room) == 5:
 			url = self.baseurl + 'rooms/' + str(room) + '/lock' + '?access_token=' + self.accesstoken
 			values = {"nothing": "nothing"}
@@ -327,6 +328,7 @@ class valt_room:
 		# Returns 99 if not currently authenticated to VALT
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
+			return 0
 		if self.islocked(room):
 			url = self.baseurl + 'rooms/' + str(room) + '/unlock' + '?access_token=' + self.accesstoken
 			values = {"nothing": "nothing"}
