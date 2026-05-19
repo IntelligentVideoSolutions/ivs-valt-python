@@ -2,7 +2,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 import os
-import ssl
 import urllib.request
 
 if TYPE_CHECKING:
@@ -13,7 +12,6 @@ class valt_recording:
 		if os.path.isfile(file_path):
 			if self.accesstoken == 0:
 				self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
-				return 0
 			else:
 				url = f"{self.baseurl}records/create-upload?access_token={self.accesstoken}"
 				values = {"name": upload_name}
@@ -40,10 +38,7 @@ class valt_recording:
 				if data['url']:
 					try:
 						# 1. Open the URL
-						ctx = ssl.create_default_context()
-						ctx.check_hostname = False
-						ctx.verify_mode = ssl.CERT_NONE
-						with urllib.request.urlopen(data['url'], timeout=self.httptimeout, context=ctx) as response:
+						with urllib.request.urlopen(data['url']) as response:
 							# 2. Read the binary data
 							file_data = response.read()
 
