@@ -1,10 +1,10 @@
 import logging
 
 class valt_log:
-	def __init__(self, **kwargs):
+	def __init__(self: "VALT", **kwargs):
 		super().__init__(**kwargs) # Passes arguments to the next class in MRO
 		self.set_up_logging()
-	def set_up_logging(self,logpath='valt.log'):
+	def set_up_logging(self: "VALT",logpath='valt.log'):
 		if logging.getLogger("kivy").hasHandlers():
 			self.logger = logging.getLogger("kivy").getChild(__name__)
 		else:
@@ -12,7 +12,7 @@ class valt_log:
 			# logging.basicConfig(filename=logpath, level=logging.DEBUG)
 			logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s", datefmt='%Y-%m-%d %H:%M:%S', handlers=[logging.FileHandler(logpath), logging.StreamHandler()])
 
-	def log_level(self, loglevel):
+	def log_level(self: "VALT", loglevel):
 		# Standardize input to lowercase for consistency
 		match loglevel.lower():
 			case "debug":

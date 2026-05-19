@@ -5,7 +5,7 @@ import time, threading
 
 
 class valt_auth:
-	def auth(self):
+	def auth(self: "VALT"):
 		# Authenticate to VALT server
 		# Sets accesstoken value to 0 if the authentication attempt fails.
 		if self.username != "None" and self.username != "" and self.username is not None and self.password != "None" and self.password != "" and self.password is not None and self.baseurl is not None:
@@ -28,15 +28,15 @@ class valt_auth:
 				self.reauthenticate(self.success_reauth_time)
 			else:
 				self.logger.error(__name__ + ": " + "Authentication FAILED")
-	def reauthenticate(self, reauthtime):
+	def reauthenticate(self: "VALT", reauthtime):
 		self.logger.info(__name__ + ":" + " Next authentication attempt in " + str(reauthtime) + " seconds")
-		if hasattr(self, 'reauth'):
+		if hasattr(self: "VALT", 'reauth'):
 			self.reauth.cancel()
 		self.reauth = threading.Timer(reauthtime, self.auth)
 		self.reauth.daemon = True
 		self.reauth.start()
 
-	def changeserver(self, valt_address, valt_username, valt_password):
+	def changeserver(self: "VALT", valt_address, valt_username, valt_password):
 		if valt_address != "None" and valt_address != "" and valt_address is not None:
 			self.disconnect()
 			if valt_address.find("http", 0, 4) == -1:
@@ -49,7 +49,7 @@ class valt_auth:
 		self.password = valt_password
 		self.auth()
 
-	def testconnection(self, valt_address, valt_username, valt_password):
+	def testconnection(self: "VALT", valt_address, valt_username, valt_password):
 		values = {"username": valt_username, "password": valt_password}
 		params = json.dumps(values).encode('utf-8')
 		if valt_address.find("http", 0, 4) == -1:
@@ -85,12 +85,12 @@ class valt_auth:
 		else:
 			return True
 	@property
-	def accesstoken(self):
+	def accesstoken(self: "VALT"):
 		return self._accesstoken
 	@accesstoken.setter
-	def accesstoken(self,newmsg):
+	def accesstoken(self: "VALT",newmsg):
 		self._accesstoken = newmsg
 		for callback in self._accesstoken_observers:
 			callback(self._accesstoken)
-	def bind_to_accesstoken(self,callback):
+	def bind_to_accesstoken(self: "VALT",callback):
 		self._accesstoken_observers.append(callback)

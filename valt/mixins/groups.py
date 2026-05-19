@@ -1,5 +1,5 @@
 class valt_groups:
-	def get_user_group_info(self,group_id):
+	def get_user_group_info(self: "VALT",group_id):
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 		else:
@@ -9,7 +9,7 @@ class valt_groups:
 				return data['data']
 			else:
 				return 0
-	def get_user_group_rooms(self,group_id):
+	def get_user_group_rooms(self: "VALT",group_id):
 		data = self.get_user_group_info(group_id)
 		if data != 0:
 			if 'rooms' in data.keys():
@@ -21,7 +21,7 @@ class valt_groups:
 
 
 
-	def update_group(self,group_id,**kwargs):
+	def update_group(self: "VALT",group_id,**kwargs):
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 		else:

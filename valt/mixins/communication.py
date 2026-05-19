@@ -7,13 +7,13 @@ import json
 import time
 
 class valt_communication:
-	def __init__(self, **kwargs):
+	def __init__(self: "VALT", **kwargs):
 		super().__init__(**kwargs)
 		self.ignore_ssl_errors()
-	def ignore_ssl_errors(self):
+	def ignore_ssl_errors(self: "VALT"):
 		if (not os.environ.get('PYTHONHTTPSVERIFY', '') and getattr(ssl, '_create_unverified_context', None)):
 			ssl._create_default_https_context = ssl._create_unverified_context
-	def send_to_valt(self,url,**kwargs):
+	def send_to_valt(self: "VALT",url,**kwargs):
 		self.logger.debug(__name__ + ":" + str(url))
 		ctx = ssl.create_default_context()
 		ctx.check_hostname = False

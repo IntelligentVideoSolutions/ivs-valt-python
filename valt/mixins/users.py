@@ -1,5 +1,5 @@
 class valt_users:
-	def get_user_by_card_number(self, cardnumber):
+	def get_user_by_card_number(self: "VALT", cardnumber):
 		if self.major_version == "5":
 			return self.get_user_by_card_number_v5(cardnumber)
 		elif self.major_version == "6":
@@ -7,7 +7,7 @@ class valt_users:
 				return self.get_user_by_card_number_v6(cardnumber)
 			else:
 				return self.get_user_by_card_number_v5(cardnumber)
-	def get_user_by_card_number_v6(self, cardnumber):
+	def get_user_by_card_number_v6(self: "VALT", cardnumber):
 		# Function returns user matching card number.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
@@ -20,7 +20,7 @@ class valt_users:
 				else:
 					self.logger.info(__name__ + ": " + "No user found with card number: " + str(cardnumber))
 					return 0
-	def get_user_by_card_number_v5(self, cardnumber):
+	def get_user_by_card_number_v5(self: "VALT", cardnumber):
 		# Function returns user matching card number.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
@@ -39,10 +39,10 @@ class valt_users:
 			else:
 				self.logger.info(__name__ + ": " + "No user found with card number: " + str(cardnumber))
 				return 0
-	def update_user(self,**kwargs):
+	def update_user(self: "VALT",**kwargs):
 		pass
 
-	def getusers(self):
+	def getusers(self: "VALT"):
 		# Function to return a list of users.
 		# Returns 0 on failure.
 		# Each list item is a dictionary with information about the user.
