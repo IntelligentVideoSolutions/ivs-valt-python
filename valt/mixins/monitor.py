@@ -28,7 +28,7 @@ class valt_monitor:
 		self.kill_threads = False
 		self.run_check_room_status = True
 		self.logger.debug(__name__ + ": " + "Room Check Thread Started")
-		if not hasattr(self: "VALT",'room_check_thread'):
+		if not hasattr(self,'room_check_thread'):
 			self.room_check_thread = threading.Thread(target=self.check_room_status)
 			self.room_check_thread.daemon = True
 			self.room_check_thread.start()

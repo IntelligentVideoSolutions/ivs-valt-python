@@ -30,7 +30,7 @@ class valt_auth:
 				self.logger.error(__name__ + ": " + "Authentication FAILED")
 	def reauthenticate(self: "VALT", reauthtime):
 		self.logger.info(__name__ + ":" + " Next authentication attempt in " + str(reauthtime) + " seconds")
-		if hasattr(self: "VALT", 'reauth'):
+		if hasattr(self, 'reauth'):
 			self.reauth.cancel()
 		self.reauth = threading.Timer(reauthtime, self.auth)
 		self.reauth.daemon = True
