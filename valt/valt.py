@@ -42,7 +42,7 @@ class VALT(valt_communication,valt_log,valt_recording,valt_room,valt_preset,valt
 		if 'room' in kwargs:
 			try:
 				self.selected_room = int(kwargs['room'])
-			except:
+			except (ValueError, TypeError):
 				self.selected_room = None
 		else:
 			self.selected_room = None

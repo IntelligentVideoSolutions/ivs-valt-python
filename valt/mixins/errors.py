@@ -55,15 +55,15 @@ class valt_errors:
 		elif str(e) == "Invalid Room ID":
 			self.errormsg = "Invalid Room ID"
 		elif str(e) == "Unable to apply preset":
-			pass
+			self.errormsg = "Unable to Apply Preset"
 		elif str(e) == "Unable to get camera presets":
-			pass
+			self.errormsg = "Unable to Get Camera Presets"
 		elif str(e) == "File not found.":
-			pass
+			self.errormsg = "File Not Found"
 		elif str(e) == "Recording Not Found":
-			pass
+			self.errormsg = "Recording Not Found"
 		elif str(e) == "Video Not Found":
-			pass
+			self.errormsg = "Video Not Found"
 		else:
 			self.errormsg = "An Unknown Error Occurred"
 			self.accesstoken = 0
