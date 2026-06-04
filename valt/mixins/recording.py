@@ -21,11 +21,10 @@ class valt_recording:
 				record_id = data['id']
 				videos = data['videos'][0]
 				url = f"{self.baseurl}records/{record_id}/videos/{videos}?access_token={self.accesstoken}"
-				result = self.send_to_valt(url,file_path=file_path)
-				if result is None:
-					self.logger.warning(__name__ + ": Upload may have failed or returned no response")
-					return 0
-				return record_id
+				self.send_to_valt(url, file_path=file_path)
+				if self.accesstoken != 0:
+					return record_id
+				return 0
 			else:
 				self.handleerror("Upload Creation Failed.")
 				return 0
