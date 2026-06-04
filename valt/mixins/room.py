@@ -175,23 +175,23 @@ class valt_room:
 					self.handleerror("No Recording")
 				return 0
 			if self.version[0] == "6":
-					url = self.baseurl + 'comment?access_token=' + self.accesstoken
+				url = self.baseurl + 'comment?access_token=' + self.accesstoken
+			elif self.version[0] == "5":
+				url = self.baseurl + 'rooms/' + str(room) + '/record/markers' + '?access_token=' + self.accesstoken
+			else:
+				self.logger.error(__name__ + ": Unable to Determine VALT version")
+				return 0
+			markertime = self.getrecordingtime(room)
+			if markertime > 0:
+				if self.version[0] == "6":
+					values = {"recordTime": markertime, "recordId": self.getrecordingid(room), "type": "simple", "message":markername}
 				elif self.version[0] == "5":
-					url = self.baseurl + 'rooms/' + str(room) + '/record/markers' + '?access_token=' + self.accesstoken
-				else:
-					self.logger.error(__name__ + ": Unable to Determine VALT version")
-					return 0
-				markertime = self.getrecordingtime(room)
-				if markertime > 0:
-					if self.version[0] == "6":
-						values = {"recordTime": markertime, "recordId": self.getrecordingid(room), "type": "simple", "message":markername}
-					elif self.version[0] == "5":
-						values = {"event": markername, "time": markertime, "color": color}
-					data = self.send_to_valt(url, values=values)
-					self.logger.info(__name__ + ": " + "Comment " + markername + " added in " + str(self.getroomname(room)))
-					return 1
-				else:
-					return 0
+					values = {"event": markername, "time": markertime, "color": color}
+				data = self.send_to_valt(url, values=values)
+				self.logger.info(__name__ + ": " + "Comment " + markername + " added in " + str(self.getroomname(room)))
+				return 1
+			else:
+				return 0
 
 	def getrecordingtime(self: VALT, room):
 		# Returns current recording time index in seconds for the specified room.
@@ -226,7 +226,7 @@ class valt_room:
 					return True
 				else:
 					return False
-			return False
+			return 0
 
 	def islocked(self: VALT, room):
 		# Function to check if specified room is currently locked.
@@ -242,7 +242,7 @@ class valt_room:
 					return True
 				else:
 					return False
-			return False
+			return 0
 
 	def getcameras(self: VALT, room):
 		return self.get_cameras(room)
@@ -345,7 +345,8 @@ class valt_room:
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
-		if self.islocked(room):
+		locked = self.islocked(room)
+		if locked is True:
 			url = self.baseurl + 'rooms/' + str(room) + '/unlock' + '?access_token=' + self.accesstoken
 			values = {"nothing": "nothing"}
 			data = self.send_to_valt(url, values=values)
@@ -354,6 +355,8 @@ class valt_room:
 				return data['data']['id']
 			else:
 				return 0
-		else:
+		elif locked is False:
 			self.handleerror("Not Locked")
+			return 0
+		else:
 			return 0
