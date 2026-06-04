@@ -6,6 +6,9 @@ if TYPE_CHECKING:
 
 class valt_users:
 	def get_user_by_card_number(self: VALT, cardnumber):
+		if self.accesstoken == 0:
+			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
+			return 0
 		if self.major_version == "5":
 			return self.get_user_by_card_number_v5(cardnumber)
 		elif self.major_version == "6":
@@ -13,6 +16,9 @@ class valt_users:
 				return self.get_user_by_card_number_v6(cardnumber)
 			else:
 				return self.get_user_by_card_number_v5(cardnumber)
+		else:
+			self.logger.error(__name__ + ": Unable to Determine VALT version")
+			return 0
 
 	def get_user_by_card_number_v6(self: VALT, cardnumber):
 		# Function returns user matching card number.

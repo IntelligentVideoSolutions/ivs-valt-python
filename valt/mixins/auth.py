@@ -29,6 +29,7 @@ class valt_auth:
 				if self.version and self.version != 0:
 					self.major_version = self.version.split(".")[0]
 					self.minor_version = self.version.split(".")[1]
+					self.patch_level = "0"
 					if self.major_version == "6":
 						self.patch_level = self.version.split(".")[2]
 				else:

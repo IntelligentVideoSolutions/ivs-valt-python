@@ -15,10 +15,6 @@ if TYPE_CHECKING:
 class valt_communication:
 	def __init__(self: VALT, **kwargs):
 		super().__init__(**kwargs)
-		self.ignore_ssl_errors()
-	def ignore_ssl_errors(self: VALT):
-		if (not os.environ.get('PYTHONHTTPSVERIFY', '') and getattr(ssl, '_create_unverified_context', None)):
-			ssl._create_default_https_context = ssl._create_unverified_context
 	def send_to_valt(self: VALT,url,**kwargs):
 		self.logger.debug(__name__ + ":" + str(url))
 		ctx = ssl.create_default_context()
@@ -75,7 +71,8 @@ class valt_communication:
 				req.add_header('Content-Type', 'application/json')
 				response = request.urlopen(req, params, timeout=self.httptimeout,context=ctx)
 			else:
-				req = request.Request(url)
+				method = kwargs.get('method', None)
+				req = request.Request(url, method=method) if method else request.Request(url)
 				response = request.urlopen(req, timeout=self.httptimeout,context=ctx)
 			endtime = time.time()
 			elapsedtime = endtime - starttime

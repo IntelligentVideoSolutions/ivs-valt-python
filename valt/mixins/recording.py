@@ -9,21 +9,21 @@ if TYPE_CHECKING:
 
 class valt_recording:
 	def upload_video(self: VALT,file_path,upload_name):
+		if self.accesstoken == 0:
+			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
+			return 0
 		if os.path.isfile(file_path):
-			if self.accesstoken == 0:
-				self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
+			url = f"{self.baseurl}records/create-upload?access_token={self.accesstoken}"
+			values = {"name": upload_name}
+			data = self.send_to_valt(url,values=values)
+			if type(data).__name__ == "dict":
+				record_id = data['id']
+				videos = data['videos'][0]
+				url = f"{self.baseurl}records/{record_id}/videos/{videos}?access_token={self.accesstoken}"
+				self.send_to_valt(url,file_path=file_path)
 			else:
-				url = f"{self.baseurl}records/create-upload?access_token={self.accesstoken}"
-				values = {"name": upload_name}
-				data = self.send_to_valt(url,values=values)
-				if type(data).__name__ == "dict":
-					record_id = data['id']
-					videos = data['videos'][0]
-					url = f"{self.baseurl}records/{record_id}/videos/{videos}?access_token={self.accesstoken}"
-					self.send_to_valt(url,file_path=file_path)
-				else:
-					self.handleerror("Upload Creation Failed.")
-					return 0
+				self.handleerror("Upload Creation Failed.")
+				return 0
 		else:
 			self.handleerror("File not found.")
 			return 0

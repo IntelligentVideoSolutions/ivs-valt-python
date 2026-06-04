@@ -69,18 +69,11 @@ class valt_comment:
 			return 0
 
 		url = self.baseurl + f'comment/{comment_id}?access_token=' + self.accesstoken
-		ctx = ssl.create_default_context()
-		ctx.check_hostname = False
-		ctx.verify_mode = ssl.CERT_NONE
-		try:
-			req = urllib.request.Request(url, method='DELETE')
-			response = urllib.request.urlopen(req, timeout=self.httptimeout, context=ctx)
-			result = json.load(response)
+		data = self.send_to_valt(url, method='DELETE')
+		if isinstance(data, dict):
 			self.logger.info(__name__ + f": Deleted comment ID {comment_id}")
-			return result.get('id', 0)
-		except Exception as e:
-			self.logger.error(__name__ + ": Failed to delete comment")
-			self.handleerror(e)
+			return data.get('id', 0)
+		else:
 			return 0
 
 	def download_comment_file(self: VALT, comment_id, output_path):
@@ -91,9 +84,12 @@ class valt_comment:
 			return False
 
 		url = self.baseurl + f'comment/{comment_id}/file?access_token=' + self.accesstoken
+		ctx = ssl.create_default_context()
+		ctx.check_hostname = False
+		ctx.verify_mode = ssl.CERT_NONE
 		try:
 			req = urllib.request.Request(url)
-			with urllib.request.urlopen(req, timeout=self.httptimeout) as response, open(output_path, 'wb') as out_file:
+			with urllib.request.urlopen(req, timeout=self.httptimeout, context=ctx) as response, open(output_path, 'wb') as out_file:
 				out_file.write(response.read())
 			self.logger.info(__name__ + f": File for comment {comment_id} saved to {output_path}")
 			return True

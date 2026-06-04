@@ -57,10 +57,7 @@ class valt_admin:
 				return 0
 
 	def getversion(self: VALT):
-		# Function to get the current active recording id in the specified room
-		# Returns true if the specified room is recording
-		# Returns False if the room is not recording
-		# Returns 2 if an error is encountered
+		# Returns the VALT software version string, or 0 on failure.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
@@ -172,7 +169,7 @@ class valt_admin:
 			values['ip'] = camera_ip
 			values['device_type'] = "camera"
 			values['http_port'] = kwargs.get("camera_http",80)
-			values['rtsp_port'] = kwargs.get("camera_http",554)
+			values['rtsp_port'] = kwargs.get("camera_rtsp",554)
 			values['username'] = camera_username
 			values['password'] = camera_password
 			values['brand'] = 1

@@ -8,8 +8,9 @@ if TYPE_CHECKING:
 
 class valt_log:
 	def __init__(self: VALT, **kwargs):
-		super().__init__(**kwargs) # Passes arguments to the next class in MRO
-		self.set_up_logging()
+		logpath = kwargs.pop('logpath', 'valt.log')
+		super().__init__(**kwargs)
+		self.set_up_logging(logpath)
 	def set_up_logging(self: VALT,logpath='valt.log'):
 		if logging.getLogger("kivy").hasHandlers():
 			self.logger = logging.getLogger("kivy").getChild(__name__)

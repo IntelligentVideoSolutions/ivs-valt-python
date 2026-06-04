@@ -13,7 +13,7 @@ from .mixins.auth import valt_auth
 
 class VALT(valt_communication,valt_log,valt_recording,valt_room,valt_preset,valt_users,valt_groups,valt_comment,valt_admin,valt_errors,valt_auth,valt_monitor):
 	def __init__(self, valt_address, valt_username, valt_password, timeout=5,logpath="ivs.log", **kwargs):
-		super().__init__()
+		super().__init__(logpath=logpath)
 		if valt_address != "None" and valt_address != "" and valt_address is not None:
 			if valt_address.find("http", 0, 4) == -1:
 				self.baseurl = 'http://' + valt_address + '/api/v3/'
@@ -25,7 +25,6 @@ class VALT(valt_communication,valt_log,valt_recording,valt_room,valt_preset,valt
 		self.password = valt_password
 		self.success_reauth_time = 28800
 		self.failure_reauth_time = 30
-		self.logpath = logpath
 		self._errormsg_observers = []
 		self._errormsg = None
 		self.testmsg = None
@@ -33,11 +32,10 @@ class VALT(valt_communication,valt_log,valt_recording,valt_room,valt_preset,valt
 		self._accesstoken_observers = []
 		self.httptimeout = int(timeout)
 		self.kill_threads = False
-		self.auth()
 		self._selected_room_status = 99
-
 		self.run_check_room_status = False
-		self._observers =  []
+		self._observers = []
+		self.auth()
 
 		if 'room' in kwargs:
 			try:
@@ -56,6 +54,8 @@ class VALT(valt_communication,valt_log,valt_recording,valt_room,valt_preset,valt
 
 	def disconnect(self):
 		self.kill_threads = True
+		if hasattr(self, 'reauth'):
+			self.reauth.cancel()
 
 	def change_timeout(self,new_timeout):
 		self.logger.info(__name__ + ": " + "HTTP Timeout set to " + str(new_timeout))
