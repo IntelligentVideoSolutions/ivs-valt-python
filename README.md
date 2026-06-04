@@ -29,8 +29,8 @@ rec_id = v.start_recording(room_id=3, name='My Recording')
 # Stop it
 v.stop_recording(room_id=3)
 
-# List recordings
-records = v.getrecords(search='My Recording')
+# Search recordings
+records = v.get_records(search='My Recording')
 ```
 
 ## Constructor
@@ -58,8 +58,8 @@ VALT(valt_address, username, password, timeout=5, logpath='ivs.log', room=None, 
 | Method | Description |
 |---|---|
 | `auth()` | Authenticate (called automatically on init) |
-| `testconnection(address, username, password)` | Test credentials, returns `True`/`False` |
-| `changeserver(address, username, password)` | Switch to a different VALT server |
+| `test_connection(address, username, password)` | Test credentials, returns `True`/`False` |
+| `change_server(address, username, password)` | Switch to a different VALT server |
 | `disconnect()` | Stop background threads and cancel reauth timer |
 | `change_timeout(seconds)` | Update HTTP timeout |
 
@@ -69,23 +69,22 @@ VALT(valt_address, username, password, timeout=5, logpath='ivs.log', room=None, 
 
 | Method | Description |
 |---|---|
-| `getrooms()` | List all rooms |
-| `getroomname(room_id)` | Get room name |
-| `getroomstatus(room_id)` | Returns 1=available, 2=recording, 3=paused, 4=locked, 5=prepared |
-| `isrecording(room_id)` | Returns `True` if room is recording |
-| `ispaused(room_id)` | Returns `True` if recording is paused |
-| `islocked(room_id)` | Returns `True` if room is locked |
-| `getrecordingid(room_id)` | Returns active recording ID |
-| `getrecordingtime(room_id)` | Returns elapsed recording time in seconds |
-| `startrecording(room_id, name, author=None)` | Start a recording, returns recording ID |
-| `stoprecording(room_id)` | Stop the active recording |
-| `pauserecording(room_id)` | Pause the active recording |
-| `resumerecording(room_id)` | Resume a paused recording |
-| `addcomment(room_id, name, color='red')` | Add a live marker to the active recording |
-| `lockroom(room_id)` | Lock a room |
-| `unlockroom(room_id)` | Unlock a room |
+| `get_rooms()` | List all rooms |
+| `get_room_name(room_id)` | Get room name |
+| `get_room_status(room_id)` | Returns 1=available, 2=recording, 3=paused, 4=locked, 5=prepared |
+| `is_recording(room_id)` | Returns `True` if room is recording |
+| `is_paused(room_id)` | Returns `True` if recording is paused |
+| `is_locked(room_id)` | Returns `True` if room is locked |
+| `get_recording_id(room_id)` | Returns active recording ID |
+| `get_recording_time(room_id)` | Returns elapsed recording time in seconds |
+| `start_recording(room_id, name, author=None)` | Start a recording, returns recording ID |
+| `stop_recording(room_id)` | Stop the active recording |
+| `pause_recording(room_id)` | Pause the active recording |
+| `resume_recording(room_id)` | Resume a paused recording |
+| `add_comment(room_id, name, color='red')` | Add a live marker to the active recording |
+| `lock_room(room_id)` | Lock a room |
+| `unlock_room(room_id)` | Unlock a room |
 | `get_cameras(room_id)` | List cameras in a room |
-| `getcameras(room_id)` | Alias for `get_cameras` |
 
 ---
 
@@ -93,9 +92,9 @@ VALT(valt_address, username, password, timeout=5, logpath='ivs.log', room=None, 
 
 | Method | Description |
 |---|---|
-| `getrecords(search=None, start_date=None)` | Search recordings |
+| `get_records(search=None, start_date=None)` | Search recordings |
 | `get_video_information(recording_id)` | Get full recording metadata |
-| `setsharing(record_id, users=[], groups=[])` | Set sharing permissions |
+| `set_sharing(record_id, users=[], groups=[])` | Set sharing permissions |
 | `share_record(record_id)` | Generate a public share URL |
 | `deactivate_share(record_id)` | Remove the public share URL |
 | `cut_record(record_id, start_time, end_time)` | Clip a recording (seconds), returns `{clip_id, message}` |
@@ -157,7 +156,7 @@ VALT(valt_address, username, password, timeout=5, logpath='ivs.log', room=None, 
 
 | Method | Description |
 |---|---|
-| `getschedule(room_id)` | List schedules for a room |
+| `get_room_schedule(room_id)` | List schedules for a room |
 | `get_schedule(schedule_id)` | Get a specific schedule |
 | `get_blocked_schedules()` | List blocked schedules |
 | `get_conflict_schedules()` | List conflicting schedules |
@@ -202,9 +201,9 @@ VALT(valt_address, username, password, timeout=5, logpath='ivs.log', room=None, 
 
 | Method | Description |
 |---|---|
-| `getusers()` | List all users |
+| `get_users()` | List all users |
 | `get_user(user_id)` | Get a user |
-| `getusername(user_id)` | Get a user's name |
+| `get_username(user_id)` | Get a user's name |
 | `get_user_by_card_number(card_number)` | Find a user by I/O card number |
 | `create_user(name, password, display_name=None, user_group=None, card_number=None, rooms=None, video_access=None)` | Create a user |
 | `update_user(user_id, **kwargs)` | Update a user |
@@ -282,7 +281,7 @@ VALT(valt_address, username, password, timeout=5, logpath='ivs.log', room=None, 
 
 | Method | Description |
 |---|---|
-| `getversion()` | Get VALT software version string |
+| `get_version()` | Get VALT software version string |
 | `get_log_categories()` | List log category names |
 
 ---
@@ -309,3 +308,37 @@ Logs are written to `ivs.log` by default. Adjust level at runtime:
 ```python
 v.log_level('debug')   # debug | info | warn | error | critical
 ```
+
+---
+
+## Deprecated Names
+
+The following method names were renamed in v4.2.0 to follow Python naming conventions. The old names still work but will emit a `DeprecationWarning` and will be removed in a future version.
+
+| Deprecated | Replacement |
+|---|---|
+| `testconnection` | `test_connection` |
+| `changeserver` | `change_server` |
+| `getrooms` | `get_rooms` |
+| `getroomname` | `get_room_name` |
+| `getroomstatus` | `get_room_status` |
+| `isrecording` | `is_recording` |
+| `ispaused` | `is_paused` |
+| `islocked` | `is_locked` |
+| `getrecordingid` | `get_recording_id` |
+| `getrecordingtime` | `get_recording_time` |
+| `startrecording` | `start_recording` |
+| `stoprecording` | `stop_recording` |
+| `pauserecording` | `pause_recording` |
+| `resumerecording` | `resume_recording` |
+| `addcomment` | `add_comment` |
+| `lockroom` | `lock_room` |
+| `unlockroom` | `unlock_room` |
+| `getcameras` | `get_cameras` |
+| `setsharing` | `set_sharing` |
+| `getrecords` | `get_records` |
+| `getversion` | `get_version` |
+| `getschedule` | `get_room_schedule` |
+| `getusername` | `get_username` |
+| `getusers` | `get_users` |
+| `handleerror` | `handle_error` |
