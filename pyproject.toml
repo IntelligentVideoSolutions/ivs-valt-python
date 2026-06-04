@@ -4,21 +4,27 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ivs-valt-python"
-# We tell the project the version is dynamic
 dynamic = ["version"]
-description = "A Python library for interacting with VALT"
+description = "Python client library for the Intelligent Video Solutions (IVS) VALT REST API v3"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 authors = [
     {name = "Jared Buttitta", email = "jbuttitta@ipivs.com"}
 ]
-# Use "Proprietary" or "Other/Proprietary License"
+keywords = ["valt", "ivs", "video", "recording", "rest", "api", "client"]
 classifiers = [
-    "Private :: Do Not Upload"
+    "Private :: Do Not Upload",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Intended Audience :: Developers",
+    "Topic :: Multimedia :: Video",
+    "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 
 [tool.setuptools.dynamic]
-# This points to the specific file and variable name
 version = {attr = "valt._version.__version__"}
 
 [tool.setuptools.packages.find]
