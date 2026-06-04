@@ -4,6 +4,12 @@ A Python client library for the **Intelligent Video Solutions (IVS) VALT** REST 
 
 ## Installation
 
+**Via the IVS package index (recommended):**
+```bash
+pip install ivs-valt-python --extra-index-url https://files.ipivs.com/pip/
+```
+
+**From source:**
 ```bash
 git clone https://github.com/IntelligentVideoSolutions/ivs-valt-python.git
 cd ivs-valt-python
@@ -18,10 +24,10 @@ from valt.valt import VALT
 v = VALT('https://your-valt-server.com', 'username', 'password', timeout=30)
 
 # Start a recording
-rec_id = v.startrecording(room_id=3, name='My Recording')
+rec_id = v.start_recording(room_id=3, name='My Recording')
 
 # Stop it
-v.stoprecording(room_id=3)
+v.stop_recording(room_id=3)
 
 # List recordings
 records = v.getrecords(search='My Recording')
