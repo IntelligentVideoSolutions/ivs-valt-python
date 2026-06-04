@@ -48,7 +48,10 @@ class valt_room:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
-			if self.isrecording(room) != True:
+			is_recording = self.isrecording(room)
+			if is_recording == 0:
+				return 0
+			if is_recording is not True:
 				if 'author' in kwargs:
 					values = {"name": name, "author": kwargs['author']}
 				else:
@@ -181,8 +184,7 @@ class valt_room:
 				return 0
 
 	def getrecordingtime(self: VALT, room):
-		# Function to add a marker current recording in specified room.
-		# Returns current time index on sucess.
+		# Returns current recording time index in seconds for the specified room.
 		# Returns 0 on failure.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")

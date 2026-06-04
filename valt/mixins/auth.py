@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING
 
 import json
 import http.client
+import ssl as _ssl
 from urllib import error, request
 import time, threading
 
@@ -37,6 +38,7 @@ class valt_auth:
 					self.version = "0.0.0"
 					self.major_version = "0"
 					self.minor_version = "0"
+					self.patch_level = "0"
 				self.logger.info(__name__ + ": " + "Valt Version: " + str(self.version))
 				self.reauthenticate(self.success_reauth_time)
 			else:
@@ -75,7 +77,6 @@ class valt_auth:
 		self.logger.debug(__name__ + ": " + valt_username)
 		self.logger.debug(__name__ + ": " + valt_password)
 
-		import ssl as _ssl
 		ctx = _ssl.create_default_context()
 		ctx.check_hostname = False
 		ctx.verify_mode = _ssl.CERT_NONE

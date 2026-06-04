@@ -47,6 +47,7 @@ class valt_recording:
 						self.logger.info(f"{__name__}: File saved successfully as {file_name}")
 					except Exception as e:
 						self.logger.error(f"{__name__}: Failed to download: {e}")
+						return 0
 				else:
 					self.handleerror("Video Not Found")
 					return 0

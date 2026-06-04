@@ -36,12 +36,11 @@ class valt_communication:
 			if file_path is not None and os.path.isfile(file_path):
 				file_size = os.path.getsize(file_path)
 
-				# Read the file content
 				with open(file_path, 'rb') as f:
 					file_content = f.read()
 
 				boundary = uuid.uuid4().hex
-				content_type = f'multipart/form-data; boundary={boundary}'
+				upload_content_type = f'multipart/form-data; boundary={boundary}'
 				content_range = f'bytes 0-{file_size - 1}/{file_size}'
 				body_parts = []
 				body_parts.append(f'--{boundary}'.encode())
@@ -51,11 +50,10 @@ class valt_communication:
 				payload = b'\r\n'.join(body_parts) + b'\r\n'
 				payload += file_content + f'\r\n--{boundary}--\r\n'.encode()
 
-				# Create request
 				req = request.Request(url, data=payload, method='POST')
-				req.add_header('Content-Type', content_type)
+				req.add_header('Content-Type', upload_content_type)
 				req.add_header('Content-Range', content_range)
-				response = request.urlopen(req, context=ctx)
+				response = request.urlopen(req, timeout=self.httptimeout, context=ctx)
 
 			elif params is not None:
 				req = request.Request(url)
@@ -70,8 +68,8 @@ class valt_communication:
 			self.logger.debug(__name__ + ": " + str(elapsedtime) + " seconds elapsed")
 			code = response.getcode()
 			self.logger.debug(__name__ + f": {code} Received")
-			content_type = response.info().get('Content-Type', '')
-			self.logger.debug(__name__ + f" Content-Type received: {content_type}")
+			response_content_type = response.info().get('Content-Type', '')
+			self.logger.debug(__name__ + f" Content-Type received: {response_content_type}")
 		except error.HTTPError as e:
 			self.logger.error(__name__ + ": VALT API Call Failed")
 			self.handleerror(e)
