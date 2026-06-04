@@ -57,17 +57,14 @@ class valt_preset:
 
 	def delete_camera_preset(self: VALT, camera_id, preset_id):
 		# Function to delete an existing preset from a given camera.
-		# Returns deleted preset ID or 0 on failure.
+		# Returns 1 on success or 0 on failure.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 
-		url = self.baseurl + f'presets/{camera_id}/delete?access_token={self.accesstoken}'
-		values = {"preset": preset_id}
-		data = self.send_to_valt(url, values=values)
-		if isinstance(data, dict) and 'id' in data:
+		url = self.baseurl + f'cameras/{camera_id}/presets/{preset_id}?access_token={self.accesstoken}'
+		self.send_to_valt(url, method='DELETE')
+		if self.accesstoken != 0:
 			self.logger.info(__name__ + f": Preset {preset_id} deleted from camera {camera_id}")
-			return data['id']
-		else:
-			self.handleerror("Unable to delete preset")
-			return 0
+			return 1
+		return 0
