@@ -31,7 +31,6 @@ class valt_room:
 		else:
 			url = self.baseurl + 'rooms/info/' + str(room) + '?access_token=' + self.accesstoken
 			data = self.send_to_valt(url)
-			# print data
 			if type(data).__name__ == "dict":
 				if "recording" in data['data'].keys():
 					return data['data']['recording']['id']
@@ -159,14 +158,6 @@ class valt_room:
 			return 0
 		else:
 			if self.isrecording(room) == True:
-				if 'template_id' in kwargs:
-					template_id = kwargs['template_id']
-				else:
-					template_id = 1
-				if 'template_data' in kwargs:
-					template_data = kwargs['template_data']
-				else:
-					template_data = []
 				if self.version[0] == "6":
 					url = self.baseurl + 'comment?access_token=' + self.accesstoken
 				elif self.version[0] == "5":
@@ -294,9 +285,6 @@ class valt_room:
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
-		# elif not isinstance(room, int):
-		# 	self.handleerror("Invalid Room ID")
-		# 	return 0
 		else:
 			url = self.baseurl + 'rooms/' + str(room) + '/status?access_token=' + self.accesstoken
 			data = self.send_to_valt(url)

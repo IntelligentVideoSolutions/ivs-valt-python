@@ -41,23 +41,14 @@ class valt_communication:
 					file_content = f.read()
 
 				boundary = uuid.uuid4().hex
-
-				# Headers
 				content_type = f'multipart/form-data; boundary={boundary}'
-				# The range format is: bytes <start>-<end>/<total>
-				# For a full file: 0 to (size - 1) / size
 				content_range = f'bytes 0-{file_size - 1}/{file_size}'
 				body_parts = []
-				# 1. Start with the opening boundary
 				body_parts.append(f'--{boundary}'.encode())
-				# 2. File headers
 				body_parts.append(f'Content-Disposition: form-data; name="file"; filename="{os.path.basename(file_path)}"'.encode())
 				body_parts.append(b'Content-Type: application/octet-stream')
-				# 3. An empty line (CRLF) before the actual data
 				body_parts.append(b'')
-				# 4. Join parts with CRLF
 				payload = b'\r\n'.join(body_parts) + b'\r\n'
-				# 5. Add the binary file content and the closing boundary
 				payload += file_content + f'\r\n--{boundary}--\r\n'.encode()
 
 				# Create request
@@ -82,19 +73,15 @@ class valt_communication:
 			content_type = response.info().get('Content-Type', '')
 			self.logger.debug(__name__ + f" Content-Type received: {content_type}")
 		except error.HTTPError as e:
-			self.accesstoken = 0
 			self.logger.error(__name__ + ": VALT API Call Failed")
 			self.handleerror(e)
 		except error.URLError as e:
-			self.accesstoken = 0
 			self.logger.error(__name__ + ": VALT API Call Failed")
 			self.handleerror(e)
 		except http.client.HTTPException as e:
-			self.accesstoken = 0
 			self.logger.error(__name__ + ": VALT API Call Failed")
 			self.handleerror(e)
 		except Exception as e:
-			self.accesstoken = 0
 			self.logger.error(__name__ + ": VALT API Call Failed")
 			self.handleerror(e)
 		else:

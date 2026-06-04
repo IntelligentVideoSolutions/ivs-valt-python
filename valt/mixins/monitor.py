@@ -30,7 +30,6 @@ class valt_monitor:
 			self.logger.debug(__name__ + ": " + "Checking Room " + str(self.selected_room) + " current status is " + str(self.selected_room_status))
 
 	def start_room_check_thread(self: VALT):
-		# if self.selected_room != None and self.selected_room != "":
 		self.kill_threads = False
 		self.run_check_room_status = True
 		self.logger.debug(__name__ + ": " + "Room Check Thread Started")

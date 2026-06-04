@@ -61,6 +61,7 @@ class valt_auth:
 		self.username = valt_username
 		self.password = valt_password
 		self.auth()
+		self.start_room_check_thread()
 
 	def testconnection(self: VALT, valt_address, valt_username, valt_password):
 		values = {"username": valt_username, "password": valt_password}
@@ -74,10 +75,14 @@ class valt_auth:
 		self.logger.debug(__name__ + ": " + valt_username)
 		self.logger.debug(__name__ + ": " + valt_password)
 
+		import ssl as _ssl
+		ctx = _ssl.create_default_context()
+		ctx.check_hostname = False
+		ctx.verify_mode = _ssl.CERT_NONE
 		try:
 			req = request.Request(valt_baseurl + 'login')
 			req.add_header('Content-Type', 'application/json')
-			response = request.urlopen(req, params, timeout=self.httptimeout)
+			response = request.urlopen(req, params, timeout=self.httptimeout, context=ctx)
 		except error.HTTPError as e:
 			self.logger.warning(__name__ + ": " + str(e))
 			if str(e) == "HTTP Error 401: Unauthorized":

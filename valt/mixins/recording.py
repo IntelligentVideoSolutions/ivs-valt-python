@@ -2,6 +2,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 import os
+import ssl
 import urllib.request
 
 if TYPE_CHECKING:
@@ -36,18 +37,14 @@ class valt_recording:
 			data = self.send_to_valt(url)
 			if type(data).__name__ == "dict":
 				if data['url']:
+					ctx = ssl.create_default_context()
+					ctx.check_hostname = False
+					ctx.verify_mode = ssl.CERT_NONE
 					try:
-						# 1. Open the URL
-						with urllib.request.urlopen(data['url']) as response:
-							# 2. Read the binary data
-							file_data = response.read()
-
-							# 3. Write to a local file in 'wb' (write binary) mode
+						with urllib.request.urlopen(data['url'], timeout=self.httptimeout, context=ctx) as response:
 							with open(file_name, "wb") as f:
-								f.write(file_data)
-
+								f.write(response.read())
 						self.logger.info(f"{__name__}: File saved successfully as {file_name}")
-
 					except Exception as e:
 						self.logger.error(f"{__name__}: Failed to download: {e}")
 				else:
