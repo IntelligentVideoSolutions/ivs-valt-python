@@ -9,11 +9,12 @@ from .mixins.monitor import ValtMonitor
 from .mixins.preset import ValtPreset
 from .mixins.recording import ValtRecording
 from .mixins.room import ValtRoom
+from .mixins.template import ValtTemplate
 from .mixins.upload import ValtUpload
 from .mixins.users import ValtUsers
 from .mixins.auth import ValtAuth
 
-class VALT(ValtCommunication,ValtLog,ValtRecording,ValtUpload,ValtDownload,ValtRoom,ValtPreset,ValtUsers,ValtGroups,ValtComment,ValtAdmin,ValtErrors,ValtAuth,ValtMonitor):
+class VALT(ValtCommunication,ValtLog,ValtRecording,ValtUpload,ValtDownload,ValtRoom,ValtPreset,ValtUsers,ValtGroups,ValtComment,ValtAdmin,ValtTemplate,ValtErrors,ValtAuth,ValtMonitor):
 	def __init__(self, valt_address, valt_username, valt_password, timeout=5,logpath="ivs.log", **kwargs):
 		super().__init__(logpath=logpath)
 		if valt_address != "None" and valt_address != "" and valt_address is not None:
