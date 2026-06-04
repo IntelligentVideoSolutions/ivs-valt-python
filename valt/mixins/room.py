@@ -32,7 +32,7 @@ class valt_room:
 			url = self.baseurl + 'rooms/info/' + str(room) + '?access_token=' + self.accesstoken
 			data = self.send_to_valt(url)
 			if isinstance(data, dict):
-				if "recording" in data['data'].keys():
+				if "recording" in data['data']:
 					return data['data']['recording']['id']
 				else:
 					self.handleerror("No Recording")
