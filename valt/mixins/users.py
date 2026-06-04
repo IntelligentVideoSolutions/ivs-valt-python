@@ -58,6 +58,52 @@ class ValtUsers:
 				self.logger.info(__name__ + ": " + "No user found with card number: " + str(cardnumber))
 				return 0
 
+	def get_user(self: VALT, user_id):
+		# Returns full user dict or 0 on failure.
+		if self.accesstoken == 0:
+			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
+			return 0
+		url = self.baseurl + f'admin/users/{user_id}?access_token={self.accesstoken}'
+		data = self.send_to_valt(url)
+		if isinstance(data, dict) and 'data' in data:
+			return data['data']
+		else:
+			self.handleerror("Unable to get user")
+			return 0
+
+	def create_user(self: VALT, name, password, **kwargs):
+		# Creates a user. Returns new user id or 0 on failure.
+		# Optional kwargs: display_name, user_group, card_number, rooms, video_access
+		if self.accesstoken == 0:
+			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
+			return 0
+		url = self.baseurl + f'admin/users?access_token={self.accesstoken}'
+		values = {'name': name, 'password': password}
+		for key in ('display_name', 'user_group', 'card_number', 'rooms', 'video_access'):
+			if key in kwargs:
+				values[key] = kwargs[key]
+		data = self.send_to_valt(url, values=values)
+		if isinstance(data, dict) and 'data' in data:
+			self.logger.info(__name__ + f": Created user '{name}'")
+			return data['data'].get('id', 0)
+		else:
+			self.handleerror("Unable to create user")
+			return 0
+
+	def delete_user(self: VALT, user_id):
+		# Deletes a user. Returns 1 on success or 0 on failure.
+		if self.accesstoken == 0:
+			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
+			return 0
+		url = self.baseurl + f'admin/users/{user_id}/delete?access_token={self.accesstoken}'
+		data = self.send_to_valt(url, values={})
+		if isinstance(data, dict) and 'data' in data:
+			self.logger.info(__name__ + f": Deleted user {user_id}")
+			return 1
+		else:
+			self.handleerror("Unable to delete user")
+			return 0
+
 	def update_user(self: VALT, user_id, **kwargs):
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
