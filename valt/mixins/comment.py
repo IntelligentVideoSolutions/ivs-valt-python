@@ -20,7 +20,7 @@ class valt_comment:
 		url = self.baseurl + 'comment/record/' + str(record_id) + '?access_token=' + self.accesstoken
 		data = self.send_to_valt(url)
 
-		if type(data).__name__ == "list":
+		if isinstance(data, list):
 			return data
 		else:
 			self.logger.error(__name__ + ": " + "Unable to retrieve comments for record " + str(record_id))
@@ -51,7 +51,7 @@ class valt_comment:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 
-		url = self.baseurl + f'comment/update/{comment_id}?access_token=' + self.accesstoken
+		url = self.baseurl + f'comment/update/{comment_id}?access_token={self.accesstoken}'
 		data = self.send_to_valt(url, values=update_data)
 
 		if isinstance(data, dict):
@@ -68,7 +68,7 @@ class valt_comment:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 
-		url = self.baseurl + f'comment/{comment_id}?access_token=' + self.accesstoken
+		url = self.baseurl + f'comment/{comment_id}?access_token={self.accesstoken}'
 		data = self.send_to_valt(url, method='DELETE')
 		if isinstance(data, dict):
 			self.logger.info(__name__ + f": Deleted comment ID {comment_id}")
@@ -83,7 +83,7 @@ class valt_comment:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return False
 
-		url = self.baseurl + f'comment/{comment_id}/file?access_token=' + self.accesstoken
+		url = self.baseurl + f'comment/{comment_id}/file?access_token={self.accesstoken}'
 		ctx = ssl.create_default_context()
 		ctx.check_hostname = False
 		ctx.verify_mode = ssl.CERT_NONE

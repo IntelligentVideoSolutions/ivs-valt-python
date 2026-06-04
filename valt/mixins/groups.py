@@ -12,14 +12,14 @@ class valt_groups:
 		else:
 			url = self.baseurl + 'admin/user_groups/' + str(group_id) + '?access_token=' + self.accesstoken
 			data = self.send_to_valt(url)
-			if type(data).__name__ == "dict":
+			if isinstance(data, dict):
 				return data['data']
 			else:
 				return 0
 	def get_user_group_rooms(self: VALT,group_id):
 		data = self.get_user_group_info(group_id)
 		if data != 0:
-			if 'rooms' in data.keys():
+			if 'rooms' in data:
 				return data['rooms']
 			else:
 				return []
@@ -50,7 +50,7 @@ class valt_groups:
 			if "rights" in kwargs:
 				values['rights'] = kwargs['rights']
 			data = self.send_to_valt(url,values=values)
-			if type(data).__name__ == "dict":
+			if isinstance(data, dict):
 				return data['data']
 			else:
 				return 0

@@ -12,7 +12,7 @@ class valt_preset:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 
-		url = self.baseurl + f'presets/{camera_id}?access_token=' + self.accesstoken
+		url = self.baseurl + f'presets/{camera_id}?access_token={self.accesstoken}'
 		data = self.send_to_valt(url)
 		if isinstance(data, list):
 			return data
@@ -28,7 +28,7 @@ class valt_preset:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 
-		url = self.baseurl + f'presets/{camera_id}/add?access_token=' + self.accesstoken
+		url = self.baseurl + f'presets/{camera_id}/add?access_token={self.accesstoken}'
 		values = {"name": name}
 		data = self.send_to_valt(url, values=values)
 		if isinstance(data, dict) and 'id' in data:
@@ -45,7 +45,7 @@ class valt_preset:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 
-		url = self.baseurl + f'presets/{camera_id}/apply?access_token=' + self.accesstoken
+		url = self.baseurl + f'presets/{camera_id}/apply?access_token={self.accesstoken}'
 		values = {"preset": preset_id}
 		data = self.send_to_valt(url, values=values)
 		if isinstance(data, dict) and 'message' in data:
@@ -62,7 +62,7 @@ class valt_preset:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 
-		url = self.baseurl + f'presets/{camera_id}/delete?access_token=' + self.accesstoken
+		url = self.baseurl + f'presets/{camera_id}/delete?access_token={self.accesstoken}'
 		values = {"preset": preset_id}
 		data = self.send_to_valt(url, values=values)
 		if isinstance(data, dict) and 'id' in data:

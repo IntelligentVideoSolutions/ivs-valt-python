@@ -22,7 +22,7 @@ class valt_auth:
 			url = self.baseurl + 'login'
 			data = self.send_to_valt(url, values=values)
 			self.lastauthtime = time.time()
-			if type(data).__name__ == "dict":
+			if isinstance(data, dict):
 				self.accesstoken = data['data']['access_token']
 				self.errormsg = None
 				self.logger.info(__name__ + ": " + "Authenticated to VALT")
@@ -32,7 +32,8 @@ class valt_auth:
 					self.minor_version = self.version.split(".")[1]
 					self.patch_level = "0"
 					if self.major_version == "6":
-						self.patch_level = self.version.split(".")[2]
+						parts = self.version.split(".")
+						self.patch_level = parts[2] if len(parts) > 2 else "0"
 				else:
 					self.logger.error(__name__ + ": " + "Unable to determine VALT version")
 					self.version = "0.0.0"

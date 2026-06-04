@@ -28,7 +28,7 @@ class valt_users:
 		else:
 			url = self.baseurl + 'admin/users' + '?access_token=' + self.accesstoken + '&cardNumber=' + str(cardnumber)
 			data = self.send_to_valt(url)
-			if type(data).__name__ == "dict":
+			if isinstance(data, dict):
 				if data['data']:
 					return data['data'][0]['id']
 				else:
@@ -45,7 +45,7 @@ class valt_users:
 		else:
 			user_list = self.getusers()
 			found_user = None
-			if type(user_list).__name__ == "list":
+			if isinstance(user_list, list):
 				for user in user_list:
 					if user['card_number'] == cardnumber:
 						found_user = user['id']
@@ -65,7 +65,7 @@ class valt_users:
 		else:
 			url = self.baseurl + 'admin/users/' + str(user_id) + '/edit?access_token=' + self.accesstoken
 			data = self.send_to_valt(url, values=kwargs)
-			if type(data).__name__ == "dict":
+			if isinstance(data, dict):
 				return data['data']
 			else:
 				return 0
@@ -80,7 +80,7 @@ class valt_users:
 		else:
 			url = self.baseurl + 'admin/users?access_token=' + self.accesstoken
 			data = self.send_to_valt(url)
-			if type(data).__name__ == "dict":
+			if isinstance(data, dict):
 				return data['data']
 			else:
 				self.handleerror("No Users")

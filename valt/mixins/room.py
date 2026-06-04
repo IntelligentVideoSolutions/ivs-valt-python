@@ -15,7 +15,7 @@ class valt_room:
 		else:
 			url = self.baseurl + 'rooms/info/' + str(room) + '?access_token=' + self.accesstoken
 			data = self.send_to_valt(url)
-			if type(data).__name__ == "dict":
+			if isinstance(data, dict):
 				return data['data']['has_recording']
 			else:
 				return 0
@@ -31,7 +31,7 @@ class valt_room:
 		else:
 			url = self.baseurl + 'rooms/info/' + str(room) + '?access_token=' + self.accesstoken
 			data = self.send_to_valt(url)
-			if type(data).__name__ == "dict":
+			if isinstance(data, dict):
 				if "recording" in data['data'].keys():
 					return data['data']['recording']['id']
 				else:
@@ -67,7 +67,7 @@ class valt_room:
 				self.logger.info(__name__ + ": " + "Recording " + name + " started in " + str(self.getroomname(room)))
 			if room == self.selected_room:
 				self.selected_room_status = 2
-			if type(data).__name__ == "dict":
+			if isinstance(data, dict):
 				return data['data']['id']
 			else:
 				return 0
@@ -88,7 +88,7 @@ class valt_room:
 				self.logger.info(__name__ + ": " + "Recording stopped in " + str(self.getroomname(room)))
 				if room == self.selected_room:
 					self.selected_room_status = 1
-				if type(data).__name__ == "dict":
+				if isinstance(data, dict):
 					return data['data']['id']
 				else:
 					return 0
@@ -119,7 +119,7 @@ class valt_room:
 				self.logger.info(__name__ + ": " + "Recording paused in " + str(self.getroomname(room)))
 				if room == self.selected_room:
 					self.selected_room_status = 3
-				if type(data).__name__ == "dict":
+				if isinstance(data, dict):
 					return data['data']['id']
 				else:
 					return 0
@@ -150,7 +150,7 @@ class valt_room:
 				self.logger.info(__name__ + ": " + "Recording resumed in " + str(self.getroomname(room)))
 				if room == self.selected_room:
 					self.selected_room_status = 2
-				if type(data).__name__ == "dict":
+				if isinstance(data, dict):
 					return data['data']['id']
 				else:
 					return 0
@@ -207,7 +207,7 @@ class valt_room:
 				return 0
 			url = self.baseurl + 'rooms/info/' + str(room) + '?access_token=' + self.accesstoken
 			data = self.send_to_valt(url)
-			if type(data).__name__ == "dict":
+			if isinstance(data, dict):
 				return data['data']['recording']['time']
 			else:
 				return 0
@@ -221,7 +221,7 @@ class valt_room:
 		else:
 			url = self.baseurl + 'rooms/' + str(room) + '/status?access_token=' + self.accesstoken
 			data = self.send_to_valt(url)
-			if type(data).__name__ == "dict":
+			if isinstance(data, dict):
 				if data['data']['status'] == 'paused':
 					return True
 				else:
@@ -237,7 +237,7 @@ class valt_room:
 		else:
 			url = self.baseurl + 'rooms/' + str(room) + '/status?access_token=' + self.accesstoken
 			data = self.send_to_valt(url)
-			if type(data).__name__ == "dict":
+			if isinstance(data, dict):
 				if data['data']['status'] == 'locked':
 					return True
 				else:
@@ -255,10 +255,10 @@ class valt_room:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
-			if room != None and room != "" and room != "None":
+			if room is not None and room != "" and room != "None":
 				url = self.baseurl + 'admin/rooms/' + str(room) + '/cameras?access_token=' + self.accesstoken
 				data = self.send_to_valt(url)
-				if type(data).__name__ == "dict":
+				if isinstance(data, dict):
 					if data['data']['cameras']:
 						return data['data']['cameras']
 					else:
@@ -277,10 +277,10 @@ class valt_room:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
-			if room != None and room != "" and room != "None":
+			if room is not None and room != "" and room != "None":
 				url = self.baseurl + 'rooms/info/' + str(room) + '?access_token=' + self.accesstoken
 				data = self.send_to_valt(url)
-				if type(data).__name__ == "dict":
+				if isinstance(data, dict):
 					return data['data']['name']
 				else:
 					return 0
@@ -301,7 +301,7 @@ class valt_room:
 		else:
 			url = self.baseurl + 'rooms/' + str(room) + '/status?access_token=' + self.accesstoken
 			data = self.send_to_valt(url)
-			if type(data).__name__ == "dict":
+			if isinstance(data, dict):
 				if data['data']['status'] == 'available':
 					return 1
 				elif data['data']['status'] == 'recording':
@@ -331,7 +331,7 @@ class valt_room:
 			values = {"nothing": "nothing"}
 			data = self.send_to_valt(url, values=values)
 			self.logger.info(__name__ + ": " + str(self.getroomname(room)) + " Locked")
-			if type(data).__name__ == "dict":
+			if isinstance(data, dict):
 				return data['data']['id']
 			else:
 				return 0
@@ -351,7 +351,7 @@ class valt_room:
 			values = {"nothing": "nothing"}
 			data = self.send_to_valt(url, values=values)
 			self.logger.info(__name__ + ": " + str(self.getroomname(room)) + " Unlocked")
-			if type(data).__name__ == "dict":
+			if isinstance(data, dict):
 				return data['data']['id']
 			else:
 				return 0

@@ -26,7 +26,7 @@ class valt_admin:
 			data = self.send_to_valt(url,values=values)
 			self.logger.info(__name__ + ": " + "Sharing Permissions Updated")
 			self.logger.debug(__name__ + ": " + str(values))
-			if type(data).__name__ == "dict":
+			if isinstance(data, dict):
 				return data['data']['id']
 			else:
 				return 0
@@ -64,8 +64,8 @@ class valt_admin:
 		else:
 			url = self.baseurl + 'admin/general?access_token=' + self.accesstoken
 			data = self.send_to_valt(url)
-			if type(data).__name__ == "dict":
-				if "version" in data['data'].keys():
+			if isinstance(data, dict):
+				if "version" in data['data']:
 					return data['data']['version']
 				else:
 					self.handleerror("No Version")
@@ -81,7 +81,7 @@ class valt_admin:
 		else:
 			url = self.baseurl + 'admin/cameras?access_token=' + self.accesstoken
 			data = self.send_to_valt(url)
-			if type(data).__name__ == "dict":
+			if isinstance(data, dict):
 				if data['data']['cameras']:
 					return data['data']['cameras']
 				else:
@@ -152,7 +152,7 @@ class valt_admin:
 		else:
 			url = self.baseurl + 'admin/users/' + str(user) + '?access_token=' + self.accesstoken
 			data = self.send_to_valt(url)
-			if type(data).__name__ == "dict":
+			if isinstance(data, dict):
 				return data['data']['name']
 			else:
 				return 0
@@ -178,7 +178,7 @@ class valt_admin:
 			values['wowza'] = kwargs.get("wowza",1)
 			url = self.baseurl + 'admin/cameras?access_token=' + self.accesstoken
 			data = self.send_to_valt(url, values=values)
-			if type(data).__name__ == "dict":
+			if isinstance(data, dict):
 				return data['data']['id']
 			else:
 				return 0
@@ -193,7 +193,7 @@ class valt_admin:
 			values['wowza'] = kwargs.get("wowza",1)
 			url = self.baseurl + 'admin/rooms?access_token=' + self.accesstoken
 			data = self.send_to_valt(url, values=values)
-			if type(data).__name__ == "dict":
+			if isinstance(data, dict):
 				return data['data']['id']
 			else:
 				return 0
@@ -208,7 +208,7 @@ class valt_admin:
 		else:
 			url = self.baseurl + 'admin/wowza?access_token=' + self.accesstoken
 			data = self.send_to_valt(url)
-			if type(data).__name__ == "dict":
+			if isinstance(data, dict):
 				if data['data']['media_servers']:
 					return data['data']['media_servers']
 				else:
