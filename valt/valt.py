@@ -1,4 +1,5 @@
 from .mixins.admin import ValtAdmin
+from .mixins.audio import ValtAudio
 from .mixins.comment import ValtComment
 from .mixins.communication import ValtCommunication
 from .mixins.download import ValtDownload
@@ -14,7 +15,7 @@ from .mixins.upload import ValtUpload
 from .mixins.users import ValtUsers
 from .mixins.auth import ValtAuth
 
-class VALT(ValtCommunication,ValtLog,ValtRecording,ValtUpload,ValtDownload,ValtRoom,ValtPreset,ValtUsers,ValtGroups,ValtComment,ValtAdmin,ValtTemplate,ValtErrors,ValtAuth,ValtMonitor):
+class VALT(ValtCommunication,ValtLog,ValtRecording,ValtUpload,ValtDownload,ValtRoom,ValtPreset,ValtUsers,ValtGroups,ValtComment,ValtAdmin,ValtTemplate,ValtAudio,ValtErrors,ValtAuth,ValtMonitor):
 	def __init__(self, valt_address, valt_username, valt_password, timeout=5,logpath="ivs.log", **kwargs):
 		super().__init__(logpath=logpath)
 		if valt_address != "None" and valt_address != "" and valt_address is not None:
