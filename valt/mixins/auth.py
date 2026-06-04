@@ -44,6 +44,8 @@ class valt_auth:
 				self.reauthenticate(self.success_reauth_time)
 			else:
 				self.logger.error(__name__ + ": " + "Authentication FAILED")
+				self.accesstoken = 0
+				self.reauthenticate(self.failure_reauth_time)
 	def reauthenticate(self: VALT, reauthtime):
 		self.logger.info(__name__ + ":" + " Next authentication attempt in " + str(reauthtime) + " seconds")
 		if hasattr(self, 'reauth'):

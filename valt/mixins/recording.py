@@ -24,6 +24,7 @@ class valt_recording:
 				result = self.send_to_valt(url,file_path=file_path)
 				if result is None:
 					self.logger.warning(__name__ + ": Upload may have failed or returned no response")
+					return 0
 				return record_id
 			else:
 				self.handleerror("Upload Creation Failed.")
@@ -48,6 +49,7 @@ class valt_recording:
 							with open(file_name, "wb") as f:
 								f.write(response.read())
 						self.logger.info(f"{__name__}: File saved successfully as {file_name}")
+						return 1
 					except Exception as e:
 						self.logger.error(f"{__name__}: Failed to download: {e}")
 						return 0

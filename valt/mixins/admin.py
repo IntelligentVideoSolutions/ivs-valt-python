@@ -70,6 +70,8 @@ class valt_admin:
 				else:
 					self.handleerror("No Version")
 					return 0
+			else:
+				return 0
 
 	def get_all_cameras(self: VALT):
 		# Function to return a list of all cameras.
@@ -116,7 +118,7 @@ class valt_admin:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
-			if room != None and room != "" and room != "None":
+			if room is not None and room != "" and room != "None":
 				url = self.baseurl + 'schedule?access_token=' + self.accesstoken
 				roomsched = []
 				data = self.send_to_valt(url)
