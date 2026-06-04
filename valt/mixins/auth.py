@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 	from ..valt import VALT
 
 
-class valt_auth:
+class ValtAuth:
 	def auth(self: VALT):
 		# Authenticate to VALT server
 		# Sets accesstoken value to 0 if the authentication attempt fails.

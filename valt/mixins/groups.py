@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
 	from ..valt import VALT
 
-class valt_groups:
+class ValtGroups:
 	def get_user_group_info(self: VALT,group_id):
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")

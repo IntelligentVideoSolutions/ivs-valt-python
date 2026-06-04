@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
 	from ..valt import VALT
 
-class valt_preset:
+class ValtPreset:
 	def get_camera_presets(self: VALT, camera_id):
 		# Function to retrieve presets for a given camera.
 		# Returns a list of preset dicts or 0 on failure.

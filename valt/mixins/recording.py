@@ -8,7 +8,7 @@ import urllib.request
 if TYPE_CHECKING:
 	from ..valt import VALT
 
-class valt_recording:
+class ValtRecording:
 	def upload_video(self: VALT,file_path,upload_name):
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")

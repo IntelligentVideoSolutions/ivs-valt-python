@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
 	from ..valt import VALT
 
-class valt_users:
+class ValtUsers:
 	def get_user_by_card_number(self: VALT, cardnumber):
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")

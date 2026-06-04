@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
 	from ..valt import VALT
 
-class valt_admin:
+class ValtAdmin:
 	def setsharing(self: VALT, recid, **kwargs):
 		# Function changes sets sharing permission on the specified recording.
 		# Users and groups must be passed as lists, enclosed in [].

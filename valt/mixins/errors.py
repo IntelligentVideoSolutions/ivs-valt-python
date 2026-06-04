@@ -5,7 +5,7 @@ if TYPE_CHECKING:
 	from ..valt import VALT
 
 
-class valt_errors:
+class ValtErrors:
 	def handleerror(self: VALT, e):
 		self.logger.error(__name__ + ": " + str(e))
 		if str(e) == "<urlopen error timed out>" or str(e) == "<urlopen error [Errno 11001] getaddrinfo failed>" or str(e) == "HTTP Error 400: Bad Request" or str(e) == "<urlopen error [Errno -3] Temporary failure in name resolution>" or str(e) == "<urlopen error [WinError 10061] No connection could be made because the target machine actively refused it>" or str(e) == "<urlopen error _ssl.c:989: The handshake operation timed out>":

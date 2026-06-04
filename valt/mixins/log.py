@@ -6,7 +6,7 @@ import logging
 if TYPE_CHECKING:
 	from ..valt import VALT
 
-class valt_log:
+class ValtLog:
 	def __init__(self: VALT, **kwargs):
 		logpath = kwargs.pop('logpath', 'valt.log')
 		super().__init__(**kwargs)

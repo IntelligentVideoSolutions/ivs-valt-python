@@ -12,7 +12,7 @@ import time
 if TYPE_CHECKING:
 	from ..valt import VALT
 
-class valt_communication:
+class ValtCommunication:
 	def __init__(self: VALT, **kwargs):
 		super().__init__(**kwargs)
 	def send_to_valt(self: VALT,url,**kwargs):

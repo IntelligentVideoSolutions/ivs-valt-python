@@ -8,7 +8,7 @@ import urllib.request
 if TYPE_CHECKING:
 	from ..valt import VALT
 
-class valt_comment:
+class ValtComment:
 	def get_comments_by_record(self: VALT, record_id):
 		# Function to return a list of all comments associated with a specific recording
 		# Returns list of comment dictionaries on success

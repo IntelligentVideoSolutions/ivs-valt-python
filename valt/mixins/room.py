@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
 	from ..valt import VALT
 
-class valt_room:
+class ValtRoom:
 	def isrecording(self: VALT, room):
 		# Function to check if the specified room is currently recording
 		# Returns true if the specified room is recording

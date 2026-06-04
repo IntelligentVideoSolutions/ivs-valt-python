@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 	from ..valt import VALT
 
 
-class valt_monitor:
+class ValtMonitor:
 	def check_room_status(self: VALT):
 		while not self.kill_threads:
 			self.logger.debug(__name__ + ": Thread ID:" + str(threading.get_ident()))
