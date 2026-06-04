@@ -39,7 +39,7 @@ class valt_comment:
 
 		if isinstance(data, dict):
 			self.logger.info(__name__ + f": Created comment on record {comment_data.get('recordId', 'unknown')}")
-			return data.get('data', 0)
+			return data
 		else:
 			self.handleerror("Unable to create comment")
 			return 0
@@ -56,7 +56,7 @@ class valt_comment:
 
 		if isinstance(data, dict):
 			self.logger.info(__name__ + f": Updated comment ID {comment_id}")
-			return data.get('data', 0)
+			return data
 		else:
 			self.handleerror("Unable to update comment")
 			return 0
@@ -76,14 +76,14 @@ class valt_comment:
 		else:
 			return 0
 
-	def download_comment_file(self: VALT, comment_id, output_path):
+	def download_comment_file(self: VALT, comment_id, file_id, output_path):
 		# Created by AI – Function to download a comment's attached file to a local path.
 		# Returns True on success, False on failure.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return False
 
-		url = self.baseurl + f'comment/{comment_id}/file?access_token={self.accesstoken}'
+		url = self.baseurl + f'comment/{comment_id}/files/{file_id}?access_token={self.accesstoken}'
 		ctx = ssl.create_default_context()
 		ctx.check_hostname = False
 		ctx.verify_mode = ssl.CERT_NONE
