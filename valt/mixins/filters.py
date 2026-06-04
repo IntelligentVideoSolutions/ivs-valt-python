@@ -15,7 +15,7 @@ class ValtFilters:
 		if isinstance(data, dict) and 'data' in data:
 			return data['data']
 		else:
-			self.handleerror("Unable to get filters")
+			self.handle_error("Unable to get filters")
 			return 0
 
 	def get_filter(self: VALT, filter_id):
@@ -28,7 +28,7 @@ class ValtFilters:
 		if isinstance(data, dict) and 'data' in data:
 			return data['data']
 		else:
-			self.handleerror("Unable to get filter")
+			self.handle_error("Unable to get filter")
 			return 0
 
 	def get_filter_template_fields(self: VALT):
@@ -41,7 +41,7 @@ class ValtFilters:
 		if isinstance(data, dict) and 'data' in data:
 			return data['data'].get('fields', data['data'])
 		else:
-			self.handleerror("Unable to get filter template fields")
+			self.handle_error("Unable to get filter template fields")
 			return 0
 
 	def create_filter(self: VALT, name, **kwargs):
@@ -60,7 +60,7 @@ class ValtFilters:
 			self.logger.info(__name__ + f": Created filter '{name}'")
 			return data['data'].get('id', 0)
 		else:
-			self.handleerror("Unable to create filter")
+			self.handle_error("Unable to create filter")
 			return 0
 
 	def update_filter(self: VALT, filter_id, **kwargs):
@@ -79,7 +79,7 @@ class ValtFilters:
 			self.logger.info(__name__ + f": Updated filter {filter_id}")
 			return data['data'].get('id', 0)
 		else:
-			self.handleerror("Unable to update filter")
+			self.handle_error("Unable to update filter")
 			return 0
 
 	def delete_filter(self: VALT, filter_id):
@@ -93,5 +93,5 @@ class ValtFilters:
 			self.logger.info(__name__ + f": Deleted filter {filter_id}")
 			return 1
 		else:
-			self.handleerror("Unable to delete filter")
+			self.handle_error("Unable to delete filter")
 			return 0

@@ -22,7 +22,7 @@ class ValtAudio:
 		if isinstance(data, dict):
 			return data
 		else:
-			self.handleerror("Unable to get audio")
+			self.handle_error("Unable to get audio")
 			return 0
 
 	def upload_audio(self: VALT, file_path, duration, frequencies):
@@ -37,7 +37,7 @@ class ValtAudio:
 			self.logger.info(__name__ + f": Uploaded audio {data['id']}")
 			return data
 		else:
-			self.handleerror("Unable to upload audio")
+			self.handle_error("Unable to upload audio")
 			return 0
 
 	def update_audio(self: VALT, audio_id, file_path, duration, frequencies):
@@ -52,7 +52,7 @@ class ValtAudio:
 			self.logger.info(__name__ + f": Updated audio {audio_id}")
 			return data
 		else:
-			self.handleerror("Unable to update audio")
+			self.handle_error("Unable to update audio")
 			return 0
 
 	def delete_audio(self: VALT, audio_id):
@@ -67,13 +67,13 @@ class ValtAudio:
 			self.logger.info(__name__ + f": Deleted audio {audio_id}")
 			return data['id']
 		else:
-			self.handleerror("Unable to delete audio")
+			self.handle_error("Unable to delete audio")
 			return 0
 
 	def _send_audio(self: VALT, url, file_path, duration, frequencies):
 		# Builds a multipart/form-data request with audioNote, duration, and frequencies.
 		if not os.path.isfile(file_path):
-			self.handleerror("File not found.")
+			self.handle_error("File not found.")
 			return 0
 
 		boundary = uuid.uuid4().hex
@@ -108,9 +108,9 @@ class ValtAudio:
 			return json.load(response)
 		except error.HTTPError as e:
 			self.logger.error(__name__ + ": VALT API Call Failed")
-			self.handleerror(e)
+			self.handle_error(e)
 			return 0
 		except Exception as e:
 			self.logger.error(__name__ + ": VALT API Call Failed")
-			self.handleerror(e)
+			self.handle_error(e)
 			return 0

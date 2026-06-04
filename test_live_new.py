@@ -51,11 +51,11 @@ section('RECORDS')
 # Start and stop a fresh recording to get a usable record
 rec_room = 3
 time.sleep(2)
-rec_id = v.startrecording(rec_room, 'API Records Test')
+rec_id = v.start_recording(rec_room, 'API Records Test')
 check('startrecording for records test', rec_id, not_value=0)
 if rec_id and rec_id != 0:
     time.sleep(8)
-    v.stoprecording(rec_room)
+    v.stop_recording(rec_room)
     time.sleep(3)
 
     share_url = v.share_record(rec_id)

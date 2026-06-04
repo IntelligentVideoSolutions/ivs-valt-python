@@ -15,7 +15,7 @@ class ValtRights:
 		if isinstance(data, dict) and 'data' in data:
 			return data['data']
 		else:
-			self.handleerror("Unable to get rights")
+			self.handle_error("Unable to get rights")
 			return 0
 
 	def get_rights_by_type(self: VALT, right_type):
@@ -28,5 +28,5 @@ class ValtRights:
 		if isinstance(data, dict) and 'data' in data:
 			return data['data']
 		else:
-			self.handleerror("Unable to get rights")
+			self.handle_error("Unable to get rights")
 			return 0

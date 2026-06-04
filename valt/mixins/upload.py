@@ -24,8 +24,8 @@ class ValtUpload:
 					return record_id
 				return 0
 			else:
-				self.handleerror("Upload Creation Failed.")
+				self.handle_error("Upload Creation Failed.")
 				return 0
 		else:
-			self.handleerror("File not found.")
+			self.handle_error("File not found.")
 			return 0

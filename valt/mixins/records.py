@@ -18,7 +18,7 @@ class ValtRecords:
 			self.logger.info(__name__ + f": Cut started on record {record_id}")
 			return data['data']
 		else:
-			self.handleerror("Unable to cut record")
+			self.handle_error("Unable to cut record")
 			return 0
 
 	def get_cut_status(self: VALT, clip_id):
@@ -31,7 +31,7 @@ class ValtRecords:
 		if isinstance(data, dict) and 'data' in data:
 			return data['data'].get('status', False)
 		else:
-			self.handleerror("Unable to get cut status")
+			self.handle_error("Unable to get cut status")
 			return 0
 
 	def delete_record(self: VALT, record_id):
@@ -56,7 +56,7 @@ class ValtRecords:
 		if isinstance(data, dict) and 'data' in data:
 			return data['data'].get('url', 0)
 		else:
-			self.handleerror("Unable to share record")
+			self.handle_error("Unable to share record")
 			return 0
 
 	def deactivate_share(self: VALT, record_id):
@@ -70,5 +70,5 @@ class ValtRecords:
 			self.logger.info(__name__ + f": Share deactivated for record {record_id}")
 			return 1
 		else:
-			self.handleerror("Unable to deactivate share")
+			self.handle_error("Unable to deactivate share")
 			return 0

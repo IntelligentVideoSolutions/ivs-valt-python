@@ -1,12 +1,13 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
+import warnings
 
 if TYPE_CHECKING:
 	from ..valt import VALT
 
 
 class ValtErrors:
-	def handleerror(self: VALT, e):
+	def handle_error(self: VALT, e):
 		self.logger.error(__name__ + ": " + str(e))
 		if str(e) == "<urlopen error timed out>" or str(e) == "<urlopen error [Errno 11001] getaddrinfo failed>" or str(e) == "HTTP Error 400: Bad Request" or str(e) == "<urlopen error [Errno -3] Temporary failure in name resolution>" or str(e) == "<urlopen error [WinError 10061] No connection could be made because the target machine actively refused it>" or str(e) == "<urlopen error _ssl.c:989: The handshake operation timed out>":
 			self.errormsg = "Server Address Unreachable"
@@ -70,15 +71,24 @@ class ValtErrors:
 			self.errormsg = "An Unknown Error Occurred"
 			self.accesstoken = 0
 			self.reauthenticate(self.failure_reauth_time)
+
+	def handleerror(self: VALT, e):
+		warnings.warn("handleerror is deprecated and will be removed in a future version. Use handle_error instead.", DeprecationWarning, stacklevel=2)
+		return self.handle_error(e)
+
 	@property
 	def errormsg(self: VALT):
 		return self._errormsg
+
 	@errormsg.setter
-	def errormsg(self: VALT,newmsg):
+	def errormsg(self: VALT, newmsg):
 		self._errormsg = newmsg
 		for callback in self._errormsg_observers:
 			callback(self._errormsg)
-	def bind_to_errormsg(self: VALT,callback):
+
+	def bind_to_errormsg(self: VALT, callback):
 		self._errormsg_observers.append(callback)
+
 	def bind_to_errormg(self: VALT, callback):
+		warnings.warn("bind_to_errormg is deprecated and will be removed in a future version. Use bind_to_errormsg instead.", DeprecationWarning, stacklevel=2)
 		self.bind_to_errormsg(callback)

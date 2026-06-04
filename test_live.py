@@ -65,8 +65,8 @@ check('major_version', major not in ('0', None), expected=True)
 print(f'  VALT version: {ver_attr}')
 
 section('TESTCONNECTION')
-check('valid credentials', v.testconnection(HOST, USER, PASS), expected=True)
-check('bad credentials returns False', v.testconnection(HOST, USER, 'wrongpassword'), expected=False)
+check('valid credentials', v.test_connection(HOST, USER, PASS), expected=True)
+check('bad credentials returns False', v.test_connection(HOST, USER, 'wrongpassword'), expected=False)
 
 # ── Observables ───────────────────────────────────────────────
 section('OBSERVABLES')
@@ -99,7 +99,7 @@ check('change_timeout sets httptimeout', v.httptimeout, expected=30)
 
 # ── Rooms ─────────────────────────────────────────────────────
 section('ROOMS')
-rooms = v.getrooms()
+rooms = v.get_rooms()
 check('getrooms returns list', isinstance(rooms, list), expected=True)
 if isinstance(rooms, list):
     print(f'  Room count: {len(rooms)}')
@@ -108,7 +108,7 @@ if isinstance(rooms, list):
 
 if isinstance(rooms, list) and rooms:
     rid = rooms[0].get('id')
-    name = v.getroomname(rid)
+    name = v.get_room_name(rid)
     check(f'getroomname room {rid}', name, not_value=0)
 
 section('ROOM STATUS')
@@ -116,15 +116,15 @@ test_room_id = None
 if isinstance(rooms, list) and rooms:
     for r in rooms:
         rid = r.get('id')
-        status = v.getroomstatus(rid)
+        status = v.get_room_status(rid)
         status_labels = {0:'error',1:'available',2:'recording',3:'paused',4:'locked',5:'prepared'}
-        print(f'  Room {rid} ({v.getroomname(rid)}): status={status} ({status_labels.get(status,"?")})')
+        print(f'  Room {rid} ({v.get_room_name(rid)}): status={status} ({status_labels.get(status,"?")})')
         if status == 1 and test_room_id is None:
             test_room_id = rid
 
 # ── Users ─────────────────────────────────────────────────────
 section('USERS')
-users = v.getusers()
+users = v.get_users()
 check('getusers returns list', isinstance(users, list), expected=True)
 if isinstance(users, list):
     print(f'  User count: {len(users)}')
@@ -132,7 +132,7 @@ if isinstance(users, list):
         print(f'    id={u.get("id")}  name={u.get("name")}')
 
 time.sleep(2)
-username = v.getusername(1)
+username = v.get_username(1)
 check('getusername(1)', username, not_value=0)
 print(f'  User 1 name: {username!r}')
 
@@ -217,7 +217,7 @@ ensure_auth(v)
 section('SCHEDULE')
 if isinstance(rooms, list) and rooms:
     rid = rooms[0].get('id')
-    sched = v.getschedule(rid)
+    sched = v.get_room_schedule(rid)
     if isinstance(sched, list):
         print(f'  {PASS_MARK} getschedule room {rid}: {len(sched)} entries')
     else:
@@ -226,7 +226,7 @@ if isinstance(rooms, list) and rooms:
 # ── Version ───────────────────────────────────────────────────
 section('GETVERSION')
 time.sleep(2)
-ver = v.getversion()
+ver = v.get_version()
 check('getversion', ver, not_value=0)
 
 # ── Media Servers ─────────────────────────────────────────────
@@ -244,7 +244,7 @@ else:
 # ── getrecords ────────────────────────────────────────────────
 section('GETRECORDS')
 time.sleep(2)
-records = v.getrecords(search='API Test')
+records = v.get_records(search='API Test')
 if isinstance(records, list):
     check('getrecords(search=API Test) returns list', True, expected=True)
     print(f'  Found {len(records)} matching record(s)')
@@ -258,9 +258,9 @@ section('ROOM STATE CHECKS')
 if isinstance(rooms, list) and rooms:
     for r in rooms[:3]:
         rid = r.get('id')
-        rec = v.isrecording(rid)
-        paused = v.ispaused(rid)
-        locked = v.islocked(rid)
+        rec = v.is_recording(rid)
+        paused = v.is_paused(rid)
+        locked = v.is_locked(rid)
         print(f'  Room {rid}: isrecording={rec!r}  ispaused={paused!r}  islocked={locked!r}')
         check(f'isrecording room {rid} is bool or 0', rec in (True, False, 0), expected=True)
         check(f'ispaused room {rid} is bool or 0', paused in (True, False, 0), expected=True)
@@ -275,44 +275,44 @@ lifecycle_video_id = None
 if test_room_id is None:
     print(f'  {SKIP_MARK} No available room — skipping recording lifecycle')
 else:
-    print(f'  Using room {test_room_id} ({v.getroomname(test_room_id)})')
+    print(f'  Using room {test_room_id} ({v.get_room_name(test_room_id)})')
 
     time.sleep(3)
-    rec_id = v.startrecording(test_room_id, 'API Test Recording', author=1)
+    rec_id = v.start_recording(test_room_id, 'API Test Recording', author=1)
     check('startrecording (with author) returns id', rec_id, not_value=0)
 
     if rec_id:
         lifecycle_rec_id = rec_id
         time.sleep(5)
-        check('isrecording after start', v.isrecording(test_room_id), expected=True)
-        check('getroomstatus == 2', v.getroomstatus(test_room_id), expected=2)
-        check('getrecordingid matches', v.getrecordingid(test_room_id), expected=rec_id)
-        rec_time = v.getrecordingtime(test_room_id)
+        check('isrecording after start', v.is_recording(test_room_id), expected=True)
+        check('getroomstatus == 2', v.get_room_status(test_room_id), expected=2)
+        check('getrecordingid matches', v.get_recording_id(test_room_id), expected=rec_id)
+        rec_time = v.get_recording_time(test_room_id)
         check('getrecordingtime > 0', rec_time > 0, expected=True)
 
         time.sleep(3)
-        pause_result = v.pauserecording(test_room_id)
+        pause_result = v.pause_recording(test_room_id)
         check('pauserecording returns id', pause_result, not_value=0)
         if pause_result:
             time.sleep(3)
-            check('ispaused after pause', v.ispaused(test_room_id), expected=True)
-            check('getroomstatus == 3', v.getroomstatus(test_room_id), expected=3)
+            check('ispaused after pause', v.is_paused(test_room_id), expected=True)
+            check('getroomstatus == 3', v.get_room_status(test_room_id), expected=3)
             time.sleep(3)
-            resume_result = v.resumerecording(test_room_id)
+            resume_result = v.resume_recording(test_room_id)
             check('resumerecording returns id', resume_result, not_value=0)
             time.sleep(3)
-            check('ispaused after resume', v.ispaused(test_room_id), expected=False)
+            check('ispaused after resume', v.is_paused(test_room_id), expected=False)
 
         time.sleep(3)
-        comment_result = v.addcomment(test_room_id, 'TestMarker')
+        comment_result = v.add_comment(test_room_id, 'TestMarker')
         check('addcomment returns 1', comment_result, expected=1)
 
         time.sleep(3)
-        stopped_id = v.stoprecording(test_room_id)
+        stopped_id = v.stop_recording(test_room_id)
         check('stoprecording returns id', stopped_id, not_value=0)
         time.sleep(5)
-        check('isrecording after stop', v.isrecording(test_room_id), expected=False)
-        check('getroomstatus == 1', v.getroomstatus(test_room_id), expected=1)
+        check('isrecording after stop', v.is_recording(test_room_id), expected=False)
+        check('getroomstatus == 1', v.get_room_status(test_room_id), expected=1)
 
         time.sleep(3)
         info = v.get_video_information(stopped_id)
@@ -368,10 +368,10 @@ else:
 section('SETSHARING')
 if lifecycle_rec_id:
     time.sleep(3)
-    share_result = v.setsharing(lifecycle_rec_id, users=[2])
+    share_result = v.set_sharing(lifecycle_rec_id, users=[2])
     check('setsharing with user', share_result, not_value=0)
     time.sleep(3)
-    restore_result = v.setsharing(lifecycle_rec_id, users=[], groups=[])
+    restore_result = v.set_sharing(lifecycle_rec_id, users=[], groups=[])
     check('setsharing restore empty', restore_result, not_value=0)
 else:
     print(f'  {SKIP_MARK} No lifecycle recording — skipping setsharing')
@@ -410,19 +410,19 @@ else:
 
 # ── Lock / Unlock ─────────────────────────────────────────────
 section('LOCK/UNLOCK')
-if test_room_id is not None and v.getroomstatus(test_room_id) == 1:
+if test_room_id is not None and v.get_room_status(test_room_id) == 1:
     time.sleep(3)
-    lock_result = v.lockroom(test_room_id)
+    lock_result = v.lock_room(test_room_id)
     check('lockroom returns id', lock_result, not_value=0)
     if lock_result:
         time.sleep(3)
-        check('islocked after lock', v.islocked(test_room_id), expected=True)
-        check('getroomstatus == 4', v.getroomstatus(test_room_id), expected=4)
+        check('islocked after lock', v.is_locked(test_room_id), expected=True)
+        check('getroomstatus == 4', v.get_room_status(test_room_id), expected=4)
         time.sleep(3)
-        unlock_result = v.unlockroom(test_room_id)
+        unlock_result = v.unlock_room(test_room_id)
         check('unlockroom returns id', unlock_result, not_value=0)
         time.sleep(3)
-        check('islocked after unlock', v.islocked(test_room_id), expected=False)
+        check('islocked after unlock', v.is_locked(test_room_id), expected=False)
 else:
     print(f'  {SKIP_MARK} No available room for lock test')
 
@@ -436,7 +436,7 @@ if isinstance(rooms, list) and rooms:
         print(f'  {len(cams)} camera(s) in room {rid}')
     else:
         print(f'  {SKIP_MARK} get_cameras room {rid}: {cams!r}')
-    cams2 = v.getcameras(rid)
+    cams2 = v.get_cameras(rid)
     check('getcameras alias == get_cameras', cams2 == cams, expected=True)
 
 # ── Monitor ───────────────────────────────────────────────────
@@ -455,7 +455,7 @@ else:
 # ── changeserver ─────────────────────────────────────────────
 section('CHANGESERVER')
 time.sleep(3)
-v.changeserver(HOST, USER, PASS)
+v.change_server(HOST, USER, PASS)
 time.sleep(3)
 check('changeserver re-authenticates', v.accesstoken, not_value=0)
 check('changeserver version still set', v.version, not_value=0)

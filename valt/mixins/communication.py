@@ -72,16 +72,16 @@ class ValtCommunication:
 			self.logger.debug(__name__ + f" Content-Type received: {response_content_type}")
 		except error.HTTPError as e:
 			self.logger.error(__name__ + ": VALT API Call Failed")
-			self.handleerror(e)
+			self.handle_error(e)
 		except error.URLError as e:
 			self.logger.error(__name__ + ": VALT API Call Failed")
-			self.handleerror(e)
+			self.handle_error(e)
 		except http.client.HTTPException as e:
 			self.logger.error(__name__ + ": VALT API Call Failed")
-			self.handleerror(e)
+			self.handle_error(e)
 		except Exception as e:
 			self.logger.error(__name__ + ": VALT API Call Failed")
-			self.handleerror(e)
+			self.handle_error(e)
 		else:
 			try:
 				self.logger.debug(__name__ + ": " + str(response))
@@ -89,7 +89,7 @@ class ValtCommunication:
 			except (json.JSONDecodeError, UnicodeDecodeError):
 				self.logger.error(__name__ + ": No JSON data in response.")
 			except Exception as e:
-				self.handleerror(e)
+				self.handle_error(e)
 			else:
 				self.logger.debug(__name__ + ": " + str(data))
 				return data

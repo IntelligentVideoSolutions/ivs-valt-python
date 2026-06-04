@@ -15,7 +15,7 @@ class ValtSchedule:
 		if isinstance(data, dict) and 'data' in data:
 			return data['data'].get('blocked_schedules', data['data'])
 		else:
-			self.handleerror("Unable to get blocked schedules")
+			self.handle_error("Unable to get blocked schedules")
 			return 0
 
 	def get_conflict_schedules(self: VALT):
@@ -28,7 +28,7 @@ class ValtSchedule:
 		if isinstance(data, dict) and 'data' in data:
 			return data['data'].get('conflict_schedules', data['data'])
 		else:
-			self.handleerror("Unable to get conflict schedules")
+			self.handle_error("Unable to get conflict schedules")
 			return 0
 
 	def get_schedule(self: VALT, schedule_id):
@@ -41,7 +41,7 @@ class ValtSchedule:
 		if isinstance(data, dict) and 'data' in data:
 			return data['data']
 		else:
-			self.handleerror("Unable to get schedule")
+			self.handle_error("Unable to get schedule")
 			return 0
 
 	def create_schedule(self: VALT, name, room, start_at, duration, **kwargs):
@@ -63,7 +63,7 @@ class ValtSchedule:
 			self.logger.info(__name__ + f": Created schedule '{name}'")
 			return data['data']
 		else:
-			self.handleerror("Unable to create schedule")
+			self.handle_error("Unable to create schedule")
 			return 0
 
 	def update_schedule(self: VALT, schedule_id, **kwargs):
@@ -92,7 +92,7 @@ class ValtSchedule:
 			self.logger.info(__name__ + f": Deleted next occurrence of schedule {schedule_id}")
 			return data['data']
 		else:
-			self.handleerror("Unable to delete next schedule")
+			self.handle_error("Unable to delete next schedule")
 			return 0
 
 	def stop_schedule(self: VALT, schedule_id):

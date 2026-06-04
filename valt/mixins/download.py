@@ -29,8 +29,8 @@ class ValtDownload:
 					self.logger.error(f"{__name__}: Failed to download: {e}")
 					return 0
 			else:
-				self.handleerror("Video Not Found")
+				self.handle_error("Video Not Found")
 				return 0
 		else:
-			self.handleerror("Video Not Found")
+			self.handle_error("Video Not Found")
 			return 0

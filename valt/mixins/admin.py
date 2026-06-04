@@ -1,14 +1,12 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
+import warnings
 
 if TYPE_CHECKING:
 	from ..valt import VALT
 
 class ValtAdmin:
-	def setsharing(self: VALT, recid, **kwargs):
-		# Function changes sets sharing permission on the specified recording.
-		# Users and groups must be passed as lists, enclosed in [].
-		# Returns 0 on failure.
+	def set_sharing(self: VALT, recid, **kwargs):
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
@@ -20,10 +18,10 @@ class ValtAdmin:
 			elif 'groups' in kwargs:
 				values = {"share": {"groups": kwargs['groups']}}
 			else:
-				self.handleerror("No Users or Groups Specified")
+				self.handle_error("No Users or Groups Specified")
 				return 0
 			url = self.baseurl + 'records/' + str(recid) + '/update?access_token=' + self.accesstoken
-			data = self.send_to_valt(url,values=values)
+			data = self.send_to_valt(url, values=values)
 			self.logger.info(__name__ + ": " + "Sharing Permissions Updated")
 			self.logger.debug(__name__ + ": " + str(values))
 			if isinstance(data, dict):
@@ -31,10 +29,7 @@ class ValtAdmin:
 			else:
 				return 0
 
-	def getrecords(self: VALT, **kwargs):
-		# Function to return a list of records.
-		# Returns 0 on failure.
-		# Each list item is a dictionary with information about the user.
+	def get_records(self: VALT, **kwargs):
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
@@ -46,18 +41,17 @@ class ValtAdmin:
 			elif 'start_date' in kwargs:
 				values = {"start_date": kwargs['start_date']}
 			else:
-				self.handleerror("No Search Criteria Specified")
+				self.handle_error("No Search Criteria Specified")
 				return 0
 			url = self.baseurl + 'records?access_token=' + self.accesstoken
 			data = self.send_to_valt(url, values=values)
 			if isinstance(data, dict) and data['data']:
 				return data['data']
 			else:
-				self.handleerror("No Records")
+				self.handle_error("No Records")
 				return 0
 
-	def getversion(self: VALT):
-		# Returns the VALT software version string, or 0 on failure.
+	def get_version(self: VALT):
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
@@ -68,15 +62,12 @@ class ValtAdmin:
 				if "version" in data['data']:
 					return data['data']['version']
 				else:
-					self.handleerror("No Version")
+					self.handle_error("No Version")
 					return 0
 			else:
 				return 0
 
 	def get_all_cameras(self: VALT):
-		# Function to return a list of all cameras.
-		# Returns a list of cameras if successful. Each list item is actually a dictionary containing information about that camera.
-		# Returns 0 on failure.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
@@ -87,16 +78,13 @@ class ValtAdmin:
 				if data['data']['cameras']:
 					return data['data']['cameras']
 				else:
-					self.handleerror("No Cameras")
+					self.handle_error("No Cameras")
 					return 0
 			else:
-				self.handleerror("No Cameras")
+				self.handle_error("No Cameras")
 				return 0
 
-	def getrooms(self: VALT):
-		# Function to return a list of all rooms.
-		# Returns a list of rooms if successful. Each list item is actually a dictionary containing information about that room.
-		# Returns 0 on failure.
+	def get_rooms(self: VALT):
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
@@ -106,14 +94,10 @@ class ValtAdmin:
 			if isinstance(data, dict) and data['data']['rooms']:
 				return data['data']['rooms']
 			else:
-				self.handleerror("No Rooms")
+				self.handle_error("No Rooms")
 				return 0
 
-	def getschedule(self: VALT, room):
-		# Function to return a list of scheduled recordings for the specified room.
-		# Returns a list of schedules if successful. Each list item is actually a list containing information about that schedule.
-		# Returns 0 on failure.
-		# Returns an empty list if no schedules exist for the specified room.
+	def get_room_schedule(self: VALT, room):
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
@@ -137,17 +121,16 @@ class ValtAdmin:
 							self.errormsg = None
 						return roomsched
 					else:
-						self.handleerror("No Schedules")
+						self.handle_error("No Schedules")
 						return 0
 				else:
-					self.handleerror("No Schedules")
+					self.handle_error("No Schedules")
 					return 0
 			else:
-				self.handleerror("Invalid Room ID")
+				self.handle_error("Invalid Room ID")
 				return 0
 
-	def getusername(self: VALT, user):
-		# Function to return the name of the specified user.
+	def get_username(self: VALT, user):
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
@@ -159,25 +142,23 @@ class ValtAdmin:
 			else:
 				return 0
 
-	def create_camera(self: VALT,camera_name,camera_ip,camera_username,camera_password,**kwargs):
-		# Function to start recording in the specified room.
-		# Returns camera id on success and 0 on failure.
+	def create_camera(self: VALT, camera_name, camera_ip, camera_username, camera_password, **kwargs):
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
-			values={}
+			values = {}
 			values['name'] = camera_name
 			values['ip'] = camera_ip
 			values['device_type'] = "camera"
-			values['http_port'] = kwargs.get("camera_http",80)
-			values['rtsp_port'] = kwargs.get("camera_rtsp",554)
+			values['http_port'] = kwargs.get("camera_http", 80)
+			values['rtsp_port'] = kwargs.get("camera_rtsp", 554)
 			values['username'] = camera_username
 			values['password'] = camera_password
 			values['brand'] = 1
 			values['model'] = 1
-			values['rooms'] = kwargs.get("rooms",[])
-			values['wowza'] = kwargs.get("wowza",1)
+			values['rooms'] = kwargs.get("rooms", [])
+			values['wowza'] = kwargs.get("wowza", 1)
 			url = self.baseurl + 'admin/cameras?access_token=' + self.accesstoken
 			data = self.send_to_valt(url, values=values)
 			if isinstance(data, dict):
@@ -185,14 +166,14 @@ class ValtAdmin:
 			else:
 				return 0
 
-	def create_room(self: VALT,room_name,**kwargs):
+	def create_room(self: VALT, room_name, **kwargs):
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
-			values={}
+			values = {}
 			values['name'] = room_name
-			values['wowza'] = kwargs.get("wowza",1)
+			values['wowza'] = kwargs.get("wowza", 1)
 			url = self.baseurl + 'admin/rooms?access_token=' + self.accesstoken
 			data = self.send_to_valt(url, values=values)
 			if isinstance(data, dict):
@@ -201,7 +182,6 @@ class ValtAdmin:
 				return 0
 
 	def get_admin_rooms(self: VALT):
-		# Returns list of all rooms with full camera details or 0 on failure.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
@@ -210,11 +190,10 @@ class ValtAdmin:
 		if isinstance(data, dict) and 'data' in data:
 			return data['data']
 		else:
-			self.handleerror("Unable to get admin rooms")
+			self.handle_error("Unable to get admin rooms")
 			return 0
 
 	def get_admin_room(self: VALT, room_id):
-		# Returns a room dict with full camera details or 0 on failure.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
@@ -223,12 +202,10 @@ class ValtAdmin:
 		if isinstance(data, dict) and 'data' in data:
 			return data['data']
 		else:
-			self.handleerror("Unable to get admin room")
+			self.handle_error("Unable to get admin room")
 			return 0
 
 	def update_room(self: VALT, room_id, **kwargs):
-		# Updates a room. Returns room id or 0 on failure.
-		# Optional kwargs: name, is_io, io_camera_id, io_user_id
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
@@ -239,11 +216,10 @@ class ValtAdmin:
 			self.logger.info(__name__ + f": Updated room {room_id}")
 			return data['data'].get('id', 0)
 		else:
-			self.handleerror("Unable to update room")
+			self.handle_error("Unable to update room")
 			return 0
 
 	def delete_room(self: VALT, room_id):
-		# Deletes a room. Returns 1 on success or 0 on failure.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
@@ -253,11 +229,10 @@ class ValtAdmin:
 			self.logger.info(__name__ + f": Deleted room {room_id}")
 			return 1
 		else:
-			self.handleerror("Unable to delete room")
+			self.handle_error("Unable to delete room")
 			return 0
 
 	def get_camera(self: VALT, camera_id):
-		# Returns full camera dict or 0 on failure.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
@@ -266,11 +241,10 @@ class ValtAdmin:
 		if isinstance(data, dict) and 'data' in data:
 			return data['data']
 		else:
-			self.handleerror("Unable to get camera")
+			self.handle_error("Unable to get camera")
 			return 0
 
 	def update_camera(self: VALT, camera_id, **kwargs):
-		# Updates a camera. Returns camera id or 0 on failure.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
@@ -281,11 +255,10 @@ class ValtAdmin:
 			self.logger.info(__name__ + f": Updated camera {camera_id}")
 			return data['data'].get('id', 0)
 		else:
-			self.handleerror("Unable to update camera")
+			self.handle_error("Unable to update camera")
 			return 0
 
 	def delete_camera(self: VALT, camera_id):
-		# Deletes a camera. Returns 1 on success or 0 on failure.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
@@ -295,11 +268,10 @@ class ValtAdmin:
 			self.logger.info(__name__ + f": Deleted camera {camera_id}")
 			return 1
 		else:
-			self.handleerror("Unable to delete camera")
+			self.handle_error("Unable to delete camera")
 			return 0
 
 	def get_camera_brands(self: VALT):
-		# Returns list of camera brands and models or 0 on failure.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
@@ -308,11 +280,10 @@ class ValtAdmin:
 		if isinstance(data, dict) and 'data' in data:
 			return data['data'].get('brands', data['data'])
 		else:
-			self.handleerror("Unable to get camera brands")
+			self.handle_error("Unable to get camera brands")
 			return 0
 
 	def get_media_server(self: VALT, server_id):
-		# Returns a media server dict or 0 on failure.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
@@ -321,12 +292,10 @@ class ValtAdmin:
 		if isinstance(data, dict) and 'data' in data:
 			return data['data']
 		else:
-			self.handleerror("Unable to get media server")
+			self.handle_error("Unable to get media server")
 			return 0
 
 	def create_media_server(self: VALT, name, address, storage_folder, **kwargs):
-		# Creates a media server. Returns new server id or 0 on failure.
-		# Optional kwargs: port, ssl
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
@@ -340,11 +309,10 @@ class ValtAdmin:
 			self.logger.info(__name__ + f": Created media server '{name}'")
 			return data['data'].get('id', 0)
 		else:
-			self.handleerror("Unable to create media server")
+			self.handle_error("Unable to create media server")
 			return 0
 
 	def update_media_server(self: VALT, server_id, **kwargs):
-		# Updates a media server. Returns server id or 0 on failure.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
@@ -355,11 +323,10 @@ class ValtAdmin:
 			self.logger.info(__name__ + f": Updated media server {server_id}")
 			return data['data'].get('id', 0)
 		else:
-			self.handleerror("Unable to update media server")
+			self.handle_error("Unable to update media server")
 			return 0
 
 	def delete_media_server(self: VALT, server_id):
-		# Deletes a media server. Returns 1 on success or 0 on failure.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
@@ -369,11 +336,10 @@ class ValtAdmin:
 			self.logger.info(__name__ + f": Deleted media server {server_id}")
 			return 1
 		else:
-			self.handleerror("Unable to delete media server")
+			self.handle_error("Unable to delete media server")
 			return 0
 
 	def get_log_categories(self: VALT):
-		# Returns list of log category names or 0 on failure.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
@@ -382,13 +348,10 @@ class ValtAdmin:
 		if isinstance(data, dict) and 'data' in data:
 			return data['data'].get('logs_list', data['data'])
 		else:
-			self.handleerror("Unable to get log categories")
+			self.handle_error("Unable to get log categories")
 			return 0
 
 	def get_media_servers(self: VALT):
-		# Function to return a list of all cameras.
-		# Returns a list of cameras if successful. Each list item is actually a dictionary containing information about that camera.
-		# Returns 0 on failure.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
@@ -399,8 +362,34 @@ class ValtAdmin:
 				if data['data']['media_servers']:
 					return data['data']['media_servers']
 				else:
-					self.handleerror("No Media Servers")
+					self.handle_error("No Media Servers")
 					return 0
 			else:
-				self.handleerror("No Media Servers")
+				self.handle_error("No Media Servers")
 				return 0
+
+	# ── Deprecated aliases ────────────────────────────────────────
+
+	def setsharing(self: VALT, recid, **kwargs):
+		warnings.warn("setsharing is deprecated and will be removed in a future version. Use set_sharing instead.", DeprecationWarning, stacklevel=2)
+		return self.set_sharing(recid, **kwargs)
+
+	def getrecords(self: VALT, **kwargs):
+		warnings.warn("getrecords is deprecated and will be removed in a future version. Use get_records instead.", DeprecationWarning, stacklevel=2)
+		return self.get_records(**kwargs)
+
+	def getversion(self: VALT):
+		warnings.warn("getversion is deprecated and will be removed in a future version. Use get_version instead.", DeprecationWarning, stacklevel=2)
+		return self.get_version()
+
+	def getrooms(self: VALT):
+		warnings.warn("getrooms is deprecated and will be removed in a future version. Use get_rooms instead.", DeprecationWarning, stacklevel=2)
+		return self.get_rooms()
+
+	def getschedule(self: VALT, room):
+		warnings.warn("getschedule is deprecated and will be removed in a future version. Use get_room_schedule instead.", DeprecationWarning, stacklevel=2)
+		return self.get_room_schedule(room)
+
+	def getusername(self: VALT, user):
+		warnings.warn("getusername is deprecated and will be removed in a future version. Use get_username instead.", DeprecationWarning, stacklevel=2)
+		return self.get_username(user)

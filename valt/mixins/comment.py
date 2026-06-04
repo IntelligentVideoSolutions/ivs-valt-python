@@ -41,7 +41,7 @@ class ValtComment:
 			self.logger.info(__name__ + f": Created comment on record {comment_data.get('recordId', 'unknown')}")
 			return data
 		else:
-			self.handleerror("Unable to create comment")
+			self.handle_error("Unable to create comment")
 			return 0
 
 	def update_comment(self: VALT, comment_id, update_data):
@@ -58,7 +58,7 @@ class ValtComment:
 			self.logger.info(__name__ + f": Updated comment ID {comment_id}")
 			return data
 		else:
-			self.handleerror("Unable to update comment")
+			self.handle_error("Unable to update comment")
 			return 0
 
 	def delete_comment(self: VALT, comment_id):
@@ -95,5 +95,5 @@ class ValtComment:
 			return True
 		except Exception as e:
 			self.logger.error(__name__ + ": Failed to download comment file")
-			self.handleerror(e)
+			self.handle_error(e)
 			return False

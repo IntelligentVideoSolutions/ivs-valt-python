@@ -1,14 +1,12 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
+import warnings
 
 if TYPE_CHECKING:
 	from ..valt import VALT
 
 class ValtRoom:
-	def isrecording(self: VALT, room):
-		# Function to check if the specified room is currently recording
-		# Returns true if the specified room is recording
-		# Returns False if the room is not recording
+	def is_recording(self: VALT, room):
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
@@ -20,11 +18,7 @@ class ValtRoom:
 			else:
 				return 0
 
-
-	def getrecordingid(self: VALT, room):
-		# Function to get the current active recording id in the specified room
-		# Returns recording id if currently recording
-		# Returns 0 if the room is not recording
+	def get_recording_id(self: VALT, room):
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
@@ -35,22 +29,19 @@ class ValtRoom:
 				if "recording" in data['data']:
 					return data['data']['recording']['id']
 				else:
-					self.handleerror("No Recording")
+					self.handle_error("No Recording")
 					return 0
 			else:
 				return 0
 
-
-	def startrecording(self: VALT, room, name, **kwargs):
-		# Function to start recording in the specified room.
-		# Returns recording id on success and 0 on failure.
+	def start_recording(self: VALT, room, name, **kwargs):
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
-			is_recording = self.isrecording(room)
+			is_recording = self.is_recording(room)
 			if is_recording is True:
-				self.handleerror("Room Already Recording")
+				self.handle_error("Room Already Recording")
 				return 0
 			if is_recording is not False:
 				return 0
@@ -62,9 +53,9 @@ class ValtRoom:
 			url = self.baseurl + 'rooms/' + str(room) + '/record/start' + '?access_token=' + self.accesstoken
 			data = self.send_to_valt(url, values=values)
 			if 'author' in kwargs:
-				self.logger.info(__name__ + ": " + "Recording " + name + " started in " + str(self.getroomname(room)) + " by " + str(self.getusername(kwargs['author'])))
+				self.logger.info(__name__ + ": " + "Recording " + name + " started in " + str(self.get_room_name(room)) + " by " + str(self.get_username(kwargs['author'])))
 			else:
-				self.logger.info(__name__ + ": " + "Recording " + name + " started in " + str(self.getroomname(room)))
+				self.logger.info(__name__ + ": " + "Recording " + name + " started in " + str(self.get_room_name(room)))
 			if room == self.selected_room:
 				self.selected_room_status = 2
 			if isinstance(data, dict):
@@ -72,20 +63,17 @@ class ValtRoom:
 			else:
 				return 0
 
-
-	def stoprecording(self: VALT, room):
-		# Function to stop recording in the specified room.
-		# Returns recording id on success and 0 on failure.
+	def stop_recording(self: VALT, room):
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
-			is_recording = self.isrecording(room)
+			is_recording = self.is_recording(room)
 			if is_recording is True:
 				url = self.baseurl + 'rooms/' + str(room) + '/record/stop' + '?access_token=' + self.accesstoken
 				values = {"nothing": "nothing"}
 				data = self.send_to_valt(url, values=values)
-				self.logger.info(__name__ + ": " + "Recording stopped in " + str(self.getroomname(room)))
+				self.logger.info(__name__ + ": " + "Recording stopped in " + str(self.get_room_name(room)))
 				if room == self.selected_room:
 					self.selected_room_status = 1
 				if isinstance(data, dict):
@@ -93,30 +81,27 @@ class ValtRoom:
 				else:
 					return 0
 			elif is_recording is False:
-				self.handleerror("No Recording")
+				self.handle_error("No Recording")
 				return 0
 			else:
 				return 0
 
-
-	def pauserecording(self: VALT, room):
-		# Function to pause recording in the specified room.
-		# Returns recording id on success and 0 on failure.
+	def pause_recording(self: VALT, room):
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
-			is_recording = self.isrecording(room)
+			is_recording = self.is_recording(room)
 			if is_recording is not True:
 				if is_recording is False:
-					self.handleerror("No Recording")
+					self.handle_error("No Recording")
 				return 0
-			paused = self.ispaused(room)
+			paused = self.is_paused(room)
 			if paused is False:
 				url = self.baseurl + 'rooms/' + str(room) + '/record/pause' + '?access_token=' + self.accesstoken
 				values = {"nothing": "nothing"}
 				data = self.send_to_valt(url, values=values)
-				self.logger.info(__name__ + ": " + "Recording paused in " + str(self.getroomname(room)))
+				self.logger.info(__name__ + ": " + "Recording paused in " + str(self.get_room_name(room)))
 				if room == self.selected_room:
 					self.selected_room_status = 3
 				if isinstance(data, dict):
@@ -124,30 +109,27 @@ class ValtRoom:
 				else:
 					return 0
 			elif paused is True:
-				self.handleerror("Room Paused")
+				self.handle_error("Room Paused")
 				return 0
 			else:
 				return 0
 
-
-	def resumerecording(self: VALT, room):
-		# Function to resume recording in the specified room.
-		# Returns recording id on success and 0 on failure.
+	def resume_recording(self: VALT, room):
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
-			is_recording = self.isrecording(room)
+			is_recording = self.is_recording(room)
 			if is_recording is not True:
 				if is_recording is False:
-					self.handleerror("No Recording")
+					self.handle_error("No Recording")
 				return 0
-			paused = self.ispaused(room)
+			paused = self.is_paused(room)
 			if paused is True:
 				url = self.baseurl + 'rooms/' + str(room) + '/record/resume' + '?access_token=' + self.accesstoken
 				values = {"nothing": "nothing"}
 				data = self.send_to_valt(url, values=values)
-				self.logger.info(__name__ + ": " + "Recording resumed in " + str(self.getroomname(room)))
+				self.logger.info(__name__ + ": " + "Recording resumed in " + str(self.get_room_name(room)))
 				if room == self.selected_room:
 					self.selected_room_status = 2
 				if isinstance(data, dict):
@@ -155,24 +137,20 @@ class ValtRoom:
 				else:
 					return 0
 			elif paused is False:
-				self.handleerror("Room Not Paused")
+				self.handle_error("Room Not Paused")
 				return 0
 			else:
 				return 0
 
-
-	def addcomment(self: VALT, room, markername, color="red", **kwargs):
-		# Function to add a comment current recording in specified room.
-		# Returns 1 if successful.
-		# Returns 0 on failure.
+	def add_comment(self: VALT, room, markername, color="red", **kwargs):
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
-			is_recording = self.isrecording(room)
+			is_recording = self.is_recording(room)
 			if is_recording is not True:
 				if is_recording is False:
-					self.handleerror("No Recording")
+					self.handle_error("No Recording")
 				return 0
 			if self.version[0] == "6":
 				url = self.baseurl + 'comment?access_token=' + self.accesstoken
@@ -181,29 +159,27 @@ class ValtRoom:
 			else:
 				self.logger.error(__name__ + ": Unable to Determine VALT version")
 				return 0
-			markertime = self.getrecordingtime(room)
+			markertime = self.get_recording_time(room)
 			if markertime > 0:
 				if self.version[0] == "6":
-					values = {"recordTime": markertime, "recordId": self.getrecordingid(room), "type": "simple", "message":markername}
+					values = {"recordTime": markertime, "recordId": self.get_recording_id(room), "type": "simple", "message": markername}
 				elif self.version[0] == "5":
 					values = {"event": markername, "time": markertime, "color": color}
 				data = self.send_to_valt(url, values=values)
-				self.logger.info(__name__ + ": " + "Comment " + markername + " added in " + str(self.getroomname(room)))
+				self.logger.info(__name__ + ": " + "Comment " + markername + " added in " + str(self.get_room_name(room)))
 				return 1
 			else:
 				return 0
 
-	def getrecordingtime(self: VALT, room):
-		# Returns current recording time index in seconds for the specified room.
-		# Returns 0 on failure.
+	def get_recording_time(self: VALT, room):
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
-			is_recording = self.isrecording(room)
+			is_recording = self.is_recording(room)
 			if is_recording is not True:
 				if is_recording is False:
-					self.handleerror("No Recording")
+					self.handle_error("No Recording")
 				return 0
 			url = self.baseurl + 'rooms/info/' + str(room) + '?access_token=' + self.accesstoken
 			data = self.send_to_valt(url)
@@ -212,9 +188,7 @@ class ValtRoom:
 			else:
 				return 0
 
-	def ispaused(self: VALT, room):
-		# Function to check if specified room is currently recording and paused.
-		# Returns true if room is currently paused
+	def is_paused(self: VALT, room):
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
@@ -228,9 +202,7 @@ class ValtRoom:
 					return False
 			return 0
 
-	def islocked(self: VALT, room):
-		# Function to check if specified room is currently locked.
-		# Returns true if room is currently locked.
+	def is_locked(self: VALT, room):
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
@@ -244,13 +216,7 @@ class ValtRoom:
 					return False
 			return 0
 
-	def getcameras(self: VALT, room):
-		return self.get_cameras(room)
-
 	def get_cameras(self: VALT, room):
-		# Function to return a list of all cameras in the specified room.
-		# Returns a list of cameras if successful. Each list item is actually a dictionary containing information about that camera.
-		# Returns 0 on failure.
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
@@ -262,17 +228,16 @@ class ValtRoom:
 					if data['data']['cameras']:
 						return data['data']['cameras']
 					else:
-						self.handleerror("No Cameras")
+						self.handle_error("No Cameras")
 						return 0
 				else:
-					self.handleerror("No Cameras")
+					self.handle_error("No Cameras")
 					return 0
 			else:
-				self.handleerror("Invalid Room ID")
+				self.handle_error("Invalid Room ID")
 				return 0
 
-	def getroomname(self: VALT, room):
-		# Function to return the name of the specified room.
+	def get_room_name(self: VALT, room):
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
@@ -287,14 +252,7 @@ class ValtRoom:
 			else:
 				return 0
 
-	def getroomstatus(self: VALT, room):
-		# Function to return the current state of the specified room.
-		# Returns 0 on failure.
-		# Returns 1 if the room is available.
-		# Returns 2 if the room is recording.
-		# Returns 3 if the room is paused.
-		# Returns 4 if the room is locked.
-		# Returns 5 if the room is prepared.
+	def get_room_status(self: VALT, room):
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
@@ -313,50 +271,108 @@ class ValtRoom:
 				elif data['data']['status'] == 'prepared':
 					return 5
 				else:
-					self.handleerror("Unknown Status")
+					self.handle_error("Unknown Status")
 					return 0
 			else:
-				self.handleerror("Invalid Room ID")
+				self.handle_error("Invalid Room ID")
 				return 0
 
-	def lockroom(self: VALT, room):
-		# Function locks the specified room.
-		# Returns 0 on failure.
+	def lock_room(self: VALT, room):
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
-		room_status = self.getroomstatus(room)
+		room_status = self.get_room_status(room)
 		if room_status == 1 or room_status == 5:
 			url = self.baseurl + 'rooms/' + str(room) + '/lock' + '?access_token=' + self.accesstoken
 			values = {"nothing": "nothing"}
 			data = self.send_to_valt(url, values=values)
-			self.logger.info(__name__ + ": " + str(self.getroomname(room)) + " Locked")
+			self.logger.info(__name__ + ": " + str(self.get_room_name(room)) + " Locked")
 			if isinstance(data, dict):
 				return data['data']['id']
 			else:
 				return 0
 		else:
-			self.handleerror("No Lock")
+			self.handle_error("No Lock")
 			return 0
 
-	def unlockroom(self: VALT, room):
-		# Function unlocks the specified room.
-		# Returns 0 on failure.
+	def unlock_room(self: VALT, room):
 		if self.accesstoken == 0:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
-		locked = self.islocked(room)
+		locked = self.is_locked(room)
 		if locked is True:
 			url = self.baseurl + 'rooms/' + str(room) + '/unlock' + '?access_token=' + self.accesstoken
 			values = {"nothing": "nothing"}
 			data = self.send_to_valt(url, values=values)
-			self.logger.info(__name__ + ": " + str(self.getroomname(room)) + " Unlocked")
+			self.logger.info(__name__ + ": " + str(self.get_room_name(room)) + " Unlocked")
 			if isinstance(data, dict):
 				return data['data']['id']
 			else:
 				return 0
 		elif locked is False:
-			self.handleerror("Not Locked")
+			self.handle_error("Not Locked")
 			return 0
 		else:
 			return 0
+
+	# ── Deprecated aliases ────────────────────────────────────────
+
+	def isrecording(self: VALT, room):
+		warnings.warn("isrecording is deprecated and will be removed in a future version. Use is_recording instead.", DeprecationWarning, stacklevel=2)
+		return self.is_recording(room)
+
+	def getrecordingid(self: VALT, room):
+		warnings.warn("getrecordingid is deprecated and will be removed in a future version. Use get_recording_id instead.", DeprecationWarning, stacklevel=2)
+		return self.get_recording_id(room)
+
+	def startrecording(self: VALT, room, name, **kwargs):
+		warnings.warn("startrecording is deprecated and will be removed in a future version. Use start_recording instead.", DeprecationWarning, stacklevel=2)
+		return self.start_recording(room, name, **kwargs)
+
+	def stoprecording(self: VALT, room):
+		warnings.warn("stoprecording is deprecated and will be removed in a future version. Use stop_recording instead.", DeprecationWarning, stacklevel=2)
+		return self.stop_recording(room)
+
+	def pauserecording(self: VALT, room):
+		warnings.warn("pauserecording is deprecated and will be removed in a future version. Use pause_recording instead.", DeprecationWarning, stacklevel=2)
+		return self.pause_recording(room)
+
+	def resumerecording(self: VALT, room):
+		warnings.warn("resumerecording is deprecated and will be removed in a future version. Use resume_recording instead.", DeprecationWarning, stacklevel=2)
+		return self.resume_recording(room)
+
+	def addcomment(self: VALT, room, markername, color="red", **kwargs):
+		warnings.warn("addcomment is deprecated and will be removed in a future version. Use add_comment instead.", DeprecationWarning, stacklevel=2)
+		return self.add_comment(room, markername, color, **kwargs)
+
+	def getrecordingtime(self: VALT, room):
+		warnings.warn("getrecordingtime is deprecated and will be removed in a future version. Use get_recording_time instead.", DeprecationWarning, stacklevel=2)
+		return self.get_recording_time(room)
+
+	def ispaused(self: VALT, room):
+		warnings.warn("ispaused is deprecated and will be removed in a future version. Use is_paused instead.", DeprecationWarning, stacklevel=2)
+		return self.is_paused(room)
+
+	def islocked(self: VALT, room):
+		warnings.warn("islocked is deprecated and will be removed in a future version. Use is_locked instead.", DeprecationWarning, stacklevel=2)
+		return self.is_locked(room)
+
+	def getcameras(self: VALT, room):
+		warnings.warn("getcameras is deprecated and will be removed in a future version. Use get_cameras instead.", DeprecationWarning, stacklevel=2)
+		return self.get_cameras(room)
+
+	def getroomname(self: VALT, room):
+		warnings.warn("getroomname is deprecated and will be removed in a future version. Use get_room_name instead.", DeprecationWarning, stacklevel=2)
+		return self.get_room_name(room)
+
+	def getroomstatus(self: VALT, room):
+		warnings.warn("getroomstatus is deprecated and will be removed in a future version. Use get_room_status instead.", DeprecationWarning, stacklevel=2)
+		return self.get_room_status(room)
+
+	def lockroom(self: VALT, room):
+		warnings.warn("lockroom is deprecated and will be removed in a future version. Use lock_room instead.", DeprecationWarning, stacklevel=2)
+		return self.lock_room(room)
+
+	def unlockroom(self: VALT, room):
+		warnings.warn("unlockroom is deprecated and will be removed in a future version. Use unlock_room instead.", DeprecationWarning, stacklevel=2)
+		return self.unlock_room(room)

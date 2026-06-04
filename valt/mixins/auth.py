@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 import json
 import http.client
 import ssl as _ssl
+import warnings
 from urllib import error, request
 import time, threading
 
@@ -26,7 +27,7 @@ class ValtAuth:
 				self.accesstoken = data['data']['access_token']
 				self.errormsg = None
 				self.logger.info(__name__ + ": " + "Authenticated to VALT")
-				self.version = self.getversion()
+				self.version = self.get_version()
 				if self.version and self.version != 0:
 					self.major_version = self.version.split(".")[0]
 					self.minor_version = self.version.split(".")[1]
@@ -54,7 +55,7 @@ class ValtAuth:
 		self.reauth.daemon = True
 		self.reauth.start()
 
-	def changeserver(self: VALT, valt_address, valt_username, valt_password):
+	def change_server(self: VALT, valt_address, valt_username, valt_password):
 		if valt_address != "None" and valt_address != "" and valt_address is not None:
 			self.disconnect()
 			if valt_address.find("http", 0, 4) == -1:
@@ -68,7 +69,7 @@ class ValtAuth:
 		self.auth()
 		self.start_room_check_thread()
 
-	def testconnection(self: VALT, valt_address, valt_username, valt_password):
+	def test_connection(self: VALT, valt_address, valt_username, valt_password):
 		values = {"username": valt_username, "password": valt_password}
 		params = json.dumps(values).encode('utf-8')
 		if valt_address.find("http", 0, 4) == -1:
@@ -114,5 +115,15 @@ class ValtAuth:
 		self._accesstoken = newmsg
 		for callback in self._accesstoken_observers:
 			callback(self._accesstoken)
-	def bind_to_accesstoken(self: VALT,callback):
+	def bind_to_accesstoken(self: VALT, callback):
 		self._accesstoken_observers.append(callback)
+
+	# ── Deprecated aliases ────────────────────────────────────────
+
+	def changeserver(self: VALT, valt_address, valt_username, valt_password):
+		warnings.warn("changeserver is deprecated and will be removed in a future version. Use change_server instead.", DeprecationWarning, stacklevel=2)
+		return self.change_server(valt_address, valt_username, valt_password)
+
+	def testconnection(self: VALT, valt_address, valt_username, valt_password):
+		warnings.warn("testconnection is deprecated and will be removed in a future version. Use test_connection instead.", DeprecationWarning, stacklevel=2)
+		return self.test_connection(valt_address, valt_username, valt_password)

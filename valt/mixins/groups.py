@@ -15,7 +15,7 @@ class ValtGroups:
 		if isinstance(data, dict) and 'data' in data:
 			return data['data'].get('userGroups', data['data'])
 		else:
-			self.handleerror("Unable to get user groups")
+			self.handle_error("Unable to get user groups")
 			return 0
 
 	def get_user_group_info(self: VALT,group_id):
@@ -57,7 +57,7 @@ class ValtGroups:
 			self.logger.info(__name__ + f": Created user group '{name}'")
 			return data['data'].get('id', 0)
 		else:
-			self.handleerror("Unable to create user group")
+			self.handle_error("Unable to create user group")
 			return 0
 
 	def delete_user_group(self: VALT, group_id):
@@ -71,7 +71,7 @@ class ValtGroups:
 			self.logger.info(__name__ + f": Deleted user group {group_id}")
 			return 1
 		else:
-			self.handleerror("Unable to delete user group")
+			self.handle_error("Unable to delete user group")
 			return 0
 
 	def update_group(self: VALT,group_id,**kwargs):

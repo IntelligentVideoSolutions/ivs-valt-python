@@ -15,7 +15,7 @@ class ValtAdminTemplates:
 		if isinstance(data, dict) and 'data' in data:
 			return data['data']
 		else:
-			self.handleerror("Unable to get admin templates")
+			self.handle_error("Unable to get admin templates")
 			return 0
 
 	def get_admin_template(self: VALT, template_id):
@@ -28,7 +28,7 @@ class ValtAdminTemplates:
 		if isinstance(data, dict) and 'data' in data:
 			return data['data']
 		else:
-			self.handleerror("Unable to get admin template")
+			self.handle_error("Unable to get admin template")
 			return 0
 
 	def create_admin_template(self: VALT, name, template_type, entity_name, **kwargs):
@@ -47,7 +47,7 @@ class ValtAdminTemplates:
 			self.logger.info(__name__ + f": Created template '{name}'")
 			return data['data'].get('id', 0)
 		else:
-			self.handleerror("Unable to create admin template")
+			self.handle_error("Unable to create admin template")
 			return 0
 
 	def update_admin_template(self: VALT, template_id, **kwargs):
@@ -63,7 +63,7 @@ class ValtAdminTemplates:
 			self.logger.info(__name__ + f": Updated template {template_id}")
 			return data['data'].get('id', 0)
 		else:
-			self.handleerror("Unable to update admin template")
+			self.handle_error("Unable to update admin template")
 			return 0
 
 	def delete_admin_template(self: VALT, template_id):
@@ -77,7 +77,7 @@ class ValtAdminTemplates:
 			self.logger.info(__name__ + f": Deleted template {template_id}")
 			return 1
 		else:
-			self.handleerror("Unable to delete admin template")
+			self.handle_error("Unable to delete admin template")
 			return 0
 
 	def get_template_fields(self: VALT, template_id):
@@ -90,7 +90,7 @@ class ValtAdminTemplates:
 		if isinstance(data, dict) and 'data' in data:
 			return data['data']
 		else:
-			self.handleerror("Unable to get template fields")
+			self.handle_error("Unable to get template fields")
 			return 0
 
 	def add_template_fields(self: VALT, template_id, fields):
@@ -106,7 +106,7 @@ class ValtAdminTemplates:
 			self.logger.info(__name__ + f": Added fields to template {template_id}")
 			return data['data'].get('fields', data['data'])
 		else:
-			self.handleerror("Unable to add template fields")
+			self.handle_error("Unable to add template fields")
 			return 0
 
 	def update_template_field(self: VALT, template_id, field_id, **kwargs):
@@ -122,7 +122,7 @@ class ValtAdminTemplates:
 			self.logger.info(__name__ + f": Updated field {field_id} on template {template_id}")
 			return data['data']
 		else:
-			self.handleerror("Unable to update template field")
+			self.handle_error("Unable to update template field")
 			return 0
 
 	def delete_template_field(self: VALT, template_id, field_id):
@@ -136,5 +136,5 @@ class ValtAdminTemplates:
 			self.logger.info(__name__ + f": Deleted field {field_id} from template {template_id}")
 			return 1
 		else:
-			self.handleerror("Unable to delete template field")
+			self.handle_error("Unable to delete template field")
 			return 0

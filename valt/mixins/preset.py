@@ -17,7 +17,7 @@ class ValtPreset:
 		if isinstance(data, list):
 			return data
 		else:
-			self.handleerror("Unable to get camera presets")
+			self.handle_error("Unable to get camera presets")
 			return 0
 
 
@@ -35,7 +35,7 @@ class ValtPreset:
 			self.logger.info(__name__ + f": Preset '{name}' created for camera {camera_id}")
 			return data['id']
 		else:
-			self.handleerror("Unable to create preset")
+			self.handle_error("Unable to create preset")
 			return 0
 
 	def apply_camera_preset(self: VALT, camera_id, preset_id):
@@ -52,7 +52,7 @@ class ValtPreset:
 			self.logger.info(__name__ + f": Preset {preset_id} applied to camera {camera_id}")
 			return 1
 		else:
-			self.handleerror("Unable to apply preset")
+			self.handle_error("Unable to apply preset")
 			return 0
 
 	def delete_camera_preset(self: VALT, camera_id, preset_id):

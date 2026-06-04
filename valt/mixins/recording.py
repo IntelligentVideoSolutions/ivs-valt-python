@@ -16,8 +16,8 @@ class ValtRecording:
 				if data['data'] is not None:
 					return data['data']
 				else:
-					self.handleerror("Recording Not Found")
+					self.handle_error("Recording Not Found")
 					return 0
 			else:
-				self.handleerror("Recording Not Found")
+				self.handle_error("Recording Not Found")
 				return 0

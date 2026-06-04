@@ -17,5 +17,5 @@ class ValtTemplate:
 		if isinstance(data, dict) and 'templates' in data:
 			return data
 		else:
-			self.handleerror("Unable to get templates")
+			self.handle_error("Unable to get templates")
 			return 0

@@ -15,7 +15,7 @@ class ValtHelp:
 		if isinstance(data, dict) and 'data' in data:
 			return data['data'].get('helps', data['data'])
 		else:
-			self.handleerror("Unable to get helps")
+			self.handle_error("Unable to get helps")
 			return 0
 
 	def get_help(self: VALT, help_id):
@@ -28,7 +28,7 @@ class ValtHelp:
 		if isinstance(data, dict) and 'data' in data:
 			return data['data']
 		else:
-			self.handleerror("Unable to get help")
+			self.handle_error("Unable to get help")
 			return 0
 
 	def create_help(self: VALT, title, content):
@@ -43,7 +43,7 @@ class ValtHelp:
 			self.logger.info(__name__ + f": Created help '{title}'")
 			return data['data']
 		else:
-			self.handleerror("Unable to create help")
+			self.handle_error("Unable to create help")
 			return 0
 
 	def update_help(self: VALT, help_id, title, content):
@@ -58,7 +58,7 @@ class ValtHelp:
 			self.logger.info(__name__ + f": Updated help {help_id}")
 			return data['data'].get('id', 0)
 		else:
-			self.handleerror("Unable to update help")
+			self.handle_error("Unable to update help")
 			return 0
 
 	def delete_help(self: VALT, help_id):
@@ -72,5 +72,5 @@ class ValtHelp:
 			self.logger.info(__name__ + f": Deleted help {help_id}")
 			return 1
 		else:
-			self.handleerror("Unable to delete help")
+			self.handle_error("Unable to delete help")
 			return 0

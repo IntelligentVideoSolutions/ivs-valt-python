@@ -1,5 +1,6 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
+import warnings
 
 if TYPE_CHECKING:
 	from ..valt import VALT
@@ -43,7 +44,7 @@ class ValtUsers:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
-			user_list = self.getusers()
+			user_list = self.get_users()
 			found_user = None
 			if isinstance(user_list, list):
 				for user in user_list:
@@ -68,7 +69,7 @@ class ValtUsers:
 		if isinstance(data, dict) and 'data' in data:
 			return data['data']
 		else:
-			self.handleerror("Unable to get user")
+			self.handle_error("Unable to get user")
 			return 0
 
 	def create_user(self: VALT, name, password, **kwargs):
@@ -87,7 +88,7 @@ class ValtUsers:
 			self.logger.info(__name__ + f": Created user '{name}'")
 			return data['data'].get('id', 0)
 		else:
-			self.handleerror("Unable to create user")
+			self.handle_error("Unable to create user")
 			return 0
 
 	def delete_user(self: VALT, user_id):
@@ -101,7 +102,7 @@ class ValtUsers:
 			self.logger.info(__name__ + f": Deleted user {user_id}")
 			return 1
 		else:
-			self.handleerror("Unable to delete user")
+			self.handle_error("Unable to delete user")
 			return 0
 
 	def update_user(self: VALT, user_id, **kwargs):
@@ -116,7 +117,7 @@ class ValtUsers:
 			else:
 				return 0
 
-	def getusers(self: VALT):
+	def get_users(self: VALT):
 		# Function to return a list of users.
 		# Returns 0 on failure.
 		# Each list item is a dictionary with information about the user.
@@ -129,5 +130,11 @@ class ValtUsers:
 			if isinstance(data, dict):
 				return data['data']
 			else:
-				self.handleerror("No Users")
+				self.handle_error("No Users")
 				return 0
+
+	# ── Deprecated alias ─────────────────────────────────────────
+
+	def getusers(self: VALT):
+		warnings.warn("getusers is deprecated and will be removed in a future version. Use get_users instead.", DeprecationWarning, stacklevel=2)
+		return self.get_users()
