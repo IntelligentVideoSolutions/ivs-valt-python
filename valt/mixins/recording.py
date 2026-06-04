@@ -21,7 +21,9 @@ class valt_recording:
 				record_id = data['id']
 				videos = data['videos'][0]
 				url = f"{self.baseurl}records/{record_id}/videos/{videos}?access_token={self.accesstoken}"
-				self.send_to_valt(url,file_path=file_path)
+				result = self.send_to_valt(url,file_path=file_path)
+				if result is None:
+					self.logger.warning(__name__ + ": Upload may have failed or returned no response")
 			else:
 				self.handleerror("Upload Creation Failed.")
 				return 0
@@ -62,7 +64,7 @@ class valt_recording:
 			url = self.baseurl + f'records/{recording_id}?access_token={self.accesstoken}'
 			data = self.send_to_valt(url)
 			if type(data).__name__ == "dict":
-				if data['data']:
+				if data['data'] is not None:
 					return data['data']
 				else:
 					self.handleerror("Recording Not Found")

@@ -34,6 +34,8 @@ class valt_users:
 				else:
 					self.logger.info(__name__ + ": " + "No user found with card number: " + str(cardnumber))
 					return 0
+			else:
+				return 0
 
 	def get_user_by_card_number_v5(self: VALT, cardnumber):
 		# Function returns user matching card number.

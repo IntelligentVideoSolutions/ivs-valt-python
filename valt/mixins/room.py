@@ -49,28 +49,27 @@ class valt_room:
 			return 0
 		else:
 			is_recording = self.isrecording(room)
-			if is_recording == 0:
-				return 0
-			if is_recording is not True:
-				if 'author' in kwargs:
-					values = {"name": name, "author": kwargs['author']}
-				else:
-					values = {"name": name}
-
-				url = self.baseurl + 'rooms/' + str(room) + '/record/start' + '?access_token=' + self.accesstoken
-				data = self.send_to_valt(url, values=values)
-				if 'author' in kwargs:
-					self.logger.info(__name__ + ": " + "Recording " + name + " started in " + str(self.getroomname(room)) + " by " + str(self.getusername(kwargs['author'])))
-				else:
-					self.logger.info(__name__ + ": " + "Recording " + name + " started in " + str(self.getroomname(room)))
-				if room == self.selected_room:
-					self.selected_room_status = 2
-				if type(data).__name__ == "dict":
-					return data['data']['id']
-				else:
-					return 0
-			else:
+			if is_recording is True:
 				self.handleerror("Room Already Recording")
+				return 0
+			if is_recording is not False:
+				return 0
+			if 'author' in kwargs:
+				values = {"name": name, "author": kwargs['author']}
+			else:
+				values = {"name": name}
+
+			url = self.baseurl + 'rooms/' + str(room) + '/record/start' + '?access_token=' + self.accesstoken
+			data = self.send_to_valt(url, values=values)
+			if 'author' in kwargs:
+				self.logger.info(__name__ + ": " + "Recording " + name + " started in " + str(self.getroomname(room)) + " by " + str(self.getusername(kwargs['author'])))
+			else:
+				self.logger.info(__name__ + ": " + "Recording " + name + " started in " + str(self.getroomname(room)))
+			if room == self.selected_room:
+				self.selected_room_status = 2
+			if type(data).__name__ == "dict":
+				return data['data']['id']
+			else:
 				return 0
 
 
@@ -81,9 +80,9 @@ class valt_room:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
-			if self.isrecording(room) == True:
+			is_recording = self.isrecording(room)
+			if is_recording is True:
 				url = self.baseurl + 'rooms/' + str(room) + '/record/stop' + '?access_token=' + self.accesstoken
-
 				values = {"nothing": "nothing"}
 				data = self.send_to_valt(url, values=values)
 				self.logger.info(__name__ + ": " + "Recording stopped in " + str(self.getroomname(room)))
@@ -93,8 +92,10 @@ class valt_room:
 					return data['data']['id']
 				else:
 					return 0
-			else:
+			elif is_recording is False:
 				self.handleerror("No Recording")
+				return 0
+			else:
 				return 0
 
 
@@ -105,23 +106,27 @@ class valt_room:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
-			if self.isrecording(room) == True:
-				if self.ispaused(room) != True:
-					url = self.baseurl + 'rooms/' + str(room) + '/record/pause' + '?access_token=' + self.accesstoken
-					values = {"nothing": "nothing"}
-					data = self.send_to_valt(url, values=values)
-					self.logger.info(__name__ + ": " + "Recording paused in " + str(self.getroomname(room)))
-					if room == self.selected_room:
-						self.selected_room_status = 3
-					if type(data).__name__ == "dict":
-						return data['data']['id']
-					else:
-						return 0
+			is_recording = self.isrecording(room)
+			if is_recording is not True:
+				if is_recording is False:
+					self.handleerror("No Recording")
+				return 0
+			paused = self.ispaused(room)
+			if paused is False:
+				url = self.baseurl + 'rooms/' + str(room) + '/record/pause' + '?access_token=' + self.accesstoken
+				values = {"nothing": "nothing"}
+				data = self.send_to_valt(url, values=values)
+				self.logger.info(__name__ + ": " + "Recording paused in " + str(self.getroomname(room)))
+				if room == self.selected_room:
+					self.selected_room_status = 3
+				if type(data).__name__ == "dict":
+					return data['data']['id']
 				else:
-					self.handleerror("Room Paused")
 					return 0
+			elif paused is True:
+				self.handleerror("Room Paused")
+				return 0
 			else:
-				self.handleerror("No Recording")
 				return 0
 
 
@@ -132,23 +137,27 @@ class valt_room:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
-			if self.isrecording(room) == True:
-				if self.ispaused(room) == True:
-					url = self.baseurl + 'rooms/' + str(room) + '/record/resume' + '?access_token=' + self.accesstoken
-					values = {"nothing": "nothing"}
-					data = self.send_to_valt(url, values=values)
-					self.logger.info(__name__ + ": " + "Recording resumed in " + str(self.getroomname(room)))
-					if room == self.selected_room:
-						self.selected_room_status = 2
-					if type(data).__name__ == "dict":
-						return data['data']['id']
-					else:
-						return 0
+			is_recording = self.isrecording(room)
+			if is_recording is not True:
+				if is_recording is False:
+					self.handleerror("No Recording")
+				return 0
+			paused = self.ispaused(room)
+			if paused is True:
+				url = self.baseurl + 'rooms/' + str(room) + '/record/resume' + '?access_token=' + self.accesstoken
+				values = {"nothing": "nothing"}
+				data = self.send_to_valt(url, values=values)
+				self.logger.info(__name__ + ": " + "Recording resumed in " + str(self.getroomname(room)))
+				if room == self.selected_room:
+					self.selected_room_status = 2
+				if type(data).__name__ == "dict":
+					return data['data']['id']
 				else:
-					self.handleerror("Room Not Paused")
 					return 0
+			elif paused is False:
+				self.handleerror("Room Not Paused")
+				return 0
 			else:
-				self.handleerror("No Recording")
 				return 0
 
 
@@ -160,8 +169,12 @@ class valt_room:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
-			if self.isrecording(room) == True:
-				if self.version[0] == "6":
+			is_recording = self.isrecording(room)
+			if is_recording is not True:
+				if is_recording is False:
+					self.handleerror("No Recording")
+				return 0
+			if self.version[0] == "6":
 					url = self.baseurl + 'comment?access_token=' + self.accesstoken
 				elif self.version[0] == "5":
 					url = self.baseurl + 'rooms/' + str(room) + '/record/markers' + '?access_token=' + self.accesstoken
@@ -179,9 +192,6 @@ class valt_room:
 					return 1
 				else:
 					return 0
-			else:
-				self.handleerror("No Recording")
-				return 0
 
 	def getrecordingtime(self: VALT, room):
 		# Returns current recording time index in seconds for the specified room.
@@ -190,15 +200,16 @@ class valt_room:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
-			if self.isrecording(room) == True:
-				url = self.baseurl + 'rooms/info/' + str(room) + '?access_token=' + self.accesstoken
-				data = self.send_to_valt(url)
-				if type(data).__name__ == "dict":
-					return data['data']['recording']['time']
-				else:
-					return 0
+			is_recording = self.isrecording(room)
+			if is_recording is not True:
+				if is_recording is False:
+					self.handleerror("No Recording")
+				return 0
+			url = self.baseurl + 'rooms/info/' + str(room) + '?access_token=' + self.accesstoken
+			data = self.send_to_valt(url)
+			if type(data).__name__ == "dict":
+				return data['data']['recording']['time']
 			else:
-				self.handleerror("No Recording")
 				return 0
 
 	def ispaused(self: VALT, room):
