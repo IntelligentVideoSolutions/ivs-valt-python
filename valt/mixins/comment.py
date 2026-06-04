@@ -39,7 +39,7 @@ class valt_comment:
 
 		if isinstance(data, dict):
 			self.logger.info(__name__ + f": Created comment on record {comment_data.get('recordId', 'unknown')}")
-			return data.get('data')
+			return data.get('data', 0)
 		else:
 			self.handleerror("Unable to create comment")
 			return 0
@@ -56,7 +56,7 @@ class valt_comment:
 
 		if isinstance(data, dict):
 			self.logger.info(__name__ + f": Updated comment ID {comment_id}")
-			return data.get('data')
+			return data.get('data', 0)
 		else:
 			self.handleerror("Unable to update comment")
 			return 0

@@ -17,7 +17,7 @@ class valt_recording:
 			url = f"{self.baseurl}records/create-upload?access_token={self.accesstoken}"
 			values = {"name": upload_name}
 			data = self.send_to_valt(url,values=values)
-			if isinstance(data, dict):
+			if isinstance(data, dict) and 'id' in data and data.get('videos'):
 				record_id = data['id']
 				videos = data['videos'][0]
 				url = f"{self.baseurl}records/{record_id}/videos/{videos}?access_token={self.accesstoken}"
