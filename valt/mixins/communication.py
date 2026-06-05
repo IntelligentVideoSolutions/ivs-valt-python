@@ -53,7 +53,8 @@ class ValtCommunication:
 				req = request.Request(url, data=payload, method='POST')
 				req.add_header('Content-Type', upload_content_type)
 				req.add_header('Content-Range', content_range)
-				response = request.urlopen(req, timeout=self.httptimeout, context=ctx)
+				#Timeout is intentionally set to none as upload time will vary based upon file size.
+				response = request.urlopen(req, timeout=None, context=ctx)
 
 			elif params is not None:
 				req = request.Request(url)
