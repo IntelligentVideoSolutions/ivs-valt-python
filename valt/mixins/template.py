@@ -8,7 +8,7 @@ class ValtTemplate:
 	def get_templates(self: VALT, template_type):
 		# Returns dict with 'templates' list and 'default' template id on success, 0 on failure.
 		# template_type must be one of: 'comment', 'info', 'marker'
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 

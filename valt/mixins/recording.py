@@ -6,7 +6,7 @@ if TYPE_CHECKING:
 
 class ValtRecording:
 	def get_video_information(self: VALT,recording_id):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:

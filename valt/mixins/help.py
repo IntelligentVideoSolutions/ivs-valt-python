@@ -7,7 +7,7 @@ if TYPE_CHECKING:
 class ValtHelp:
 	def get_helps(self: VALT):
 		# Returns list of all help items or 0 on failure.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'help?access_token={self.accesstoken}'
@@ -20,7 +20,7 @@ class ValtHelp:
 
 	def get_help(self: VALT, help_id):
 		# Returns a help dict or 0 on failure.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'help/{help_id}?access_token={self.accesstoken}'
@@ -33,7 +33,7 @@ class ValtHelp:
 
 	def create_help(self: VALT, title, content):
 		# Creates a help item. Returns the created help dict or 0 on failure.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'help?access_token={self.accesstoken}'
@@ -48,7 +48,7 @@ class ValtHelp:
 
 	def update_help(self: VALT, help_id, title, content):
 		# Updates a help item. Returns help id or 0 on failure.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'help/{help_id}/edit?access_token={self.accesstoken}'
@@ -63,7 +63,7 @@ class ValtHelp:
 
 	def delete_help(self: VALT, help_id):
 		# Deletes a help item. Returns 1 on success or 0 on failure.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'help/{help_id}/delete?access_token={self.accesstoken}'

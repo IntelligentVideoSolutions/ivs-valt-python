@@ -8,7 +8,7 @@ class ValtPreset:
 	def get_camera_presets(self: VALT, camera_id):
 		# Function to retrieve presets for a given camera.
 		# Returns a list of preset dicts or 0 on failure.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 
@@ -24,7 +24,7 @@ class ValtPreset:
 	def create_camera_preset(self: VALT, camera_id, name):
 		# Function to create a new preset for a given camera.
 		# Returns preset ID or 0 on failure.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 
@@ -41,7 +41,7 @@ class ValtPreset:
 	def apply_camera_preset(self: VALT, camera_id, preset_id):
 		# Function to apply an existing preset to a given camera.
 		# Returns 1 on success or 0 on failure.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 
@@ -58,7 +58,7 @@ class ValtPreset:
 	def delete_camera_preset(self: VALT, camera_id, preset_id):
 		# Function to delete an existing preset from a given camera.
 		# Returns 1 on success or 0 on failure.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 

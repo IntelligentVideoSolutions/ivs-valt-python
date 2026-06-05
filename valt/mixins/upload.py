@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 
 class ValtUpload:
 	def upload_video(self: VALT, file_path, upload_name):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		if os.path.isfile(file_path):

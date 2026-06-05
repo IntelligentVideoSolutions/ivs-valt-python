@@ -7,7 +7,7 @@ if TYPE_CHECKING:
 class ValtAdminTemplates:
 	def get_admin_templates(self: VALT):
 		# Returns list of all admin templates or 0 on failure.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'admin/templates?access_token={self.accesstoken}'
@@ -20,7 +20,7 @@ class ValtAdminTemplates:
 
 	def get_admin_template(self: VALT, template_id):
 		# Returns a template dict or 0 on failure.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'admin/templates/{template_id}?access_token={self.accesstoken}'
@@ -34,7 +34,7 @@ class ValtAdminTemplates:
 	def create_admin_template(self: VALT, name, template_type, entity_name, **kwargs):
 		# Creates a template. Returns new template id or 0 on failure.
 		# Optional kwargs: hidden, fields
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'admin/templates?access_token={self.accesstoken}'
@@ -53,7 +53,7 @@ class ValtAdminTemplates:
 	def update_admin_template(self: VALT, template_id, **kwargs):
 		# Updates a template. Returns template id or 0 on failure.
 		# Optional kwargs: name, type, hidden, entity_name, fields
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'admin/templates/{template_id}/edit?access_token={self.accesstoken}'
@@ -68,7 +68,7 @@ class ValtAdminTemplates:
 
 	def delete_admin_template(self: VALT, template_id):
 		# Deletes a template. Returns 1 on success or 0 on failure.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'admin/templates/{template_id}/delete?access_token={self.accesstoken}'
@@ -82,7 +82,7 @@ class ValtAdminTemplates:
 
 	def get_template_fields(self: VALT, template_id):
 		# Returns list of fields for a template or 0 on failure.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'admin/templates/{template_id}/fields?access_token={self.accesstoken}'
@@ -96,7 +96,7 @@ class ValtAdminTemplates:
 	def add_template_fields(self: VALT, template_id, fields):
 		# Adds fields to a template. fields is a list of field dicts.
 		# Returns list of new field ids or 0 on failure.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'admin/templates/{template_id}/fields?access_token={self.accesstoken}'
@@ -112,7 +112,7 @@ class ValtAdminTemplates:
 	def update_template_field(self: VALT, template_id, field_id, **kwargs):
 		# Updates a template field. Returns field dict or 0 on failure.
 		# Optional kwargs: on, required, type, name, data
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'admin/templates/{template_id}/fields/{field_id}/edit?access_token={self.accesstoken}'
@@ -127,7 +127,7 @@ class ValtAdminTemplates:
 
 	def delete_template_field(self: VALT, template_id, field_id):
 		# Deletes a template field. Returns 1 on success or 0 on failure.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'admin/templates/{template_id}/fields/{field_id}/delete?access_token={self.accesstoken}'

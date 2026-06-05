@@ -13,7 +13,7 @@ class ValtComment:
 		# Function to return a list of all comments associated with a specific recording
 		# Returns list of comment dictionaries on success
 		# Returns 0 on failure
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 
@@ -30,7 +30,7 @@ class ValtComment:
 		# Created by AI – Function to create a new comment in VALT.
 		# Expects comment_data as a dict.
 		# Returns the created comment dict or 0 on failure.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 
@@ -47,7 +47,7 @@ class ValtComment:
 	def update_comment(self: VALT, comment_id, update_data):
 		# Created by AI – Function to update an existing comment in VALT.
 		# Returns the updated comment dict or 0 on failure.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 
@@ -64,7 +64,7 @@ class ValtComment:
 	def delete_comment(self: VALT, comment_id):
 		# Created by AI – Function to delete a comment by ID in VALT.
 		# Returns comment ID on success or 0 on failure.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 
@@ -79,7 +79,7 @@ class ValtComment:
 	def download_comment_file(self: VALT, comment_id, file_id, output_path):
 		# Created by AI – Function to download a comment's attached file to a local path.
 		# Returns True on success, False on failure.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return False
 

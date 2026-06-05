@@ -7,7 +7,7 @@ if TYPE_CHECKING:
 class ValtGroups:
 	def get_user_groups(self: VALT):
 		# Returns list of all user groups or 0 on failure.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'admin/user_groups?access_token={self.accesstoken}'
@@ -19,7 +19,7 @@ class ValtGroups:
 			return 0
 
 	def get_user_group_info(self: VALT,group_id):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
@@ -44,7 +44,7 @@ class ValtGroups:
 	def create_user_group(self: VALT, name, **kwargs):
 		# Creates a user group. Returns new group id or 0 on failure.
 		# Optional kwargs: template, rights, max_record_duration, rooms, video_access, retention
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'admin/user_groups?access_token={self.accesstoken}'
@@ -62,7 +62,7 @@ class ValtGroups:
 
 	def delete_user_group(self: VALT, group_id):
 		# Deletes a user group. Returns 1 on success or 0 on failure.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'admin/user_groups/{group_id}/delete?access_token={self.accesstoken}'
@@ -75,7 +75,7 @@ class ValtGroups:
 			return 0
 
 	def update_group(self: VALT,group_id,**kwargs):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:

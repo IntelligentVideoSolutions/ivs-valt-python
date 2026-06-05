@@ -7,7 +7,7 @@ if TYPE_CHECKING:
 class ValtRights:
 	def get_rights(self: VALT):
 		# Returns list of all rights or 0 on failure.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'rights?access_token={self.accesstoken}'
@@ -20,7 +20,7 @@ class ValtRights:
 
 	def get_rights_by_type(self: VALT, right_type):
 		# Returns rights object for the given type or 0 on failure.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'rights/{right_type}?access_token={self.accesstoken}'

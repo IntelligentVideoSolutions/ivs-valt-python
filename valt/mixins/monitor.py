@@ -19,7 +19,7 @@ class ValtMonitor:
 
 	def update_room_status(self: VALT):
 		self.logger.debug(__name__ + ": " + "Room Check Loop: " + "Access Token: " + str(self.accesstoken))
-		if self.accesstoken != 0 and self.selected_room is not None:
+		if self.connected and self.selected_room is not None:
 			temp_room_status = self.get_room_status(self.selected_room)
 			if temp_room_status != self.selected_room_status:
 				self.selected_room_status = temp_room_status

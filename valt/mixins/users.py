@@ -7,7 +7,7 @@ if TYPE_CHECKING:
 
 class ValtUsers:
 	def get_user_by_card_number(self: VALT, cardnumber):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		if self.major_version == "5":
@@ -23,7 +23,7 @@ class ValtUsers:
 
 	def get_user_by_card_number_v6(self: VALT, cardnumber):
 		# Function returns user matching card number.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
@@ -40,7 +40,7 @@ class ValtUsers:
 
 	def get_user_by_card_number_v5(self: VALT, cardnumber):
 		# Function returns user matching card number.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
@@ -61,7 +61,7 @@ class ValtUsers:
 
 	def get_user(self: VALT, user_id):
 		# Returns full user dict or 0 on failure.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'admin/users/{user_id}?access_token={self.accesstoken}'
@@ -75,7 +75,7 @@ class ValtUsers:
 	def create_user(self: VALT, name, password, **kwargs):
 		# Creates a user. Returns new user id or 0 on failure.
 		# Optional kwargs: display_name, user_group, card_number, rooms, video_access
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'admin/users?access_token={self.accesstoken}'
@@ -93,7 +93,7 @@ class ValtUsers:
 
 	def delete_user(self: VALT, user_id):
 		# Deletes a user. Returns 1 on success or 0 on failure.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'admin/users/{user_id}/delete?access_token={self.accesstoken}'
@@ -106,7 +106,7 @@ class ValtUsers:
 			return 0
 
 	def update_user(self: VALT, user_id, **kwargs):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
@@ -121,7 +121,7 @@ class ValtUsers:
 		# Function to return a list of users.
 		# Returns 0 on failure.
 		# Each list item is a dictionary with information about the user.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:

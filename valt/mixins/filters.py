@@ -7,7 +7,7 @@ if TYPE_CHECKING:
 class ValtFilters:
 	def get_filters(self: VALT):
 		# Returns list of all filters or 0 on failure.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'filters?access_token={self.accesstoken}'
@@ -20,7 +20,7 @@ class ValtFilters:
 
 	def get_filter(self: VALT, filter_id):
 		# Returns a filter dict or 0 on failure.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'filters/{filter_id}?access_token={self.accesstoken}'
@@ -33,7 +33,7 @@ class ValtFilters:
 
 	def get_filter_template_fields(self: VALT):
 		# Returns list of template fields available for filtering or 0 on failure.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'filters/template_fields?access_token={self.accesstoken}'
@@ -47,7 +47,7 @@ class ValtFilters:
 	def create_filter(self: VALT, name, **kwargs):
 		# Creates a filter. Returns new filter id or 0 on failure.
 		# Optional kwargs: fields, rooms, authors, date
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'filters?access_token={self.accesstoken}'
@@ -66,7 +66,7 @@ class ValtFilters:
 	def update_filter(self: VALT, filter_id, **kwargs):
 		# Updates a filter. Returns filter id or 0 on failure.
 		# Optional kwargs: name, fields, rooms, authors, date
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'filters/{filter_id}/edit?access_token={self.accesstoken}'
@@ -84,7 +84,7 @@ class ValtFilters:
 
 	def delete_filter(self: VALT, filter_id):
 		# Deletes a filter. Returns 1 on success or 0 on failure.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'filters/{filter_id}/delete?access_token={self.accesstoken}'

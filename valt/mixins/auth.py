@@ -115,6 +115,9 @@ class ValtAuth:
 		self._accesstoken = newmsg
 		for callback in self._accesstoken_observers:
 			callback(self._accesstoken)
+	@property
+	def connected(self: VALT) -> bool:
+		return self.accesstoken != 0
 	def bind_to_accesstoken(self: VALT, callback):
 		self._accesstoken_observers.append(callback)
 

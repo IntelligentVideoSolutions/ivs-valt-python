@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 class ValtAudio:
 	def get_audio(self: VALT, audio_id):
 		# Returns the Audio dict on success or 0 on failure.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 
@@ -27,7 +27,7 @@ class ValtAudio:
 
 	def upload_audio(self: VALT, file_path, duration, frequencies):
 		# Uploads a new audio file. Returns the Audio dict on success or 0 on failure.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 
@@ -42,7 +42,7 @@ class ValtAudio:
 
 	def update_audio(self: VALT, audio_id, file_path, duration, frequencies):
 		# Updates an existing audio file. Returns the Audio dict on success or 0 on failure.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 
@@ -57,7 +57,7 @@ class ValtAudio:
 
 	def delete_audio(self: VALT, audio_id):
 		# Deletes an audio file. Returns the audio ID on success or 0 on failure.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 

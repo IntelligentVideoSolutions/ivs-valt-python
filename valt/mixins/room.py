@@ -7,7 +7,7 @@ if TYPE_CHECKING:
 
 class ValtRoom:
 	def is_recording(self: VALT, room):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
@@ -19,7 +19,7 @@ class ValtRoom:
 				return 0
 
 	def get_recording_id(self: VALT, room):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
@@ -35,7 +35,7 @@ class ValtRoom:
 				return 0
 
 	def start_recording(self: VALT, room, name, **kwargs):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
@@ -64,7 +64,7 @@ class ValtRoom:
 				return 0
 
 	def stop_recording(self: VALT, room):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
@@ -87,7 +87,7 @@ class ValtRoom:
 				return 0
 
 	def pause_recording(self: VALT, room):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
@@ -115,7 +115,7 @@ class ValtRoom:
 				return 0
 
 	def resume_recording(self: VALT, room):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
@@ -143,7 +143,7 @@ class ValtRoom:
 				return 0
 
 	def add_comment(self: VALT, room, markername, color="red", **kwargs):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
@@ -172,7 +172,7 @@ class ValtRoom:
 				return 0
 
 	def get_recording_time(self: VALT, room):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
@@ -189,7 +189,7 @@ class ValtRoom:
 				return 0
 
 	def is_paused(self: VALT, room):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
@@ -203,7 +203,7 @@ class ValtRoom:
 			return 0
 
 	def is_locked(self: VALT, room):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
@@ -217,7 +217,7 @@ class ValtRoom:
 			return 0
 
 	def get_cameras(self: VALT, room):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
@@ -238,7 +238,7 @@ class ValtRoom:
 				return 0
 
 	def get_room_name(self: VALT, room):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
@@ -253,7 +253,7 @@ class ValtRoom:
 				return 0
 
 	def get_room_status(self: VALT, room):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
@@ -278,7 +278,7 @@ class ValtRoom:
 				return 0
 
 	def lock_room(self: VALT, room):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		room_status = self.get_room_status(room)
@@ -296,7 +296,7 @@ class ValtRoom:
 			return 0
 
 	def unlock_room(self: VALT, room):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		locked = self.is_locked(room)

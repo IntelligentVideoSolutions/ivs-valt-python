@@ -7,7 +7,7 @@ if TYPE_CHECKING:
 
 class ValtAdmin:
 	def set_sharing(self: VALT, recid, **kwargs):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
@@ -30,7 +30,7 @@ class ValtAdmin:
 				return 0
 
 	def get_records(self: VALT, **kwargs):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
@@ -52,7 +52,7 @@ class ValtAdmin:
 				return 0
 
 	def get_version(self: VALT):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
@@ -68,7 +68,7 @@ class ValtAdmin:
 				return 0
 
 	def get_all_cameras(self: VALT):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
@@ -85,7 +85,7 @@ class ValtAdmin:
 				return 0
 
 	def get_rooms(self: VALT):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
@@ -98,7 +98,7 @@ class ValtAdmin:
 				return 0
 
 	def get_room_schedule(self: VALT, room):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
@@ -131,7 +131,7 @@ class ValtAdmin:
 				return 0
 
 	def get_username(self: VALT, user):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
@@ -143,7 +143,7 @@ class ValtAdmin:
 				return 0
 
 	def create_camera(self: VALT, camera_name, camera_ip, camera_username, camera_password, **kwargs):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
@@ -167,7 +167,7 @@ class ValtAdmin:
 				return 0
 
 	def create_room(self: VALT, room_name, **kwargs):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:
@@ -182,7 +182,7 @@ class ValtAdmin:
 				return 0
 
 	def get_admin_rooms(self: VALT):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'admin/rooms?access_token={self.accesstoken}'
@@ -194,7 +194,7 @@ class ValtAdmin:
 			return 0
 
 	def get_admin_room(self: VALT, room_id):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'admin/rooms/{room_id}?access_token={self.accesstoken}'
@@ -206,7 +206,7 @@ class ValtAdmin:
 			return 0
 
 	def update_room(self: VALT, room_id, **kwargs):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'admin/rooms/{room_id}/edit?access_token={self.accesstoken}'
@@ -220,7 +220,7 @@ class ValtAdmin:
 			return 0
 
 	def delete_room(self: VALT, room_id):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'admin/rooms/{room_id}/delete?access_token={self.accesstoken}'
@@ -233,7 +233,7 @@ class ValtAdmin:
 			return 0
 
 	def get_camera(self: VALT, camera_id):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'admin/cameras/{camera_id}?access_token={self.accesstoken}'
@@ -245,7 +245,7 @@ class ValtAdmin:
 			return 0
 
 	def update_camera(self: VALT, camera_id, **kwargs):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'admin/cameras/{camera_id}/edit?access_token={self.accesstoken}'
@@ -259,7 +259,7 @@ class ValtAdmin:
 			return 0
 
 	def delete_camera(self: VALT, camera_id):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'admin/cameras/{camera_id}/delete?access_token={self.accesstoken}'
@@ -272,7 +272,7 @@ class ValtAdmin:
 			return 0
 
 	def get_camera_brands(self: VALT):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'admin/cameras/brands?access_token={self.accesstoken}'
@@ -284,7 +284,7 @@ class ValtAdmin:
 			return 0
 
 	def get_media_server(self: VALT, server_id):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'admin/wowza/{server_id}?access_token={self.accesstoken}'
@@ -296,7 +296,7 @@ class ValtAdmin:
 			return 0
 
 	def create_media_server(self: VALT, name, address, storage_folder, **kwargs):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'admin/wowza?access_token={self.accesstoken}'
@@ -313,7 +313,7 @@ class ValtAdmin:
 			return 0
 
 	def update_media_server(self: VALT, server_id, **kwargs):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'admin/wowza/{server_id}/edit?access_token={self.accesstoken}'
@@ -327,7 +327,7 @@ class ValtAdmin:
 			return 0
 
 	def delete_media_server(self: VALT, server_id):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'admin/wowza/{server_id}/delete?access_token={self.accesstoken}'
@@ -340,7 +340,7 @@ class ValtAdmin:
 			return 0
 
 	def get_log_categories(self: VALT):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'admin/logs?access_token={self.accesstoken}'
@@ -352,7 +352,7 @@ class ValtAdmin:
 			return 0
 
 	def get_media_servers(self: VALT):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		else:

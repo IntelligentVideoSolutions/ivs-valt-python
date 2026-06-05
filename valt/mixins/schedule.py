@@ -7,7 +7,7 @@ if TYPE_CHECKING:
 class ValtSchedule:
 	def get_blocked_schedules(self: VALT):
 		# Returns list of blocked schedules or 0 on failure.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'schedule/blocked?access_token={self.accesstoken}'
@@ -20,7 +20,7 @@ class ValtSchedule:
 
 	def get_conflict_schedules(self: VALT):
 		# Returns list of conflict schedules or 0 on failure.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'schedule/conflict?access_token={self.accesstoken}'
@@ -33,7 +33,7 @@ class ValtSchedule:
 
 	def get_schedule(self: VALT, schedule_id):
 		# Returns a schedule dict or 0 on failure.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'schedule/{schedule_id}?access_token={self.accesstoken}'
@@ -47,7 +47,7 @@ class ValtSchedule:
 	def create_schedule(self: VALT, name, room, start_at, duration, **kwargs):
 		# Creates a schedule. Returns new schedule id or 0 on failure.
 		# Optional kwargs: template, recurrence, share
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'schedule?access_token={self.accesstoken}'
@@ -69,7 +69,7 @@ class ValtSchedule:
 	def update_schedule(self: VALT, schedule_id, **kwargs):
 		# Updates a schedule. Returns 1 on success or 0 on failure.
 		# Optional kwargs: name, room, start_at, duration, template, recurrence, share
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'schedule/{schedule_id}/edit?access_token={self.accesstoken}'
@@ -83,7 +83,7 @@ class ValtSchedule:
 	def delete_next_schedule(self: VALT, schedule_id):
 		# Deletes the next occurrence of a recurring schedule.
 		# Returns the updated schedule dict or 0 on failure.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'schedule/{schedule_id}/delete_next?access_token={self.accesstoken}'
@@ -97,7 +97,7 @@ class ValtSchedule:
 
 	def stop_schedule(self: VALT, schedule_id):
 		# Stops a running schedule. Returns 1 on success or 0 on failure.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'schedule/{schedule_id}/stop?access_token={self.accesstoken}'
@@ -109,7 +109,7 @@ class ValtSchedule:
 
 	def delete_schedule(self: VALT, schedule_id):
 		# Deletes a schedule. Returns 1 on success or 0 on failure.
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'schedule/{schedule_id}/delete?access_token={self.accesstoken}'

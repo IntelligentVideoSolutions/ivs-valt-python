@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 class ValtDownload:
 	def download_video(self: VALT, recording_id, video_id, file_name):
-		if self.accesstoken == 0:
+		if not self.connected:
 			self.logger.error(__name__ + ": " + "Not Currently Authenticated to VALT")
 			return 0
 		url = self.baseurl + f'records/download/{recording_id}/{video_id}?access_token={self.accesstoken}'
