@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "ivs-valt-python"
 dynamic = ["version"]
-description = "Python client library for the Intelligent Video Solutions (IVS) VALT REST API v3"
+description = "Pure-Python client library for the IVS VALT REST API v3, covering room control, recording, scheduling, users, groups, cameras, comments, audio, and full administrative management."
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [
@@ -13,16 +13,9 @@ authors = [
 ]
 keywords = ["valt", "ivs", "video", "recording", "rest", "api", "client"]
 classifiers = [
-    "Private :: Do Not Upload",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
-    "Intended Audience :: Developers",
-    "Topic :: Multimedia :: Video",
-    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Private :: Do Not Upload"
 ]
+dependencies = []
 
 [tool.setuptools.dynamic]
 version = {attr = "valt._version.__version__"}

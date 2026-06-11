@@ -1,6 +1,30 @@
 # ivs-valt-python
 
-A Python client library for the **Intelligent Video Solutions (IVS) VALT** REST API (v3). Covers room control, recordings, comments, audio, presets, scheduling, filters, templates, users, groups, cameras, and full administrative management.
+A pure-Python client library for the **Intelligent Video Solutions (IVS) VALT** REST API (v3).
+
+## Features
+
+- **Room Control:** Start, stop, pause, and resume recordings. Check room status (available, recording, paused, locked, prepared), lock and unlock rooms, and retrieve active recording ID and elapsed time.
+- **Recording Management:** Search recordings, retrieve full recording metadata, clip recordings by time range, share and deactivate share URLs, and delete recordings.
+- **Video Upload and Download:** Upload local video files to VALT and download recorded videos to disk.
+- **Comments:** Create, read, update, and delete comments (markers) on recordings. Download files attached to comments.
+- **Audio:** Upload, update, retrieve, and delete audio notes with frequency waveform data.
+- **Camera Presets:** List, create, apply, and delete PTZ presets for individual cameras.
+- **Scheduling:** Create, update, stop, and delete scheduled recordings. Retrieve schedules by room, handle recurring schedules, and query blocked or conflicting schedules.
+- **Filters:** Create, update, and delete saved record search filters with support for rooms, authors, date, and template fields.
+- **Templates:** Retrieve user-facing comment, info, and marker templates. Manage admin templates and their fields (create, update, delete).
+- **Users:** List, create, update, and delete users. Look up users by I/O card number.
+- **User Groups:** List, create, update, and delete user groups with room and rights assignments.
+- **Cameras (Admin):** List, create, update, and delete cameras. Query camera brands and models.
+- **Rooms (Admin):** List, create, update, and delete rooms with full device details.
+- **Media Servers (Admin):** List, create, update, and delete Wowza media servers.
+- **Rights:** List all rights and query by type.
+- **Help Items:** List, create, update, and delete VALT help items.
+- **Background Room Monitor:** A background thread polls the selected room and fires callbacks when status changes.
+- **Auto Re-authentication:** Automatically re-authenticates on token expiry or connection failure.
+- **Logging:** Writes structured logs to a configurable file; integrates with Kivy's logger when available.
+- **Deprecated Name Compatibility:** Pre-v4.2.0 camelCase method names still work with `DeprecationWarning`.
+- **No External Dependencies:** Built entirely on the Python standard library.
 
 ## Installation
 
@@ -32,6 +56,10 @@ v.stop_recording(room_id=3)
 # Search recordings
 records = v.get_records(search='My Recording')
 ```
+
+## Requirements
+
+- Python >= 3.10
 
 ## Constructor
 
