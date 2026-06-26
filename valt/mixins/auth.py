@@ -79,7 +79,7 @@ class ValtAuth:
 		self.logger.debug(__name__ + ": " + "Testing Connection to VALT server")
 		self.logger.debug(__name__ + ": " + valt_baseurl)
 		self.logger.debug(__name__ + ": " + valt_username)
-		self.logger.debug(__name__ + ": " + valt_password)
+		self.logger.debug(__name__ + ": ***")
 
 		ctx = _ssl.create_default_context()
 		ctx.check_hostname = False
