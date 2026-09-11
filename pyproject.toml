@@ -17,6 +17,17 @@ classifiers = [
 ]
 dependencies = []
 
+[project.optional-dependencies]
+test = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["live: hits a real device/server; opt-in only"]
+addopts = "-ra --strict-markers -m \"not live\""
+
 [tool.setuptools.dynamic]
 version = {attr = "valt._version.__version__"}
 
