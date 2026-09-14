@@ -67,6 +67,8 @@ class ValtErrors:
 			self.errormsg = "Video Not Found"
 		elif str(e) == "Upload Creation Failed.":
 			self.errormsg = "Upload Failed"
+		elif str(e) == "Upload Verification Failed":
+			self.errormsg = "Upload Could Not Be Verified"
 		else:
 			self.errormsg = "An Unknown Error Occurred"
 			self.accesstoken = 0
