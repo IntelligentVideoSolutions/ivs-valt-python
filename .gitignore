@@ -29,4 +29,9 @@ env/
 
 # Test artifacts
 .pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+# Ad-hoc scratch scripts at the repo root stay ignored; the tests/ suite is tracked.
 test_*.py
+!tests/**/test_*.py
